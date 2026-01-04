@@ -31,10 +31,9 @@
       },
       {
         "tab": "API参考",
-        "openapi": "api-reference/openapi.yaml",
         "groups": [
           {
-            "group": "Endpoint examples",
+            "group": "API",
             "pages": [
               "api-reference/endpoint/create",
               "api-reference/endpoint/get_material_category",
