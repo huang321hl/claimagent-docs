@@ -1,97 +1,71 @@
 ---
-title: "产品介绍"
-description: "Welcome to the new home for your documentation"
+title: "产品简介"
+description: "ClaimAgent API 产品简介"
 ---
 
-## Setting up
+## 01 产品概述
 
-Get your documentation site up and running in minutes.
+ClaimAgent API 是面向保险理赔材料处理的一组接口服务。你把案件材料（PDF/图片）上传进来，它会按你选择的处理阶段输出结果（JSON），用于接入现有理赔系统，实现“材料整理 + 结构化输出 + 复核提示”的自动化。
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+**当前已实现能力覆盖：**
+*   **材料分类**：输出材料大类 category 与小类 material_type
+*   **信息抽取**：输出 OCR 与结构化字段 extract_result
+*   **材料齐全性检查**：输出是否齐全 is_complete 与缺失大类 missing_categories
+*   **案件时间线**：输出按时间排序的事件列表（含证据）
+*   **材料真伪**：输出发票验真 verify_vat_ret
+*   **单图质检**：模糊/不完整/翻拍/复印/光斑等风险标签与评分
 
-## Make it yours
+## 02 产品价值
 
-Design a docs site that looks great and empowers your users.
+*   **从源头控质量**：单图质检提前拦截低质量材料，减少后续返工
+*   **减少人工翻材料与录入**：分类与抽取结果可直接回填录入界面，降低重复劳动
+*   **降低错录漏录与口径问题**：统一接口与字段输出，便于系统化治理与复核
+*   **补件更标准**：齐全性结果直接给出缺失大类清单，便于自动生成补件任务
+*   **复核更聚焦**：时间线与真伪结果让审核人员更快定位重点
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+## 03 使用流程
 
-## Create beautiful pages
+1.  **创建案件并上传材料**：`POST /claim/create`
+2.  **选择处理阶段**：用 `stages` 指定要跑哪些环节
+3.  **同步/异步获取结果**：
+    *   **同步**：请求等待处理完成后返回
+    *   **异步**：先返回 `claim_id`，处理完成后再查询结果（可配置 `callback_api`）
+4.  **按需查询结果**：分类/抽取/时间线/齐全性/真伪分别有查询接口
+5.  **单图质检（可独立使用）**：`POST /image_quality`
 
-Everything you need to create world-class documentation.
+## 04 核心概念
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+*   **Base URL**：`/doc-agent/api/v1`
+*   **claim_id**：案件 ID（创建案件成功后返回）
+*   **material_id**：材料 ID（每份上传材料对应一个）
+*   **stages**：处理阶段（只能选指定组合）
+    1.  分类
+    2.  抽取
+    3.  时间线
+    4.  真实性校验
+    *   支持组合：`[1]`、`[1,2]`、`[1,2,3]`、`[1,2,4]`、`[1,2,3,4]`
+*   **Status**：通用状态枚举
+    *   `0` 未开始 / `1` 进行中 / `2` 成功 / `3` 失败 / `4` 跳过
 
-## Need inspiration?
+## 05 接入方式：同步/异步
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+从接入方式上，ClaimAgent 支持两种典型用法：
+
+*   **同步处理**：一次请求等待处理完成，直接拿结果，适合 demo、低并发或需要即时展示结果的交互场景。
+*   **异步处理**：先创建案件返回 `claim_id`，后台处理完成后再查询结果（也可配置回调），适合生产环境批量、长耗时任务与更稳定的吞吐。
+
+**适用场景：**
+*   **同步（`is_async=false`）**：适合 Demo、交互式页面、小批量；一次请求直接拿结果
+*   **异步（`is_async=true`）**：适合生产批量与长耗时；创建后拿 `claim_id`，完成后查询结果或等回调（`callback_api`）
+
+## 06 核心接口一览
+
+**统一前缀**：`/doc-agent/api/v1`（所有接口需要 API Key 认证）
+
+*   **创建案件**：`POST /claim/create`
+*   **分类结果**：`GET /claims/{claim_id}/materials/category-mappings`
+*   **抽取结果**：`GET /claims/{claim_id}/materials/extractions`
+*   **时间线**：`GET /claims/{claim_id}/timeline`
+*   **齐全性**：`GET /claims/{claim_id}/materials/completeness`
+*   **真伪**：`GET /claims/{claim_id}/materials/validity`
+*   **单图质检**：`POST /image_quality`
