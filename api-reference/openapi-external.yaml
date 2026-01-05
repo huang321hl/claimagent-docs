@@ -2072,6 +2072,6 @@ paths:
       tags:
       - ClaimAPI
 servers:
-- url: https://agents.textin.com/claim-agent/
+- url: https://agents.textin.com/
 tags:
 - name: ClaimAPI
