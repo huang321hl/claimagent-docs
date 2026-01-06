@@ -451,6 +451,31 @@ components:
                 text: "0"
               material_id: 09234629-565f-4eba-8c6f-59faf72c39eb
       type: object
+    claim.v1.APIMaterialCategoryEntity:
+      properties:
+        category:
+          description: 材料分类（大类）
+          type: string
+        file_name:
+          description: 文件名
+          type: string
+        file_size:
+          description: 文件大小
+          type: string
+        file_type:
+          description: 文件路径
+          type: string
+        material_id:
+          description: 材料id
+          type: string
+        material_type:
+          description: 材料类型（小类）
+          type: string
+        status:
+          description: 材料的处理状态
+          format: enum
+          type: integer
+      type: object
     claim.v1.APIMaterialEntity:
       properties:
         category:
@@ -478,6 +503,56 @@ components:
           type: string
         material_type:
           description: 材料类型（小类）
+          type: string
+        ps_ret:
+          allOf:
+          - $ref: '#/components/schemas/common.TamperedRet'
+          description: 材料是否被篡改
+        status:
+          description: 材料的处理状态
+          format: enum
+          type: integer
+        verify_vat_ret:
+          allOf:
+          - $ref: '#/components/schemas/common.VerifyVatRet'
+          description: 发票验真结果
+      type: object
+    claim.v1.APIMaterialExtractEntity:
+      properties:
+        extract_result:
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.ExtractResult'
+          description: 材料的提取结果
+        file_name:
+          description: 文件名
+          type: string
+        file_size:
+          description: 文件大小
+          type: string
+        file_type:
+          description: 文件路径
+          type: string
+        material_id:
+          description: 材料id
+          type: string
+        status:
+          description: 材料的处理状态
+          format: enum
+          type: integer
+      type: object
+    claim.v1.APIMaterialValidityEntity:
+      properties:
+        file_name:
+          description: 文件名
+          type: string
+        file_size:
+          description: 文件大小
+          type: string
+        file_type:
+          description: 文件路径
+          type: string
+        material_id:
+          description: 材料id
           type: string
         ps_ret:
           allOf:
@@ -541,7 +616,7 @@ components:
               code: "1"
               message: 成功
           items:
-            $ref: '#/components/schemas/claim.v1.APIMaterialEntity'
+            $ref: '#/components/schemas/claim.v1.APIMaterialValidityEntity'
           type: array
         status:
           description: status 0 未开始 1 进行中 2 成功 3 失败
@@ -1041,7 +1116,7 @@ components:
             material_type: 纸质住院发票
             status: 2
           items:
-            $ref: '#/components/schemas/claim.v1.APIMaterialEntity'
+            $ref: '#/components/schemas/claim.v1.APIMaterialCategoryEntity'
           type: array
         status:
           description: status 0 未开始 1 进行中 2 成功 3 失败
@@ -1127,7 +1202,7 @@ components:
             material_type: 纸质住院发票
             status: 2
           items:
-            $ref: '#/components/schemas/claim.v1.APIMaterialEntity'
+            $ref: '#/components/schemas/claim.v1.APIMaterialExtractEntity'
           type: array
         status:
           description: status 0 未开始 1 进行中 2 成功 3 失败
