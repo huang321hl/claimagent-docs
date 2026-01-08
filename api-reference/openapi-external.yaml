@@ -7,8 +7,16 @@ components:
             回调接口
              处理结果会通过回调接口通知
              注：可能需要开发并联调后才能正常使用回调
-          example: http://localhost:8080/callback
+          example: http://example.com/callback
           type: string
+        file_urls:
+          description: 批量文件URL
+          example:
+          - https://example.com/file1.jpg
+          - https://example.com/file2.jpg
+          items:
+            type: string
+          type: array
         files:
           description: 案件材料文件
           items:
@@ -1075,6 +1083,10 @@ components:
       properties:
         file:
           $ref: '#/components/schemas/common.MultipartUpload'
+        file_url:
+          description: 文件URL
+          example: https://example.com/file.jpg
+          type: string
       type: object
     claim.v1.ImageQualityResponse:
       properties:
@@ -1828,8 +1840,16 @@ paths:
                     回调接口
                      处理结果会通过回调接口通知
                      注：可能需要开发并联调后才能正常使用回调
-                  example: http://localhost:8080/callback
+                  example: http://example.com/callback
                   type: string
+                file_urls:
+                  description: 批量文件URL
+                  example:
+                  - https://example.com/file1.jpg
+                  - https://example.com/file2.jpg
+                  items:
+                    type: string
+                  type: array
                 files:
                   items:
                     format: binary
@@ -2134,6 +2154,10 @@ paths:
               properties:
                 file:
                   format: binary
+                  type: string
+                file_url:
+                  description: 文件URL
+                  example: https://example.com/file.jpg
                   type: string
               type: object
         required: true
