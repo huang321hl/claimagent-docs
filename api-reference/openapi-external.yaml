@@ -1074,7 +1074,7 @@ components:
             $ref: '#/components/schemas/common.Timeline'
           type: array
         timeline_status:
-          description: 时间线状态 0:处理中, 1:处理失败, 2:处理成功
+          description: 时间线状态 0:未开始, 1:处理中, 2:处理成功, 3:处理失败
           example: "2"
           format: enum
           type: integer
