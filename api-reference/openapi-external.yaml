@@ -1329,6 +1329,9 @@ components:
         is_screen_remark:
           description: 是否翻拍
           type: boolean
+        mime_type:
+          description: mime类型
+          type: string
         other_category:
           description: 其他分类： 当分类阶段没有分到预置分类或者
           type: string
@@ -1375,6 +1378,8 @@ components:
     claim.v1.RiskDetails:
       properties:
         blurry:
+          $ref: '#/components/schemas/claim.v1.RiskInfo'
+        un_integrity:
           $ref: '#/components/schemas/claim.v1.RiskInfo'
       type: object
     claim.v1.RiskInfo:
@@ -1740,7 +1745,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1764,7 +1774,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1793,7 +1808,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1818,7 +1838,12 @@ paths:
       operationId: ClaimAPI_APICreateClaim
       parameters:
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1908,7 +1933,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1934,7 +1964,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1971,7 +2006,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2008,7 +2048,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2034,7 +2079,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2067,7 +2117,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2086,7 +2141,12 @@ paths:
       operationId: ClaimAPI_UploadFiles
       parameters:
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2135,7 +2195,12 @@ paths:
       operationId: ClaimAPI_CheckImageQuality
       parameters:
       - in: header
-        name: x-api-key
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
