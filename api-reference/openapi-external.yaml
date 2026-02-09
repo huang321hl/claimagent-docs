@@ -39,8 +39,11 @@ components:
           example: p12345678
           type: string
         stages:
-          description: "执行阶段 \n 请使用以下五种组合之一：\n [1], [1,2], [1,2,3], [1,2,4], [1,2,3,4]\n
-            数字表示的含义：1分类，2抽取，3时间线，4真实性校验"
+          description: |-
+            执行阶段
+             请使用以下组合之一：
+             [1], [1,2], [1,2,3], [1,2,4], [1,2,5], [1,2,3,4], [1,2,3,5], [1,2,4,5], [1,2,3,4,5]
+             数字表示的含义：1分类，2抽取，3时间线，4发票验真，5PS检测
           example:
           - 1
           - 2
@@ -548,6 +551,35 @@ components:
           format: enum
           type: integer
       type: object
+    claim.v1.APIMaterialInvoiceEntity:
+      properties:
+        category:
+          description: 材料分类（大类）
+          type: string
+        file_name:
+          description: 文件名
+          type: string
+        file_size:
+          description: 文件大小
+          type: string
+        file_type:
+          description: 文件路径
+          type: string
+        material_id:
+          description: 材料id
+          type: string
+        material_type:
+          description: 材料类型（小类）
+          type: string
+        status:
+          description: 材料的处理状态
+          format: enum
+          type: integer
+        verify_vat_ret:
+          allOf:
+          - $ref: '#/components/schemas/common.VerifyVatRet'
+          description: 发票验真结果
+      type: object
     claim.v1.APIMaterialValidityEntity:
       properties:
         file_name:
@@ -593,6 +625,62 @@ components:
           example: "2"
           format: enum
           type: integer
+      type: object
+    claim.v1.CheckMaterialsInvoiceResponse:
+      properties:
+        materials:
+          description: 发票验真结果
+          example:
+          - file_name: 发票.jpg
+            file_size: "523393"
+            file_type: .jpg
+            material_id: material-1234
+            status: 31
+            verify_vat_ret:
+              code: "1"
+              message: 成功
+          items:
+            $ref: '#/components/schemas/claim.v1.APIMaterialInvoiceEntity'
+          type: array
+        status:
+          description: status 0 未开始 1 进行中 2 成功 3 失败
+          example: "2"
+          format: enum
+          type: integer
+      type: object
+    claim.v1.CheckMaterialsTamperingRequest:
+      properties:
+        file:
+          allOf:
+          - $ref: '#/components/schemas/common.MultipartUpload'
+          description: 上传文件
+        file_url:
+          description: 文件URL
+          example: https://example.com/file.jpg
+          type: string
+      type: object
+    claim.v1.CheckMaterialsTamperingResponse:
+      properties:
+        areas:
+          description: 被篡改的区域
+          example:
+          - confidence: 0.98
+            positions:
+            - 241
+            - 510
+            - 397
+            - 510
+            - 397
+            - 572
+            - 241
+            - 572
+          items:
+            $ref: '#/components/schemas/common.TamperedArea'
+          type: array
+        is_tampered:
+          description: 材料是否被篡改
+          example: true
+          type: boolean
       type: object
     claim.v1.CheckMaterialsValidityResponse:
       properties:
@@ -1296,6 +1384,10 @@ components:
             format: enum
             type: integer
           type: array
+        tamper_checking_status:
+          description: 篡改校验状态
+          format: enum
+          type: integer
         thumbnail_file_id:
           description: 缩略图id
           type: string
@@ -1335,6 +1427,10 @@ components:
         other_category:
           description: 其他分类： 当分类阶段没有分到预置分类或者
           type: string
+        tamper_checking_status:
+          description: 篡改校验状态
+          format: enum
+          type: integer
         total_fields:
           description: 总字段数
           format: int32
@@ -1728,7 +1824,7 @@ info:
   version: 0.0.1
 openapi: 3.0.3
 paths:
-  /doc-agent/api/v1/claim/{claimId}:
+  /doc-agent/api/v1/claim/{claim_id}:
     delete:
       description: 清理数据： material_ids 为空时，清理所有文件
       operationId: ClaimAPI_DeleteFiles
@@ -1763,7 +1859,7 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claim/{claimId}/files:
+  /doc-agent/api/v1/claim/{claim_id}/files:
     get:
       description: 获取案件的文件列表
       operationId: ClaimAPI_FetchFiles
@@ -1792,7 +1888,7 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claim/{claimId}/material/{materialId}/re_confidence:
+  /doc-agent/api/v1/claim/{claim_id}/material/{material_id}/re_confidence:
     post:
       description: 重新计算置信度
       operationId: ClaimAPI_ReConfidence
@@ -1889,8 +1985,11 @@ paths:
                   example: p12345678
                   type: string
                 stages:
-                  description: "执行阶段 \n 请使用以下五种组合之一：\n [1], [1,2], [1,2,3], [1,2,4],
-                    [1,2,3,4]\n 数字表示的含义：1分类，2抽取，3时间线，4真实性校验"
+                  description: |-
+                    执行阶段
+                     请使用以下组合之一：
+                     [1], [1,2], [1,2,3], [1,2,4], [1,2,5], [1,2,3,4], [1,2,3,5], [1,2,4,5], [1,2,3,4,5]
+                     数字表示的含义：1分类，2抽取，3时间线，4发票验真，5PS检测
                   example:
                   - 1
                   - 2
@@ -1909,7 +2008,7 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claims/{claimId}/materials/category-mappings:
+  /doc-agent/api/v1/claims/{claim_id}/materials/category-mappings:
     get:
       description: 获取材料分类
       operationId: ClaimAPI_ListMaterialCategoryMappings
@@ -1951,7 +2050,7 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claims/{claimId}/materials/completeness:
+  /doc-agent/api/v1/claims/{claim_id}/materials/completeness:
     get:
       description: 材料齐全性检查
       operationId: ClaimAPI_CheckMaterialsCompleteness
@@ -1982,7 +2081,7 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claims/{claimId}/materials/extractions:
+  /doc-agent/api/v1/claims/{claim_id}/materials/extractions:
     get:
       description: 获取材料抽取结果
       operationId: ClaimAPI_ListMaterialExtractResults
@@ -2024,9 +2123,52 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claims/{claimId}/materials/validity:
+  /doc-agent/api/v1/claims/{claim_id}/materials/invoice-verify:
     get:
-      description: 材料真伪检查
+      description: 发票验真
+      operationId: ClaimAPI_CheckMaterialsInvoice
+      parameters:
+      - description: 案件ID
+        example: claim-1234
+        in: path
+        name: claim_id
+        required: true
+        schema:
+          type: string
+      - description: |-
+          材料ID
+           不传材料ID时，获取案件下所有材料的发票验真结果
+        example:
+        - material-1234
+        in: query
+        name: material_ids
+        schema:
+          items:
+            type: string
+          type: array
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim.v1.CheckMaterialsInvoiceResponse'
+          description: OK
+      tags:
+      - ClaimAPI
+  /doc-agent/api/v1/claims/{claim_id}/materials/validity:
+    get:
+      deprecated: true
+      description: 材料真伪检查 (已废弃，请使用 CheckMaterialsTampering 和 CheckMaterialsInvoice)
       operationId: ClaimAPI_CheckMaterialsValidity
       parameters:
       - description: 案件ID
@@ -2066,7 +2208,7 @@ paths:
           description: OK
       tags:
       - ClaimAPI
-  /doc-agent/api/v1/claims/{claimId}/timeline:
+  /doc-agent/api/v1/claims/{claim_id}/timeline:
     get:
       description: 获取案件时间线结果
       operationId: ClaimAPI_APIGetClaimTimeline
@@ -2224,6 +2366,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/claim.v1.ImageQualityResponse'
+          description: OK
+      tags:
+      - ClaimAPI
+  /doc-agent/api/v1/material_tampering:
+    post:
+      description: 获取PS检测结果
+      operationId: ClaimAPI_CheckMaterialsTampering
+      parameters:
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/claim.v1.CheckMaterialsTamperingRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim.v1.CheckMaterialsTamperingResponse'
           description: OK
       tags:
       - ClaimAPI

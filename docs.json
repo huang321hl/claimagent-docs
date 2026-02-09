@@ -41,7 +41,9 @@
               "api-reference/endpoint/get_claim_timeline",
               "api-reference/endpoint/check_materials_completeness",
               "api-reference/endpoint/check_materials_validity",
-              "api-reference/endpoint/check_image_quality"
+              "api-reference/endpoint/get_invoice_verify",
+              "api-reference/endpoint/check_image_quality",
+              "api-reference/endpoint/check_material_tampered"
             ]
           }
         ]
