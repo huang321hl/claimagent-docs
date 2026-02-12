@@ -1475,6 +1475,10 @@ components:
       properties:
         blurry:
           $ref: '#/components/schemas/claim.v1.RiskInfo'
+        photocopy:
+          $ref: '#/components/schemas/claim.v1.RiskInfo'
+        screen_remark:
+          $ref: '#/components/schemas/claim.v1.RiskInfo'
         un_integrity:
           $ref: '#/components/schemas/claim.v1.RiskInfo'
       type: object
