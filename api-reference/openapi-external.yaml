@@ -44,6 +44,7 @@ components:
              请使用以下组合之一：
              [1], [1,2], [1,2,3], [1,2,4], [1,2,5], [1,2,3,4], [1,2,3,5], [1,2,4,5], [1,2,3,4,5]
              数字表示的含义：1分类，2抽取，3时间线，4发票验真，5PS检测
+             支持两种传参方式：1) 多次传递 stages=1, stages=2  2) JSON数组字符串 stages=[1,2,3]
           example:
           - 1
           - 2
@@ -653,9 +654,9 @@ components:
         file:
           allOf:
           - $ref: '#/components/schemas/common.MultipartUpload'
-          description: 上传文件
+          description: 上传文件（与file_url二选一）
         file_url:
-          description: 文件URL
+          description: 文件URL（与file二选一）
           example: https://example.com/file.jpg
           type: string
       type: object
@@ -725,6 +726,7 @@ components:
     claim.v1.Document:
       properties:
         pages:
+          description: 文档页面列表
           items:
             $ref: '#/components/schemas/claim.v1.DocumentPage'
           type: array
@@ -732,58 +734,48 @@ components:
     claim.v1.DocumentPage:
       properties:
         angle:
+          description: 页面旋转角度
           format: int32
           type: integer
         height:
+          description: 页面高度（像素）
           format: int32
           type: integer
         lines:
+          description: 文本行列表
           items:
             $ref: '#/components/schemas/claim.v1.Line'
           type: array
         width:
+          description: 页面宽度（像素）
           format: int32
           type: integer
-      type: object
-    claim.v1.Evidence:
-      properties:
-        details:
-          items:
-            $ref: '#/components/schemas/claim.v1.EvidenceDetail'
-          type: array
-        material_id:
-          type: string
-      type: object
-    claim.v1.EvidenceDetail:
-      properties:
-        page_id:
-          format: int32
-          type: integer
-        position:
-          items:
-            $ref: '#/components/schemas/claim.v1.PositionRect'
-          type: array
-        text:
-          type: string
       type: object
     claim.v1.ExportFilesResponse:
       properties:
         file:
-          $ref: '#/components/schemas/common.StreamFile'
+          allOf:
+          - $ref: '#/components/schemas/common.StreamFile'
+          description: 导出的文件流
       type: object
     claim.v1.ExtractResult:
       properties:
         document:
-          $ref: '#/components/schemas/claim.v1.Document'
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.Document'
+          description: 文档原文内容
         fields:
+          description: 抽取的字段列表
           items:
             $ref: '#/components/schemas/claim.v1.Field'
           type: array
         pages:
+          description: 页面元数据列表
           items:
             $ref: '#/components/schemas/claim.v1.PageMeta'
           type: array
         tables:
+          description: 抽取的表格列表
           items:
             $ref: '#/components/schemas/common.Table'
           type: array
@@ -791,6 +783,7 @@ components:
     claim.v1.FetchFilesResponse:
       properties:
         files:
+          description: 文件列表
           items:
             $ref: '#/components/schemas/claim.v1.File'
           type: array
@@ -814,352 +807,66 @@ components:
           - $ref: '#/components/schemas/common.FieldDimensions'
           description: 置信度多维度评分
         key:
+          description: 字段名称
           type: string
         position:
+          description: 字段在文档中的位置
           items:
             $ref: '#/components/schemas/claim.v1.PositionRect'
           type: array
         value:
+          description: 字段值
           type: string
       type: object
     claim.v1.File:
       properties:
         extract_result:
-          $ref: '#/components/schemas/common.ExtractResult'
+          allOf:
+          - $ref: '#/components/schemas/common.ExtractResult'
+          description: 抽取结果
         info:
-          $ref: '#/components/schemas/claim.v1.MaterialEntity'
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.MaterialEntity'
+          description: 材料基础信息
       type: object
     claim.v1.GetClaimTimelineResponse:
       properties:
-        contents:
-          description: 时间线内容
+        summary:
+          description: 案件时间线总结
+          example: 被保险人张三于2023年4月因双眼干涩就诊，诊断为干眼症，使用玻璃酸钠滴眼液治疗，门诊费用87元。
+          type: string
+        timeline:
+          description: 按人员分组的时间线，对齐 person_timeline 结构
           example:
-          - at: ""
-            desc: 双眼干涩、异物感、疲劳
-            event: 发病
-            evidence:
-            - details:
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 1832
-                  - 578
-                  - 2081
-                  - 578
-                  - 2081
-                  - 615
-                  - 1832
-                  - 615
-                text: "2023-04-12"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 680
-                  - 788
-                  - 1318
-                  - 788
-                  - 1318
-                  - 838
-                  - 680
-                  - 838
-                text: 双眼干涩、有异物感不适2年
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 679
-                  - 855
-                  - 1497
-                  - 855
-                  - 1497
-                  - 905
-                  - 679
-                  - 905
-                text: 2年来双眼干涩、疲劳，无其他不适。
-              material_id: f80f627f-e419-49af-834a-2a1e85cfc1e0
-          - at: ""
-            desc: '干眼症，ICD-10编码: H04.1'
-            event: 诊断
-            evidence:
-            - details:
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 1832
-                  - 578
-                  - 2081
-                  - 578
-                  - 2081
-                  - 615
-                  - 1832
-                  - 615
-                text: "2023-04-12"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 662
-                  - 1314
-                  - 813
-                  - 1314
-                  - 813
-                  - 1363
-                  - 662
-                  - 1363
-                text: 干眼症
-              material_id: f80f627f-e419-49af-834a-2a1e85cfc1e0
-          - at: ""
-            desc: 玻璃酸钠滴眼液，每次0.001ml滴双眼，tid
-            event: 治疗
-            evidence:
-            - details:
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 1832
-                  - 578
-                  - 2081
-                  - 578
-                  - 2081
-                  - 615
-                  - 1832
-                  - 615
-                text: "2023-04-12"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 662
-                  - 1507
-                  - 1230
-                  - 1507
-                  - 1230
-                  - 1558
-                  - 662
-                  - 1558
-                - page: 0
-                  vertices:
-                  - 794
-                  - 1580
-                  - 1362
-                  - 1580
-                  - 1362
-                  - 1628
-                  - 794
-                  - 1628
-                - page: 0
-                  vertices:
-                  - 452
-                  - 1792
-                  - 1810
-                  - 1792
-                  - 1810
-                  - 1838
-                  - 452
-                  - 1838
-                - page: 0
-                  vertices:
-                  - 449
-                  - 1859
-                  - 564
-                  - 1859
-                  - 564
-                  - 1904
-                  - 449
-                  - 1904
-                text: 玻璃酸钠滴眼液 5ml:5mg;每次0.001ml 滴双眼 tid;治疗期间若有病情加重请及时复诊；若病情平稳，请按照医生要求复诊。
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 662
-                  - 1507
-                  - 1230
-                  - 1507
-                  - 1230
-                  - 1558
-                  - 662
-                  - 1558
-                - page: 0
-                  vertices:
-                  - 794
-                  - 1580
-                  - 1362
-                  - 1580
-                  - 1362
-                  - 1628
-                  - 794
-                  - 1628
-                text: 玻璃酸钠滴眼液 5ml:5mg;每次0.001ml 滴双眼 tid
-              material_id: f80f627f-e419-49af-834a-2a1e85cfc1e0
-          - at: ""
-            desc: 门诊发票：总额87.00元；治疗费87.00元；个人现金支付87元；医保及第三方支付0元
-            event: 支付费用
-            evidence:
-            - details:
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 1395
-                  - 227
-                  - 1849
-                  - 227
-                  - 1849
-                  - 322
-                  - 1395
-                  - 322
-                text: 门诊发票
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2267
-                  - 588
-                  - 2514
-                  - 588
-                  - 2514
-                  - 619
-                  - 2267
-                  - 619
-                text: "2024-09-25"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2133
-                  - 1411
-                  - 2245
-                  - 1411
-                  - 2245
-                  - 1443
-                  - 2133
-                  - 1443
-                text: "87.00"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 440
-                  - 748
-                  - 568
-                  - 748
-                  - 568
-                  - 787
-                  - 440
-                  - 787
-                text: 治疗费
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 1172
-                  - 766
-                  - 1283
-                  - 766
-                  - 1283
-                  - 800
-                  - 1172
-                  - 800
-                text: "87.00"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2223
-                  - 1643
-                  - 2268
-                  - 1643
-                  - 2268
-                  - 1673
-                  - 2223
-                  - 1673
-                text: "87"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 670
-                  - 1695
-                  - 694
-                  - 1695
-                  - 694
-                  - 1724
-                  - 670
-                  - 1724
-                text: "0"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2311
-                  - 1747
-                  - 2333
-                  - 1747
-                  - 2333
-                  - 1776
-                  - 2311
-                  - 1776
-                text: "0"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2757
-                  - 1641
-                  - 2782
-                  - 1641
-                  - 2782
-                  - 1673
-                  - 2757
-                  - 1673
-                text: "0"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 839
-                  - 1643
-                  - 882
-                  - 1643
-                  - 882
-                  - 1675
-                  - 839
-                  - 1675
-                text: "87"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2311
-                  - 1747
-                  - 2333
-                  - 1747
-                  - 2333
-                  - 1776
-                  - 2311
-                  - 1776
-                text: "0"
-              - page_id: 0
-                position:
-                - page: 0
-                  vertices:
-                  - 2757
-                  - 1641
-                  - 2782
-                  - 1641
-                  - 2782
-                  - 1673
-                  - 2757
-                  - 1673
-                text: "0"
-              material_id: 09234629-565f-4eba-8c6f-59faf72c39eb
+          - events:
+            - desc: 双眼干涩、异物感、疲劳
+              event: 发病
+              evidence:
+              - bbox:
+                - 100
+                - 200
+                - 300
+                - 250
+                material_id: material-001
+                page_num: 1
+                text: 2023-04-12 双眼干涩
+              time: 1.681272e+09
+            - desc: '干眼症，ICD-10编码: H04.1'
+              event: 诊断
+              evidence:
+              - bbox:
+                - 100
+                - 300
+                - 300
+                - 350
+                material_id: material-001
+                page_num: 1
+                text: 诊断：干眼症
+              time: 1.681272e+09
+            person: 张三
+            role: 被保险人
           items:
-            $ref: '#/components/schemas/common.Timeline'
+            $ref: '#/components/schemas/claim.v1.PersonTimeline'
           type: array
         timeline_status:
           description: 时间线状态 0:未开始, 1:处理中, 2:处理成功, 3:处理失败
@@ -1170,9 +877,11 @@ components:
     claim.v1.ImageQualityRequest:
       properties:
         file:
-          $ref: '#/components/schemas/common.MultipartUpload'
+          allOf:
+          - $ref: '#/components/schemas/common.MultipartUpload'
+          description: 上传文件（与file_url二选一）
         file_url:
-          description: 文件URL
+          description: 文件URL（与file二选一）
           example: https://example.com/file.jpg
           type: string
       type: object
@@ -1181,13 +890,25 @@ components:
         risk_details:
           allOf:
           - $ref: '#/components/schemas/claim.v1.RiskDetails'
+          description: 风险详情（每种风险类型的详细检测结果）
           example:
             blurry:
-              score: 0.8
+              score: 0.85
               valid: true
+            photocopy:
+              score: 0.92
+              valid: true
+            screen_remark:
+              score: 0.05
+              valid: false
+            un_integrity:
+              score: 0.1
+              valid: false
         risk_type:
+          description: 风险类型列表（blurry:模糊、un_integrity:不完整、photocopy:复印件、screen_remark:屏幕水印）
           example:
           - blurry
+          - photocopy
           items:
             type: string
           type: array
@@ -1195,11 +916,13 @@ components:
     claim.v1.Line:
       properties:
         position:
+          description: 文本行位置坐标
           items:
             format: int32
             type: integer
           type: array
         text:
+          description: 文本行内容
           type: string
       type: object
     claim.v1.ListMaterialCategoryMappingsResponse:
@@ -1439,24 +1162,63 @@ components:
     claim.v1.PageMeta:
       properties:
         angle:
+          description: 页面旋转角度
           format: int32
           type: integer
         dpi:
+          description: 页面分辨率
           format: int32
           type: integer
         height:
+          description: 页面高度（像素）
           format: int32
           type: integer
         width:
+          description: 页面宽度（像素）
           format: int32
           type: integer
+      type: object
+    claim.v1.PersonTimeline:
+      description: 按人员分组的时间线
+      properties:
+        events:
+          description: 该人物相关的事件列表，按时间排序
+          items:
+            $ref: '#/components/schemas/claim.v1.PersonTimelineEvent'
+          type: array
+        person:
+          description: 人物姓名
+          type: string
+        role:
+          description: 人物在案件中的角色
+          type: string
+      type: object
+    claim.v1.PersonTimelineEvent:
+      description: 人员时间线中的事件
+      properties:
+        desc:
+          description: 事件详细描述
+          type: string
+        event:
+          description: 事件简述
+          type: string
+        evidence:
+          description: 来源证据
+          items:
+            $ref: '#/components/schemas/common.Evidence'
+          type: array
+        time:
+          description: 事件时间，Unix 时间戳（秒级）
+          type: string
       type: object
     claim.v1.PositionRect:
       properties:
         page:
+          description: 页码
           format: int32
           type: integer
         vertices:
+          description: 坐标顶点数组（x1,y1,x2,y2...）
           items:
             format: int32
             type: integer
@@ -1465,8 +1227,10 @@ components:
     claim.v1.ReConfidenceRequest:
       properties:
         claim_id:
+          description: 案件ID
           type: string
         material_id:
+          description: 材料ID
           type: string
       type: object
     claim.v1.ReConfidenceResponse:
@@ -1474,40 +1238,41 @@ components:
     claim.v1.RiskDetails:
       properties:
         blurry:
-          $ref: '#/components/schemas/claim.v1.RiskInfo'
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.RiskInfo'
+          description: 模糊风险
         photocopy:
-          $ref: '#/components/schemas/claim.v1.RiskInfo'
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.RiskInfo'
+          description: 复印件风险
         screen_remark:
-          $ref: '#/components/schemas/claim.v1.RiskInfo'
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.RiskInfo'
+          description: 屏幕水印风险
         un_integrity:
-          $ref: '#/components/schemas/claim.v1.RiskInfo'
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.RiskInfo'
+          description: 不完整风险
       type: object
     claim.v1.RiskInfo:
       properties:
         score:
+          description: 风险评分（0~1）
           format: float
           type: number
         valid:
+          description: 是否存在该风险
           type: boolean
-      type: object
-    claim.v1.TimelineContent:
-      properties:
-        at:
-          type: string
-        desc:
-          type: string
-        event:
-          type: string
-        evidence:
-          items:
-            $ref: '#/components/schemas/claim.v1.Evidence'
-          type: array
       type: object
     claim.v1.TimelineResult:
       properties:
-        contents:
+        summary:
+          description: 案件时间线总结
+          type: string
+        timeline:
+          description: 按人员分组的时间线
           items:
-            $ref: '#/components/schemas/claim.v1.TimelineContent'
+            $ref: '#/components/schemas/claim.v1.PersonTimeline'
           type: array
       type: object
     claim.v1.UploadFilesRequest:
@@ -1543,6 +1308,7 @@ components:
     claim.v1.UploadFilesResponse:
       properties:
         claim_id:
+          description: 案件ID
           type: string
       type: object
     common.Document:
@@ -1771,19 +1537,6 @@ components:
           description: 材料是否被篡改
           type: boolean
       type: object
-    common.Timeline:
-      properties:
-        at:
-          type: string
-        desc:
-          type: string
-        event:
-          type: string
-        evidence:
-          items:
-            $ref: '#/components/schemas/common.Evidence'
-          type: array
-      type: object
     common.VerifyVatRet:
       properties:
         code:
@@ -1833,24 +1586,26 @@ paths:
       description: 清理数据： material_ids 为空时，清理所有文件
       operationId: ClaimAPI_DeleteFiles
       parameters:
-      - in: path
-        name: claimId
+      - description: 案件ID
+        in: path
+        name: claim_id
         required: true
         schema:
           type: string
-      - in: query
-        name: materialIds
+      - description: 材料ID列表
+        in: query
+        name: material_ids
         schema:
           items:
             type: string
           type: array
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -1868,18 +1623,19 @@ paths:
       description: 获取案件的文件列表
       operationId: ClaimAPI_FetchFiles
       parameters:
-      - in: path
-        name: claimId
+      - description: 案件ID
+        in: path
+        name: claim_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -1897,23 +1653,25 @@ paths:
       description: 重新计算置信度
       operationId: ClaimAPI_ReConfidence
       parameters:
-      - in: path
-        name: claimId
+      - description: 案件ID
+        in: path
+        name: claim_id
         required: true
         schema:
           type: string
-      - in: path
-        name: materialId
+      - description: 材料ID
+        in: path
+        name: material_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -1938,12 +1696,12 @@ paths:
       operationId: ClaimAPI_APICreateClaim
       parameters:
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -1994,6 +1752,7 @@ paths:
                      请使用以下组合之一：
                      [1], [1,2], [1,2,3], [1,2,4], [1,2,5], [1,2,3,4], [1,2,3,5], [1,2,4,5], [1,2,3,4,5]
                      数字表示的含义：1分类，2抽取，3时间线，4发票验真，5PS检测
+                     支持两种传参方式：1) 多次传递 stages=1, stages=2  2) JSON数组字符串 stages=[1,2,3]
                   example:
                   - 1
                   - 2
@@ -2036,12 +1795,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2067,12 +1826,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2109,12 +1868,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2151,12 +1910,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2194,12 +1953,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2225,12 +1984,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2248,27 +2007,30 @@ paths:
       description: 文件导出
       operationId: ClaimAPI_ExportFiles
       parameters:
-      - in: query
-        name: claimId
+      - description: 案件ID
+        in: query
+        name: claim_id
         schema:
           type: string
-      - in: query
-        name: materialId
+      - description: 材料ID
+        in: query
+        name: material_id
         schema:
           type: string
-      - in: query
-        name: contentTypes
+      - description: 内容类型列表
+        in: query
+        name: content_types
         schema:
           items:
             type: string
           type: array
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2287,12 +2049,12 @@ paths:
       operationId: ClaimAPI_UploadFiles
       parameters:
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
@@ -2341,28 +2103,20 @@ paths:
       operationId: ClaimAPI_CheckImageQuality
       parameters:
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              properties:
-                file:
-                  format: binary
-                  type: string
-                file_url:
-                  description: 文件URL
-                  example: https://example.com/file.jpg
-                  type: string
-              type: object
+              $ref: '#/components/schemas/claim.v1.ImageQualityRequest'
         required: true
       responses:
         "200":
@@ -2379,12 +2133,12 @@ paths:
       operationId: ClaimAPI_CheckMaterialsTampering
       parameters:
       - in: header
-        name: x-ti-app-id
+        name: x_ti_app_id
         required: true
         schema:
           type: string
       - in: header
-        name: x-ti-secret-code
+        name: x_ti_secret_code
         required: true
         schema:
           type: string
