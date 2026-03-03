@@ -1600,12 +1600,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1630,12 +1630,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1666,12 +1666,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1696,12 +1696,12 @@ paths:
       operationId: ClaimAPI_APICreateClaim
       parameters:
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1795,12 +1795,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1826,12 +1826,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1868,12 +1868,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1910,12 +1910,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1953,12 +1953,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -1984,12 +1984,12 @@ paths:
         schema:
           type: string
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2025,12 +2025,12 @@ paths:
             type: string
           type: array
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2049,12 +2049,12 @@ paths:
       operationId: ClaimAPI_UploadFiles
       parameters:
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2103,12 +2103,12 @@ paths:
       operationId: ClaimAPI_CheckImageQuality
       parameters:
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
@@ -2133,12 +2133,12 @@ paths:
       operationId: ClaimAPI_CheckMaterialsTampering
       parameters:
       - in: header
-        name: x_ti_app_id
+        name: x-ti-app-id
         required: true
         schema:
           type: string
       - in: header
-        name: x_ti_secret_code
+        name: x-ti-secret-code
         required: true
         schema:
           type: string
