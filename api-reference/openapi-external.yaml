@@ -487,6 +487,11 @@ components:
           description: 材料的处理状态
           format: enum
           type: integer
+        timing:
+          additionalProperties:
+            type: string
+          description: 各阶段耗时(毫秒)
+          type: object
       type: object
     claim.v1.APIMaterialEntity:
       properties:
@@ -862,38 +867,78 @@ components:
       properties:
         summary:
           description: 案件时间线总结
-          example: 被保险人张三于2023年4月因双眼干涩就诊，诊断为干眼症，使用玻璃酸钠滴眼液治疗，门诊费用87元。
+          example: 患者张三于2025年8月4日前往某某医院门诊就诊，共产生门诊费用1507.94元，其中医保个人账户支付1074.14元，个人现金支付433.80元。
           type: string
         timeline:
           description: 按人员分组的时间线，对齐 person_timeline 结构
           example:
           - events:
-            - desc: 双眼干涩、异物感、疲劳
-              event: 发病
+            - desc: 于某某医院门急诊就诊，门诊号2500001234。
+              event: 门急诊挂号/就诊
               evidence:
-              - bbox:
-                - 100
-                - 200
-                - 300
-                - 250
+              - details:
+                - page_id: 0
+                  position:
+                  - page: 0
+                    vertices:
+                    - 145
+                    - 175
+                    - 272
+                    - 170
+                    - 273
+                    - 199
+                    - 146
+                    - 203
+                  text: "2500001234"
+                - page_id: 0
+                  position:
+                  - page: 0
+                    vertices:
+                    - 25
+                    - 1127
+                    - 583
+                    - 1117
+                    - 583
+                    - 1149
+                    - 26
+                    - 1158
+                  text: 某某医院
                 material_id: material-001
-                page_num: 1
-                text: 2023-04-12 双眼干涩
-              time: 1.681272e+09
-            - desc: '干眼症，ICD-10编码: H04.1'
-              event: 诊断
+              time: "1754236800"
+            - desc: 门诊实时医保；发票金额842.94元，医保个人账户支付815.14元，个人现金支付27.80元。
+              event: 门诊费用支付
               evidence:
-              - bbox:
-                - 100
-                - 300
-                - 300
-                - 350
-                material_id: material-001
-                page_num: 1
-                text: 诊断：干眼症
-              time: 1.681272e+09
+              - details:
+                - page_id: 0
+                  position:
+                  - page: 0
+                    vertices:
+                    - 1335
+                    - 937
+                    - 1550
+                    - 937
+                    - 1550
+                    - 981
+                    - 1335
+                    - 981
+                  text: "842.94"
+                - page_id: 0
+                  position:
+                  - page: 0
+                    vertices:
+                    - 1189
+                    - 1107
+                    - 1513
+                    - 1109
+                    - 1512
+                    - 1150
+                    - 1189
+                    - 1148
+                  text: "815.14"
+                material_id: material-002
+              time: "1754236800"
             person: 张三
-            role: 被保险人
+            role: 患者
           items:
             $ref: '#/components/schemas/claim.v1.PersonTimeline'
           type: array
