@@ -33,17 +33,23 @@
         "tab": "API参考",
         "groups": [
           {
-            "group": "API",
+            "group": "文件处理",
             "pages": [
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/get_material_category",
-              "api-reference/endpoint/get_material_extraction",
-              "api-reference/endpoint/get_claim_timeline",
-              "api-reference/endpoint/check_materials_completeness",
-              "api-reference/endpoint/check_materials_validity",
-              "api-reference/endpoint/get_invoice_verify",
               "api-reference/endpoint/check_image_quality",
               "api-reference/endpoint/check_material_tampered"
+            ]
+          },
+          {
+            "group": "案件处理",
+            "pages": [
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/check_materials_completeness",
+              "api-reference/endpoint/get_material_category",
+              "api-reference/endpoint/get_material_extraction",
+              "api-reference/endpoint/get_tamper_result",
+              "api-reference/endpoint/get_invoice_verify",
+              "api-reference/endpoint/get_claim_timeline",
+              "api-reference/endpoint/check_materials_validity"
             ]
           }
         ]

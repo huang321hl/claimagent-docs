@@ -581,6 +581,35 @@ components:
           - $ref: '#/components/schemas/common.VerifyVatRet'
           description: 发票验真结果
       type: object
+    claim.v1.APIMaterialTamperingEntity:
+      properties:
+        category:
+          description: 材料分类（大类）
+          type: string
+        file_name:
+          description: 文件名
+          type: string
+        file_size:
+          description: 文件大小
+          type: string
+        file_type:
+          description: 文件路径
+          type: string
+        material_id:
+          description: 材料id
+          type: string
+        material_type:
+          description: 材料类型（小类）
+          type: string
+        ps_ret:
+          allOf:
+          - $ref: '#/components/schemas/common.TamperedRet'
+          description: 材料是否被篡改
+        status:
+          description: 材料的处理状态
+          format: enum
+          type: integer
+      type: object
     claim.v1.APIMaterialValidityEntity:
       properties:
         file_name:
@@ -1026,6 +1055,40 @@ components:
             status: 2
           items:
             $ref: '#/components/schemas/claim.v1.APIMaterialExtractEntity'
+          type: array
+        status:
+          description: status 0 未开始 1 进行中 2 成功 3 失败
+          example: "2"
+          format: enum
+          type: integer
+      type: object
+    claim.v1.ListMaterialsTamperingResultsResponse:
+      properties:
+        materials:
+          description: PS检测结果
+          example:
+          - category: 费用与结算
+            file_name: 发票.jpg
+            file_size: "523393"
+            file_type: .jpg
+            material_id: material-1234
+            material_type: 增值税发票
+            ps_ret:
+              areas:
+              - confidence: 0.98
+                positions:
+                - 241
+                - 510
+                - 397
+                - 510
+                - 397
+                - 572
+                - 241
+                - 572
+              is_tampered: true
+            status: 2
+          items:
+            $ref: '#/components/schemas/claim.v1.APIMaterialTamperingEntity'
           type: array
         status:
           description: status 0 未开始 1 进行中 2 成功 3 失败
@@ -1888,8 +1951,8 @@ paths:
       - ClaimAPI
   /doc-agent/api/v1/claims/{claim_id}/materials/invoice-verify:
     get:
-      description: 发票验真
-      operationId: ClaimAPI_CheckMaterialsInvoice
+      description: 获取案件材料发票验真结果
+      operationId: ClaimAPI_ListMaterialsInvoiceResults
       parameters:
       - description: 案件ID
         example: claim-1234
@@ -1925,6 +1988,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/claim.v1.CheckMaterialsInvoiceResponse'
+          description: OK
+      tags:
+      - ClaimAPI
+  /doc-agent/api/v1/claims/{claim_id}/materials/tampering-results:
+    get:
+      description: 获取案件材料PS检测结果
+      operationId: ClaimAPI_ListMaterialsTamperingResults
+      parameters:
+      - description: 案件ID
+        example: claim-1234
+        in: path
+        name: claim_id
+        required: true
+        schema:
+          type: string
+      - description: |-
+          材料ID
+           不传材料ID时，获取案件下所有材料的PS检测结果
+        example:
+        - material-1234
+        in: query
+        name: material_ids
+        schema:
+          items:
+            type: string
+          type: array
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim.v1.ListMaterialsTamperingResultsResponse'
           description: OK
       tags:
       - ClaimAPI
@@ -2099,7 +2204,7 @@ paths:
       - ClaimAPI
   /doc-agent/api/v1/image_quality:
     post:
-      description: 图像质检
+      description: 单文件图像质检
       operationId: ClaimAPI_CheckImageQuality
       parameters:
       - in: header
@@ -2129,7 +2234,7 @@ paths:
       - ClaimAPI
   /doc-agent/api/v1/material_tampering:
     post:
-      description: 获取PS检测结果
+      description: 单文件PS检测
       operationId: ClaimAPI_CheckMaterialsTampering
       parameters:
       - in: header
