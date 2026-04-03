@@ -36,7 +36,8 @@
             "group": "文件处理",
             "pages": [
               "api-reference/endpoint/check_image_quality",
-              "api-reference/endpoint/check_material_tampered"
+              "api-reference/endpoint/check_material_tampered",
+              "api-reference/endpoint/classify_material"
             ]
           },
           {

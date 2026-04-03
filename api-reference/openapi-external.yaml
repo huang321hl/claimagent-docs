@@ -755,7 +755,46 @@ components:
           format: enum
           type: integer
       type: object
+    claim.v1.ClassifyMaterialRequest:
+      properties:
+        file:
+          allOf:
+          - $ref: '#/components/schemas/common.MultipartUpload'
+          description: 上传文件（与file_url可同时提供，file_url优先级更高）
+        file_url:
+          description: 文件URL（与file可同时提供，优先使用file_url）
+          example: https://example.com/file.jpg
+          type: string
+      type: object
+    claim.v1.ClassifyMaterialResponse:
+      properties:
+        category:
+          description: 分类结果（大类）
+          example: 费用与结算
+          type: string
+        material_id:
+          description: 材料ID（用于审计追踪）
+          example: 718fe34e-5d62-4b6a-a8be-18661265f132
+          type: string
+        material_type:
+          description: 材料类型（小类，细粒度分类）
+          example: 增值税发票
+          type: string
+      type: object
     claim.v1.DeleteFilesResponse:
+      type: object
+    claim.v1.DivisionItem:
+      description: 地域查询结果项
+      properties:
+        level:
+          description: 级别：province / city / county
+          type: string
+        name:
+          description: 地域名称（从材料中提取的原始文本）
+          type: string
+        prefered_code:
+          description: 地域编码
+          type: string
       type: object
     claim.v1.Document:
       properties:
@@ -1159,10 +1198,17 @@ components:
           description: 置信度
           format: float
           type: number
+        confidence_enabled:
+          description: 分类置信度开关（用户配置）
+          type: boolean
         confidence_status:
           description: 置信度状态
           format: enum
           type: integer
+        confidence_threshold:
+          description: 分类置信度阈值（用户配置）
+          format: double
+          type: number
         extra:
           allOf:
           - $ref: '#/components/schemas/claim.v1.MaterialExtra'
@@ -1236,6 +1282,10 @@ components:
           description: 是否清晰置信度
           format: float
           type: number
+        division:
+          allOf:
+          - $ref: '#/components/schemas/claim.v1.DivisionItem'
+          description: 地域查询结果
         extracted_fields:
           description: 已提取的字段数
           format: int32
@@ -1422,6 +1472,7 @@ components:
     common.Document:
       properties:
         pages:
+          description: 文档页面列表
           items:
             $ref: '#/components/schemas/common.Page'
           type: array
@@ -1429,33 +1480,42 @@ components:
     common.Evidence:
       properties:
         details:
+          description: 证据详情列表
           items:
             $ref: '#/components/schemas/common.EvidenceDetail'
           type: array
         material_id:
+          description: 材料ID
           type: string
       type: object
     common.EvidenceDetail:
       properties:
         page_id:
+          description: 所在页码（从0开始）
           format: int32
           type: integer
         position:
+          description: 证据在文档中的位置
           items:
             $ref: '#/components/schemas/common.Position'
           type: array
         text:
+          description: 证据文本内容
           type: string
       type: object
     common.ExtractResult:
       properties:
         document:
-          $ref: '#/components/schemas/common.Document'
+          allOf:
+          - $ref: '#/components/schemas/common.Document'
+          description: 文档原文内容
         extract_fields:
+          description: 抽取的字段列表
           items:
             $ref: '#/components/schemas/common.Field'
           type: array
         tables:
+          description: 抽取的表格列表
           items:
             $ref: '#/components/schemas/common.Table'
           type: array
@@ -1474,41 +1534,60 @@ components:
           description: 是否人工确认
           type: boolean
         is_deleted:
+          description: 是否已删除
           type: boolean
         key:
+          description: 字段名称
           type: string
         not_consistence_reason:
+          description: 一致性异常原因列表
           items:
             type: string
           type: array
         not_normalized_reason:
+          description: 归一化异常原因
           type: string
         position:
+          description: 字段在文档中的位置
           items:
             $ref: '#/components/schemas/common.Position'
           type: array
         value:
+          description: 字段值
           type: string
       type: object
     common.FieldDimensions:
       description: 多维度评分集合
       properties:
         contextual_consistency:
-          $ref: '#/components/schemas/common.ScoreDetail'
+          allOf:
+          - $ref: '#/components/schemas/common.ScoreDetail'
+          description: 上下文一致性评分
         cross_field_consistency:
-          $ref: '#/components/schemas/common.ScoreDetail'
+          allOf:
+          - $ref: '#/components/schemas/common.ScoreDetail'
+          description: 跨字段一致性评分
         field_cue_proximity:
-          $ref: '#/components/schemas/common.ScoreDetail'
+          allOf:
+          - $ref: '#/components/schemas/common.ScoreDetail'
+          description: 字段线索邻近性评分
         numerical_plausibility:
-          $ref: '#/components/schemas/common.ScoreDetail'
+          allOf:
+          - $ref: '#/components/schemas/common.ScoreDetail'
+          description: 数值合理性评分
         traceability:
-          $ref: '#/components/schemas/common.ScoreDetail'
+          allOf:
+          - $ref: '#/components/schemas/common.ScoreDetail'
+          description: 可溯源性评分
         uniqueness_ambiguity:
-          $ref: '#/components/schemas/common.ScoreDetail'
+          allOf:
+          - $ref: '#/components/schemas/common.ScoreDetail'
+          description: 唯一性/歧义性评分
       type: object
     common.IntArray:
       properties:
         values:
+          description: 整数数组值
           items:
             format: int32
             type: integer
@@ -1517,21 +1596,23 @@ components:
     common.Line:
       properties:
         char_pos:
-          description: 二维数组 -> 定义中间 message (有时候是char_positions有时候是char_pos)
+          description: 字符位置二维数组（与char_positions等价，兼容不同数据源）
           items:
             $ref: '#/components/schemas/common.IntArray'
           type: array
         char_positions:
-          description: 二维数组 -> 定义中间 message
+          description: 字符位置二维数组
           items:
             $ref: '#/components/schemas/common.IntArray'
           type: array
         position:
+          description: 文本行位置坐标
           items:
             format: int32
             type: integer
           type: array
         text:
+          description: 行文本
           type: string
       type: object
     common.MultipartUpload:
@@ -1540,9 +1621,11 @@ components:
          表单名： file
       properties:
         filedata:
+          description: 文件二进制内容
           format: bytes
           type: string
         filename:
+          description: 文件名
           type: string
         url:
           description: |-
@@ -1553,27 +1636,34 @@ components:
     common.Page:
       properties:
         angle:
+          description: 页面的旋转角度
           format: int32
           type: integer
         height:
+          description: 页面的高度（像素）
           format: int32
           type: integer
         image_id:
+          description: 页面图片ID
           type: string
         lines:
+          description: 页面的文本行数组
           items:
             $ref: '#/components/schemas/common.Line'
           type: array
         width:
+          description: 页面的宽度（像素）
           format: int32
           type: integer
       type: object
     common.Position:
       properties:
         page:
+          description: 页码（从0开始）
           format: int32
           type: integer
         vertices:
+          description: 坐标顶点数组（x1,y1,x2,y2...）
           items:
             format: int32
             type: integer
@@ -1601,9 +1691,11 @@ components:
     common.StreamFile:
       properties:
         filedata:
+          description: 文件二进制内容
           format: bytes
           type: string
         filename:
+          description: 文件名
           type: string
       type: object
     common.Table:
@@ -1613,12 +1705,15 @@ components:
         - Row 表示一行，Row.cells 表示该行的多个单元格（每个单元格复用 Field
       properties:
         items:
+          description: 表格的行数组（每行是一个 Row）
           items:
             $ref: '#/components/schemas/common.Row'
           type: array
         table_name:
+          description: 表名，例如 "Table1"
           type: string
         table_type:
+          description: 表类型（字符串，和原 JSON 的 "type" 对应）
           type: string
       type: object
     common.TamperedArea:
@@ -1724,8 +1819,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.DeleteFilesResponse'
           description: OK
+      summary: 清理数据： material_ids 为空时，清理所有文件
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claim/{claim_id}/files:
     get:
       description: 获取案件的文件列表
@@ -1754,8 +1850,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.FetchFilesResponse'
           description: OK
+      summary: 获取案件的文件列表
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claim/{claim_id}/material/{material_id}/re_confidence:
     post:
       description: 重新计算置信度
@@ -1796,8 +1893,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.ReConfidenceResponse'
           description: OK
+      summary: 重新计算置信度
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claim/create:
     post:
       description: 创建案件
@@ -1877,8 +1975,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.APICreateClaimResponse'
           description: OK
+      summary: 创建案件
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/materials/category-mappings:
     get:
       description: 获取材料分类
@@ -1919,8 +2018,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.ListMaterialCategoryMappingsResponse'
           description: OK
+      summary: 获取材料分类
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/materials/completeness:
     get:
       description: 材料齐全性检查
@@ -1950,8 +2050,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.CheckMaterialsCompletenessResponse'
           description: OK
+      summary: 材料齐全性检查
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/materials/extractions:
     get:
       description: 获取材料抽取结果
@@ -1992,8 +2093,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.ListMaterialExtractResultsResponse'
           description: OK
+      summary: 获取材料抽取结果
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/materials/invoice-verify:
     get:
       description: 获取案件材料发票验真结果
@@ -2034,8 +2136,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.CheckMaterialsInvoiceResponse'
           description: OK
+      summary: 获取案件材料发票验真结果
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/materials/tampering-results:
     get:
       description: 获取案件材料PS检测结果
@@ -2076,8 +2179,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.ListMaterialsTamperingResultsResponse'
           description: OK
+      summary: 获取案件材料PS检测结果
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/materials/validity:
     get:
       deprecated: true
@@ -2119,8 +2223,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.CheckMaterialsValidityResponse'
           description: OK
+      summary: 材料真伪检查 (已废弃，请使用 CheckMaterialsTampering 和 CheckMaterialsInvoice)
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/claims/{claim_id}/timeline:
     get:
       description: 获取案件时间线结果
@@ -2150,8 +2255,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.GetClaimTimelineResponse'
           description: OK
+      summary: 获取案件时间线结果
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/file/export:
     get:
       description: 文件导出
@@ -2191,8 +2297,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.ExportFilesResponse'
           description: OK
+      summary: 文件导出
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/file/upload:
     post:
       description: 上传文件并创建案件
@@ -2245,8 +2352,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.UploadFilesResponse'
           description: OK
+      summary: 上传文件并创建案件
       tags:
-      - ClaimAPI
+      - claim / v1 / external
   /doc-agent/api/v1/image_quality:
     post:
       description: 单文件图像质检
@@ -2275,8 +2383,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.ImageQualityResponse'
           description: OK
+      summary: 单文件图像质检
       tags:
-      - ClaimAPI
+      - claim / v1 / external
+  /doc-agent/api/v1/material/classify:
+    post:
+      description: 单文件材料分类
+      operationId: ClaimAPI_ClassifyMaterial
+      parameters:
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/claim.v1.ClassifyMaterialRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim.v1.ClassifyMaterialResponse'
+          description: OK
+      summary: 单文件材料分类
+      tags:
+      - claim / v1 / external
   /doc-agent/api/v1/material_tampering:
     post:
       description: 单文件PS检测
@@ -2305,9 +2445,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/claim.v1.CheckMaterialsTamperingResponse'
           description: OK
+      summary: 单文件PS检测
       tags:
-      - ClaimAPI
+      - claim / v1 / external
 servers:
 - url: https://agents.textin.com/
 tags:
-- name: ClaimAPI
+- description: claim / v1 / external endpoints
+  name: claim / v1 / external
