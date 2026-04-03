@@ -770,6 +770,12 @@ components:
       properties:
         category:
           description: 分类结果（大类）
+          enum:
+          - 未分类
+          - 身份与授权
+          - 保险与资格
+          - 医疗文书
+          - 费用与结算
           example: 费用与结算
           type: string
         material_id:
@@ -777,7 +783,41 @@ components:
           example: 718fe34e-5d62-4b6a-a8be-18661265f132
           type: string
         material_type:
-          description: 材料类型（小类，细粒度分类）
+          description: |-
+            材料类型（小类，细粒度分类）
+
+            - **身份与授权**：护照、港澳台通行证、户口本、身份证、银行卡
+            - **保险与资格**：保单、保险条款、保险合同
+            - **医疗文书**：门急诊病历、入院记录、出院小结、实验室检验报告、影像学检查报告、诊断证明书、病案首页、医疗处方笺、病理报告、体检报告、手术记录单
+            - **费用与结算**：医疗门诊收费票据（电子）、门诊费用明细清单、医疗住院收费票据（电子）、住院费用明细清单、增值税发票、医保结算单、医疗门诊收费票据（纸质）、医疗住院收费票据（纸质）
+          enum:
+          - 护照
+          - 港澳台通行证
+          - 户口本
+          - 身份证
+          - 银行卡
+          - 保单
+          - 保险条款
+          - 保险合同
+          - 门急诊病历
+          - 入院记录
+          - 出院小结
+          - 实验室检验报告
+          - 影像学检查报告
+          - 诊断证明书
+          - 病案首页
+          - 医疗处方笺
+          - 病理报告
+          - 体检报告
+          - 手术记录单
+          - 医疗门诊收费票据（电子）
+          - 门诊费用明细清单
+          - 医疗住院收费票据（电子）
+          - 住院费用明细清单
+          - 增值税发票
+          - 医保结算单
+          - 医疗门诊收费票据（纸质）
+          - 医疗住院收费票据（纸质）
           example: 增值税发票
           type: string
       type: object
@@ -1817,7 +1857,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.DeleteFilesResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.DeleteFilesResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 清理数据： material_ids 为空时，清理所有文件
       tags:
@@ -1848,7 +1899,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.FetchFilesResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.FetchFilesResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 获取案件的文件列表
       tags:
@@ -1891,7 +1953,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ReConfidenceResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ReConfidenceResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 重新计算置信度
       tags:
@@ -1973,7 +2046,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.APICreateClaimResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.APICreateClaimResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 创建案件
       tags:
@@ -2016,7 +2100,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ListMaterialCategoryMappingsResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ListMaterialCategoryMappingsResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 获取材料分类
       tags:
@@ -2048,7 +2143,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.CheckMaterialsCompletenessResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.CheckMaterialsCompletenessResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 材料齐全性检查
       tags:
@@ -2091,7 +2197,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ListMaterialExtractResultsResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ListMaterialExtractResultsResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 获取材料抽取结果
       tags:
@@ -2134,7 +2251,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.CheckMaterialsInvoiceResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.CheckMaterialsInvoiceResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 获取案件材料发票验真结果
       tags:
@@ -2177,7 +2305,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ListMaterialsTamperingResultsResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ListMaterialsTamperingResultsResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 获取案件材料PS检测结果
       tags:
@@ -2221,7 +2360,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.CheckMaterialsValidityResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.CheckMaterialsValidityResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 材料真伪检查 (已废弃，请使用 CheckMaterialsTampering 和 CheckMaterialsInvoice)
       tags:
@@ -2253,7 +2403,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.GetClaimTimelineResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.GetClaimTimelineResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 获取案件时间线结果
       tags:
@@ -2295,7 +2456,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ExportFilesResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ExportFilesResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 文件导出
       tags:
@@ -2350,7 +2522,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.UploadFilesResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.UploadFilesResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 上传文件并创建案件
       tags:
@@ -2372,16 +2555,35 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/claim.v1.ImageQualityRequest'
+              properties:
+                file:
+                  format: binary
+                  type: string
+                file_url:
+                  description: 文件URL（与file二选一）
+                  example: https://example.com/file.jpg
+                  type: string
+              type: object
         required: true
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ImageQualityResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ImageQualityResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 单文件图像质检
       tags:
@@ -2403,16 +2605,35 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/claim.v1.ClassifyMaterialRequest'
+              properties:
+                file:
+                  format: binary
+                  type: string
+                file_url:
+                  description: 文件URL（与file可同时提供，优先使用file_url）
+                  example: https://example.com/file.jpg
+                  type: string
+              type: object
         required: true
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.ClassifyMaterialResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.ClassifyMaterialResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 单文件材料分类
       tags:
@@ -2434,16 +2655,35 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/claim.v1.CheckMaterialsTamperingRequest'
+              properties:
+                file:
+                  format: binary
+                  type: string
+                file_url:
+                  description: 文件URL（与file二选一）
+                  example: https://example.com/file.jpg
+                  type: string
+              type: object
         required: true
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/claim.v1.CheckMaterialsTamperingResponse'
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/claim.v1.CheckMaterialsTamperingResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
           description: OK
       summary: 单文件PS检测
       tags:
