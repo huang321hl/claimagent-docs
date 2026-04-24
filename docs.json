@@ -30,7 +30,8 @@
           {
             "group": "场景化示例",
             "pages": [
-              "insurance-scenario"
+              "insurance-scenario",
+              "custom-config"
             ]
           },
           {
