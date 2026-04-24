@@ -1,16 +1,23 @@
 ---
 title: "访问凭证"
-description: "API Key 鉴权与安全建议"
+description: "API 凭证获取"
 ---
 
-## 鉴权方式
+## 01 访问凭证获取
 
-所有接口均需要 API Key 认证。请求时在 Header 中携带 API Key：
+快速获取您的 `x-ti-app-id` 和 `x-ti-secret-code`。
 
-`x-api-key: {API_KEY}`
+点击链接获取 API Key：[TextIn 工作台 - 账号与开发者信息](https://www.textin.com/console/dashboard/setting)
 
-## 使用建议
+1. 在 Claim Agent 产品页面点按右上角的个人资料图标
+2. 点击「账号与开发者信息」进入工作台相应页面
 
-*   **API Key 视同密码**，避免在前端代码、日志、截图中泄露
-*   **建议为不同环境（测试/预发/生产）使用不同的 API Key**，便于权限隔离与问题排查
-*   **异步回调 `callback_api` 仅在任务完成后触发**，建议回调接口自行校验来源与请求签名/白名单（如有）
+<Frame caption="步骤 1-2：点击右上角个人资料图标，进入「账号与开发者信息」">
+  <img src="/images/guide/credential-step1.png" />
+</Frame>
+
+3. 单击"复制"图标获取您的 `x-ti-app-id` 和 `x-ti-secret-code`
+
+<Frame caption="步骤 3：在工作台复制 x-ti-app-id 和 x-ti-secret-code">
+  <img src="/images/guide/credential-step2.png" />
+</Frame>

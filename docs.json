@@ -26,31 +26,42 @@
               "quickstart",
               "authentication"
             ]
+          },
+          {
+            "group": "场景化示例",
+            "pages": [
+              "insurance-scenario",
+              "custom-config"
+            ]
+          },
+          {
+            "group": "常见问题",
+            "pages": [
+              "billing"
+            ]
           }
         ]
       },
       {
-        "tab": "API参考",
+        "tab": "API",
         "groups": [
           {
-            "group": "文件处理",
+            "group": "文件与材料处理",
             "pages": [
+              "api-reference/endpoint/upload_files",
               "api-reference/endpoint/check_image_quality",
-              "api-reference/endpoint/check_material_tampered",
-              "api-reference/endpoint/classify_material"
+              "api-reference/endpoint/classify_material",
+              "api-reference/endpoint/extract_material",
+              "api-reference/endpoint/verify_invoice"
             ]
           },
           {
-            "group": "案件处理",
+            "group": "医保三目录",
             "pages": [
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/check_materials_completeness",
-              "api-reference/endpoint/get_material_category",
-              "api-reference/endpoint/get_material_extraction",
-              "api-reference/endpoint/get_tamper_result",
-              "api-reference/endpoint/get_invoice_verify",
-              "api-reference/endpoint/get_claim_timeline",
-              "api-reference/endpoint/check_materials_validity"
+              "api-reference/endpoint/search_icd",
+              "api-reference/endpoint/search_medical_institution",
+              "api-reference/endpoint/search_social_insurance",
+              "api-reference/endpoint/lookup_division"
             ]
           }
         ]

@@ -3,81 +3,433 @@ title: "快速启动"
 description: "ClaimAgent API 快速入门指南"
 ---
 
-## 01 准备信息
+## 01 先决条件：获取访问凭证
 
-*   **Base URL**：`{HOST}/doc-agent/api/v1`
-*   **鉴权**：所有接口均需要 API Key
-*   **推荐先跑通**：`stages=[1,2]`（分类 + 抽取）
+### 1.1 公有云使用
 
-## 02 创建案件并上传材料（异步示例）
+使用 Claim Agent API 时，您需要先获取 API Key。
+请先登录后前往 [TextIn 工作台 - 账号与开发者信息](https://www.textin.com/console/dashboard/setting) 获取您的 `x-ti-app-id` 和 `x-ti-secret-code`。
 
-`POST /claim/create`（`multipart/form-data`）
+### 1.2 私有化使用
 
-**字段**：
-*   `files`：材料文件（可多份）
-*   `stages`：重复传参（例如传两次 `stages=1` 与 `stages=2`）
-*   `is_async=true`
-*   `policy_no`、`insured_name`：必填
-*   `callback_api`：可选（异步完成后回调）
+请联系对接的技术支持人员，获取用于私有化部署的 API 调用凭证及软件部署包。
 
-**示例（curl）**：
+## 02 前置准备
 
-```bash
-curl -X POST "{HOST}/doc-agent/api/v1/claim/create" \
-  -H "x-api-key: {API_KEY}" \
-  -F "policy_no=YOUR_POLICY_NO" \
-  -F "insured_name=YOUR_INSURED_NAME" \
-  -F "files=@/path/to/material-1.pdf" \
-  -F "files=@/path/to/material-2.jpg" \
-  -F "stages=1" \
-  -F "stages=2" \
-  -F "is_async=true"
+为了您更高效地体验 Claim Agent 效果，这里准备一套完整的测试示例样本。
+
+### 2.1 上传材料
+
+示例：
+
+```python
+def upload_files(file_paths: list[str]) -> dict:
+    """
+    上传材料文件
+
+    支持两种上传方式（可混合使用）：
+      - 方式一: 二进制文件上传（multipart/form-data）
+      - 方式二: URL 上传（传 file_urls 列表）
+
+    限制:
+      - 支持格式: jpg, jpeg, png, bmp, tiff, pdf
+      - 单文件上限: 50MB
+      - 单次上传上限: 20 个文件
+
+    返回:
+      {
+          "batch_id": "550e8400-...",
+          "materials": [
+              {"material_id": "718fe34e-...", "file_name": "invoice_01.jpg",
+               "file_type": "image/jpeg", "file_size": 590067},
+              ...
+          ]
+      }
+    """
+    print("=" * 60)
+    print("2.1 上传材料")
+    print("=" * 60)
+
+    files = []
+    for path in file_paths:
+        files.append(("files", open(path, "rb")))
+
+    try:
+        resp = requests.post(
+            api_url("/file/upload"),
+            headers=HEADERS,
+            files=files,
+        )
+    finally:
+        for _, f in files:
+            f.close()
+
+    data = check_response(resp, "上传材料")
+
+    print(f"  批次 ID: {data['batch_id']}")
+    print(f"  上传成功 {len(data['materials'])} 个文件:")
+    for m in data["materials"]:
+        print(f"    - {m['file_name']} (material_id={m['material_id']}, "
+              f"type={m['file_type']}, size={m['file_size']} bytes)")
+    print()
+
+    return data
+
+
+def upload_files_by_url(file_urls: list[str], batch_id: str | None = None) -> dict:
+    """
+    通过 URL 上传材料（与二进制上传可混合使用）
+
+    参数:
+      file_urls: 文件 URL 列表
+      batch_id:  可选, 调用方自定义批次 ID（UUID 格式），不传则系统生成
+    """
+    print("=" * 60)
+    print("2.1 上传材料（URL 方式）")
+    print("=" * 60)
+
+    payload = {"file_urls": file_urls}
+    if batch_id:
+        payload["batch_id"] = batch_id
+
+    resp = requests.post(
+        api_url("/file/upload"),
+        headers={**HEADERS, "Content-Type": "application/json"},
+        json=payload,
+    )
+
+    data = check_response(resp, "URL上传材料")
+
+    print(f"  批次 ID: {data['batch_id']}")
+    print(f"  上传成功 {len(data['materials'])} 个文件:")
+    for m in data["materials"]:
+        print(f"    - {m['file_name']} (material_id={m['material_id']})")
+    print()
+
+    return data
 ```
 
-**返回**：
-*   `claim_id`
-*   [materials[]](/api-reference/endpoint/get_material_category)（包含 `material_id`/`file_name`/`file_type`/`file_size`/`status` 等基础字段）
+使用您的参数执行上面示例代码后，可完成文件的上传动作，上传后可在 Web 页面中查看。
 
-## 03 查询结果（按需调用）
+### 2.2 材料质量检测
 
-可选通过 `material_ids` 过滤只取部分材料；不传则返回全部。
+示例：
 
-**获取分类**：
-```bash
-curl "{HOST}/doc-agent/api/v1/claims/{claim_id}/materials/category-mappings" \
-  -H "x-api-key: {API_KEY}"
+```python
+def check_image_quality(
+    batch_id: str | None = None,
+    material_id: str | None = None,
+    blurry_threshold: float | None = None,
+    un_integrity_threshold: float | None = None,
+) -> dict:
+    """
+    材料质量检测
+
+    检测 6 项质量风险:
+      - blurry: 模糊检测
+      - un_integrity: 完整性检测
+      - photocopy: 复印件检测
+      - screen_remark: 翻拍检测
+      - light_spot: 光斑检测
+      - scan: 扫描件检测
+
+    支持两种输入方式（互斥）:
+      方式一: 传 material_id 或 batch_id 指定已上传的材料
+      方式二: 直接上传文件
+
+    参数:
+      batch_id:                批次 ID（检测该批次下所有材料）
+      material_id:             单个材料 ID
+      blurry_threshold:        模糊阈值 (0.1~0.9, 默认 0.5)
+      un_integrity_threshold:  不完整阈值 (0.1~0.9, 默认 0.5)
+
+    返回:
+      各材料各页的质检结果, 包含风险评分和风险类型
+    """
+    print("=" * 60)
+    print("2.2 材料质量检测")
+    print("=" * 60)
+
+    payload = {}
+    if batch_id:
+        payload["batch_id"] = batch_id
+    if material_id:
+        payload["material_id"] = material_id
+
+    params = {}
+    if blurry_threshold is not None:
+        params["blurry_threshold"] = blurry_threshold
+    if un_integrity_threshold is not None:
+        params["un_integrity_threshold"] = un_integrity_threshold
+
+    resp = requests.post(
+        api_url("/image-quality"),
+        headers={**HEADERS, "Content-Type": "application/json"},
+        params=params,
+        json=payload,
+    )
+
+    data = check_response(resp, "质检")
+
+    for material in data["materials"]:
+        print(f"  材料 {material['material_id']}:")
+        for page in material["pages"]:
+            risk_types = page.get("risk_type", [])
+            status = "存在风险" if risk_types else "质量合格"
+            print(f"    第 {page['page']} 页: {status}")
+            if risk_types:
+                print(f"      命中风险: {', '.join(risk_types)}")
+                details = page.get("risk_details", {})
+                for risk_name, detail in details.items():
+                    if detail.get("valid"):
+                        reasons = detail.get("reason", [])
+                        reason_str = f" (原因: {', '.join(reasons)})" if reasons else ""
+                        print(f"        {risk_name}: 评分={detail['score']}"
+                              f"{reason_str}")
+    print()
+
+    return data
 ```
 
-**获取抽取**：
-```bash
-curl "{HOST}/doc-agent/api/v1/claims/{claim_id}/materials/extractions" \
-  -H "x-api-key: {API_KEY}"
+参考上面的示例代码，您可以获得采集材料的质量情况，并可以根据质量结果考虑是否需要进行触发重传，拦截流程以及人工复核等操作。
+
+### 2.3 图像与文档处理(接口暂未开发)
+
+示例：
+
+```
+这是一个图像与文档处理的示例代码
 ```
 
-**获取齐全性**：
-```bash
-curl "{HOST}/doc-agent/api/v1/claims/{claim_id}/materials/completeness" \
-  -H "x-api-key: {API_KEY}"
+参考上面的示例代码，您可以实现图像材料显示效果的提升，并能将同份文件进行归并与排序。
+
+### 2.4 材料分类
+
+示例：
+
+```python
+def classify_materials(
+    batch_id: str | None = None,
+    material_id: str | None = None,
+) -> dict:
+    """
+    材料分类
+
+    对已上传的材料进行智能分类, 返回大类和小类信息。
+    默认分类体系以医疗票据和保险常用文件为主。
+
+    支持两种输入方式（互斥）:
+      方式一: 传 material_id 或 batch_id 指定已上传的材料
+      方式二: 直接上传文件
+
+    参数:
+      batch_id:     批次 ID（分类该批次下所有材料）
+      material_id:  单个材料 ID
+
+    返回:
+      各材料的分类结果, 包含大类 (category) 和小类 (material_type)
+    """
+    print("=" * 60)
+    print("2.4 材料分类")
+    print("=" * 60)
+
+    payload = {}
+    if batch_id:
+        payload["batch_id"] = batch_id
+    if material_id:
+        payload["material_id"] = material_id
+
+    resp = requests.post(
+        api_url("/material/classify"),
+        headers={**HEADERS, "Content-Type": "application/json"},
+        json=payload,
+    )
+
+    data = check_response(resp, "材料分类")
+
+    print("  分类结果:")
+    for m in data["materials"]:
+        print(f"    材料 {m['material_id']}:")
+        print(f"      大类: {m['category']}")
+        print(f"      小类: {m.get('material_type', '未识别')}")
+    print()
+
+    return data
 ```
 
-**获取时间线**：
-```bash
-curl "{HOST}/doc-agent/api/v1/claims/{claim_id}/timeline" \
-  -H "x-api-key: {API_KEY}"
+参考上面的示例代码，您可以获取到上一步整理好的材料的分类结果。
+
+### 2.5 信息抽取
+
+示例：
+
+```python
+def extract_materials(
+    batch_id: str | None = None,
+    material_ids: list[str] | None = None,
+    category_hints: list[dict] | None = None,
+    callback_url: str | None = None,
+    poll: bool = True,
+    poll_interval: int = 5,
+    max_retries: int = 60,
+) -> dict:
+    """
+    信息抽取
+
+    对材料执行结构化信息提取, 将复杂的保险场景业务数据转化为高质量结构化数据。
+    接口幂等: 已完成材料不重复抽取, 失败材料会自动重试。
+
+    抽取结果包含:
+      - extract_fields: 字段抽取结果（key-value + 置信度 + 坐标 + 多维评分）
+      - tables: 表格抽取结果
+
+    多维度可信度评分:
+      - traceability: 可溯源性（字段值是否有清晰来源）
+      - contextual_consistency: 上下文一致性
+      - field_cue_proximity: 字段线索邻近性
+      - numerical_plausibility: 数值合理性
+      - uniqueness_ambiguity: 唯一性/歧义性
+      - cross_field_consistency: 跨字段一致性
+
+    参数:
+      batch_id:        批次 ID
+      material_ids:    材料 ID 列表（与 batch_id 二选一）
+      category_hints:  手动指定分类（可跳过自动分类步骤）
+        示例: [{"material_id": "xxx", "category": "费用与结算", "material_type":
+               "住院费用明细清单"}]
+      callback_url:    回调 URL（全部完成后系统发送 POST 通知）
+      poll:            是否轮询等待结果（默认 True）
+      poll_interval:   轮询间隔秒数（默认 5）
+      max_retries:     最大轮询次数（默认 60）
+
+    返回:
+      各材料的抽取结果, 包含字段、表格、置信度和多维评分
+    """
+    print("=" * 60)
+    print("2.5 信息抽取")
+    print("=" * 60)
+
+    payload = {}
+    if batch_id:
+        payload["batch_id"] = batch_id
+    if material_ids:
+        payload["material_ids"] = material_ids
+    if category_hints:
+        payload["category_hints"] = category_hints
+    if callback_url:
+        payload["callback_url"] = callback_url
+
+    resp = requests.post(
+        api_url("/material/extract"),
+        headers={**HEADERS, "Content-Type": "application/json"},
+        json=payload,
+    )
+
+    data = check_response(resp, "信息抽取")
+
+    status_text = {0: "待处理", 1: "分类中", 2: "抽取中", 3: "已完成", 4: "失败"}
+
+    if not poll:
+        print("  已提交抽取任务（不等待结果）:")
+        for m in data["materials"]:
+            print(f"    材料 {m['material_id']}: {status_text.get(m['status'],
+                  '未知')}")
+        if callback_url:
+            print(f"  完成后将回调: {callback_url}")
+        print()
+        return data
+
+    # 轮询等待抽取完成
+    print("  等待抽取完成...")
+    for i in range(max_retries):
+        all_done = all(m["status"] >= 3 for m in data["materials"])
+
+        if all_done:
+            break
+
+        print(f"    轮询 {i + 1}/{max_retries}, "
+              f"状态: {[status_text.get(m['status'], '?') for m in data['materials']]}, "
+              f"{poll_interval}s 后重试...")
+        time.sleep(poll_interval)
+
+        resp = requests.post(
+            api_url("/material/extract"),
+            headers={**HEADERS, "Content-Type": "application/json"},
+            json=payload,
+        )
+        data = check_response(resp, "信息抽取-轮询")
+    else:
+        print("  处理超时，请稍后再次查询")
+        print()
+        return data
+
+    # 打印抽取结果
+    print()
+    print("  抽取完成！结构化数据如下:")
+    print("-" * 50)
+
+    for m in data["materials"]:
+        mid = m["material_id"]
+        status = m["status"]
+        print(f"  材料 {mid} [{status_text.get(status, '未知')}]")
+
+        if status == 4:  # 失败
+            print(f"    错误: {m.get('error', '未知错误')}")
+            continue
+
+        print(f"    分类: {m.get('category', '')} / {m.get('material_type', '')}")
+
+        result = m.get("extract_result", {})
+
+        # 字段抽取结果
+        fields = result.get("extract_fields", [])
+        if fields:
+            print(f"    字段 ({len(fields)} 项):")
+            for field in fields:
+                confidence = field.get("confidence", 0)
+                confidence_pct = f"{confidence * 100:.0f}%" if confidence <= 1 else f"{confidence}%"
+                value = field.get("value", "") or "(空)"
+                print(f"      {field['key']}: {value}  [置信度: "
+                      f"{confidence_pct}]")
+
+                # 打印多维评分（仅在置信度不高时展示）
+                dims = field.get("dimensions", {})
+                if dims and confidence < 0.8:
+                    low_dims = [
+                        f"{k}={v.get('score', 0)}"
+                        for k, v in dims.items()
+                        if v.get("score", 1) < 0.8
+                    ]
+                    if low_dims:
+                        print(f"          低分维度: {', '.join(low_dims)}")
+                    explanations = [
+                        f"  {k}: {v['explanation']}"
+                        for k, v in dims.items()
+                        if v.get("explanation")
+                    ]
+                    if explanations:
+                        for exp in explanations:
+                            print(f"          {exp}")
+
+        # 表格抽取结果
+        tables = result.get("tables", [])
+        if tables:
+            print(f"    表格 ({len(tables)} 个):")
+            for table in tables:
+                table_name = table.get("table_name", "未命名")
+                items = table.get("items", [])
+                print(f"      [{table_name}] ({len(items)} 行)")
+                for row_idx, row in enumerate(items[:3]):  # 最多展示 3 行
+                    values = row.get("values", [])
+                    row_str = " | ".join(
+                        f"{v['key']}={v.get('value', '')}" for v in values
+                    )
+                    print(f"          行{row_idx + 1}: {row_str}")
+                if len(items) > 3:
+                    print(f"          ... 共 {len(items)} 行")
+
+    print()
+    return data
 ```
 
-**获取真伪**：
-```bash
-curl "{HOST}/doc-agent/api/v1/claims/{claim_id}/materials/validity" \
-  -H "x-api-key: {API_KEY}"
-```
-
-## 04 同步模式（需要一次拿到结果时）
-
-将 `is_async=false`，并按需设置 `stages`。同步返回会包含对应阶段的结果字段：
-
-*   `[1]`：`materials.category` + `completeness_result`
-*   `[1,2]`：增加 `materials.extract_result`
-*   `[1,2,3]`：增加 `timeline_result`
-*   `[1,2,4]`：增加 `materials.verify_vat_ret`、`materials.ps_ret`
-*   `[1,2,3,4]`：同时包含时间线与真实性结果
+这一步您已经实现将材料复杂、质量参差、结构混乱的保险场景业务数据，转化成了高质量的结构化数据，从而更好的赋能下游任务。

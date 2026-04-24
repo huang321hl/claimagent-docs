@@ -1,0 +1,1120 @@
+---
+title: "保险场景预置配置"
+description: "针对保险理赔与核保场景的预置分类和抽取字段配置详情"
+---
+
+
+
+针对保险场景，我们对高频使用的证件和票据类别做了专项的优化，预置的分类和抽取字段配置如下。
+
+## 1.1 身份与授权
+
+### 1.1.1 港澳台通行证
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">港澳台通行证</td><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">证件号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签发机关</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名(汉语拼音)</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">有效期限</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签发地点</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.1.2 户口本
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">户口本</td><td rowspan="5" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">户别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">户主姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">户口登记日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">户号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住址</td></tr>
+<tr><td rowspan="22" className="border border-gray-200 px-4 py-2 text-center align-top">表格字段</td><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">户主或与户主关系</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">曾用名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生地</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">民族</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">籍贯</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">本市(县)其他住址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">宗教信仰</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">公民身份证件编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">身高</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">血型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">文化程度</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">婚姻状况</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">兵役状况</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">服务处所</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">职业</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">何时由何地迁来本市(县)</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">何时由何地迁来本址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">登记日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">户号</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.1.3 银行卡
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="6" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="6" className="border border-gray-200 px-4 py-2 text-center align-top">银行卡</td><td rowspan="6" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">银行卡号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发卡机构</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发卡机构代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">有效期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">持有人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">卡号校验</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.1.4 身份证
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">身份证</td><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">民族</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">公民身份证号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签发机关</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">有效期限</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.1.5 护照
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="16" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="16" className="border border-gray-200 px-4 py-2 text-center align-top">护照</td><td rowspan="16" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">护照号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">国家码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">拼音</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">有效期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">国籍</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签发日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生地点</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签发地点</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">护照下方第一行</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">护照下方第二行</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签发机关</td></tr>
+</tbody>
+</table>
+</div>
+
+## 1.2 保险与资格
+
+### 1.2.1 保单
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="15" className="border border-gray-200 px-4 py-2 text-center align-top">保险与资格</td><td rowspan="15" className="border border-gray-200 px-4 py-2 text-center align-top">保单</td><td rowspan="15" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">保险公司名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保单号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">险种名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">险种类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保障计划/方案名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">投保人姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">被保险人姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">受益人信息</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保险金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保险期间起始时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保险期间终止时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">缴费方式</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签单日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">等待期天数</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.2.2 保险条款
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="9" className="border border-gray-200 px-4 py-2 text-center align-top">保险与资格</td><td rowspan="9" className="border border-gray-200 px-4 py-2 text-center align-top">保险条款</td><td rowspan="6" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">条款名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">条款编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">赔付比例信息</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">等待期描述</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">免赔及起付线信息</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">各责任限额信息</td></tr>
+<tr><td rowspan="3" className="border border-gray-200 px-4 py-2 text-center align-top">表格字段（责任认定明细表）</td><td className="border border-gray-200 px-4 py-2">保险责任</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">责任内容</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保障责任</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.2.3 保险合同
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="15" className="border border-gray-200 px-4 py-2 text-center align-top">保险与资格</td><td rowspan="15" className="border border-gray-200 px-4 py-2 text-center align-top">保险合同</td><td rowspan="15" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">保险公司名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保单号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">险种名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">险种类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保障计划/方案名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">投保人姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">被保险人姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">受益人信息</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保险金额/保额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保险期间起始时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保险期间终止日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">保费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">缴费方式</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">签单日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">等待期天数</td></tr>
+</tbody>
+</table>
+</div>
+
+## 1.3 医疗文书
+
+### 1.3.1 门急诊病历
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="32" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="32" className="border border-gray-200 px-4 py-2 text-center align-top">门急诊病历</td><td rowspan="25" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据总页数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">当前页码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">主诉</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">现病史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">既往史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">过敏史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">家族史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">婚姻史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">孕产史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体格检查</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">辅助检查</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床诊断/症状</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">诊断结果</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊处置</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医学建议/医嘱</td></tr>
+<tr><td rowspan="7" className="border border-gray-200 px-4 py-2 text-center align-top">处方汇总表</td><td className="border border-gray-200 px-4 py-2">药品名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用法</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用药频率</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用药疗程</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">提示/嘱托</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.2 入院记录
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="32" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="32" className="border border-gray-200 px-4 py-2 text-center align-top">入院记录</td><td rowspan="32" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">职业</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">婚姻状况</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病史陈述者</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生地</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">民族</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院方式</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">记录时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">主诉</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">现病史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">既往史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">过敏史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">家族史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">婚姻史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">孕产史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">婚育史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体格检查</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">专科检查</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">辅助检查</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补充诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院记录医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补充诊断医生</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.3 出院小结
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="38" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="38" className="border border-gray-200 px-4 py-2 text-center align-top">出院小结</td><td rowspan="24" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据总页数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">当前页码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院起始日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院结束日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出院诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院症状与体征</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出院症状与体征</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">诊疗经过</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">治疗结果</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出院医嘱</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院医生</td></tr>
+<tr><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">出院带药汇总表</td><td className="border border-gray-200 px-4 py-2">药品名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用法</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用药频率</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用药疗程</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">带药数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">提示/嘱托</td></tr>
+<tr><td rowspan="6" className="border border-gray-200 px-4 py-2 text-center align-top">自备药汇总表</td><td className="border border-gray-200 px-4 py-2">药品名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用法</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用药频率</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用药疗程</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">提示/嘱托</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.4 实验室检验报告
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="31" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="31" className="border border-gray-200 px-4 py-2 text-center align-top">实验室检验报告</td><td rowspan="26" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">报告时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病人编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查项目仪器</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">实验方法</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">采样时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">接收时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">标本号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">标本类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">采样医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检验医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">审核医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床诊断/症状</td></tr>
+<tr><td rowspan="5" className="border border-gray-200 px-4 py-2 text-center align-top">检验结果汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">结果</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">参考值</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">提示</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.5 影像学检查报告
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="23" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="23" className="border border-gray-200 px-4 py-2 text-center align-top">影像学检查报告</td><td rowspan="23" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据总页数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">当前页码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">报告时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开单科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查部位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检验医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">审核医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">影像所见</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">诊断意见/结果</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.6 诊断证明书
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="21" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="21" className="border border-gray-200 px-4 py-2 text-center align-top">诊断证明书</td><td rowspan="21" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开具日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">民族</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">家庭住址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院起始日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院结束日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">诊断结果</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医学建议/医嘱</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.7 病案首页
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="41" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="41" className="border border-gray-200 px-4 py-2 text-center align-top">病案首页</td><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">公民身份证号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">民族</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">籍贯</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">职业</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">现住地址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">户籍地址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">联系电话</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">联系人姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">联系人关系</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">联系人电话</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构组织机构编码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病案号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院科别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出院科别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院日期时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出院日期时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门急诊诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门急诊诊断疾病编码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院诊断疾病编码</td></tr>
+<tr><td rowspan="4" className="border border-gray-200 px-4 py-2 text-center align-top">出院诊断表</td><td className="border border-gray-200 px-4 py-2">出院诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">疾病编码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">入院病情</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出院情况</td></tr>
+<tr><td rowspan="10" className="border border-gray-200 px-4 py-2 text-center align-top">手术记录表</td><td className="border border-gray-200 px-4 py-2">手术操作名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术操作编码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术及操作日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术级别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术及操作医师-术者</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术及操作医师-一助</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术及操作医师-二助</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">麻醉方式</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">切口愈合等级</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">麻醉医师</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.8 医疗处方笺
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="25" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="25" className="border border-gray-200 px-4 py-2 text-center align-top">医疗处方笺</td><td rowspan="17" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">处方号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开具日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开单医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发药药师</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">费用合计金额</td></tr>
+<tr><td rowspan="8" className="border border-gray-200 px-4 py-2 text-center align-top">处方明细汇总表</td><td className="border border-gray-200 px-4 py-2">药品名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用法</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">用量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单价</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.9 病理报告
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="28" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="28" className="border border-gray-200 px-4 py-2 text-center align-top">病理报告</td><td rowspan="24" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">报告时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检查时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">标本部位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病理号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">送检时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床诊断症状</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">临床医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">检验医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">审核医生</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">大体检查</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">光镜所见</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病理诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补充意见</td></tr>
+<tr><td rowspan="4" className="border border-gray-200 px-4 py-2 text-center align-top">病理附加检测/指标明细表</td><td className="border border-gray-200 px-4 py-2">检测类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">指标名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">指标结果</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">提示</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.10 体检报告
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="22" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="22" className="border border-gray-200 px-4 py-2 text-center align-top">体检报告</td><td rowspan="22" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体检编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体检时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">出生日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">公民身份证号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">工作单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">家庭地址</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">健康自述</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">既往史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">家族史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">生活方式史</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体检检查摘要</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">实验室检查摘要</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">影像检查摘要</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体检异常汇总</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">体检结论</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">健康建议</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">审核医生</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.3.11 手术记录单
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="24" className="border border-gray-200 px-4 py-2 text-center align-top">医疗文书</td><td rowspan="24" className="border border-gray-200 px-4 py-2 text-center align-top">手术记录单</td><td rowspan="24" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病案号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术日期时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术级别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">术前诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">术中诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">术后诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术部位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">麻醉医师</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">麻醉方式</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">术者姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">助手姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">术中出血量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术结论</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术记录时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术开始时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">手术结束时间</td></tr>
+</tbody>
+</table>
+</div>
+
+## 1.4 费用与结算
+
+### 1.4.1 门诊费用明细清单
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="35" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="35" className="border border-gray-200 px-4 py-2 text-center align-top">门诊费用明细清单</td><td rowspan="21" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据总页数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">当前页码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">人员类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">公民身份证号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">费用合计金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款单位</td></tr>
+<tr><td rowspan="14" className="border border-gray-200 px-4 py-2 text-center align-top">诊疗清单汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">项目类别（费目）</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">项目编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单价</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保报销类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">自付比例</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">乙类分类自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">超限价自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.2 医疗住院收费票据（电子）
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="48" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="48" className="border border-gray-200 px-4 py-2 text-center align-top">医疗住院收费票据（电子）</td><td rowspan="45" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">业务流水号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据校验码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人统一社会信用代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院起始日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院结束日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">大写金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发票金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自负金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">分类自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">预缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">退费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">抹零金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">附加基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人现金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">其他支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">复核人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保当年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保历年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计统筹报销金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计起付线金额</td></tr>
+<tr><td rowspan="3" className="border border-gray-200 px-4 py-2 text-center align-top">费目金额汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.3 医疗门诊收费票据（电子）
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="51" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="51" className="border border-gray-200 px-4 py-2 text-center align-top">医疗门诊收费票据（电子）</td><td rowspan="41" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">业务流水号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据校验码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人统一社会信用代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">大写金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发票金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自负金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">分类自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">预缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">退费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">抹零金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">附加基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人现金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">其他支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">复核人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保当年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保历年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计统筹报销金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计起付线金额</td></tr>
+<tr><td rowspan="7" className="border border-gray-200 px-4 py-2 text-center align-top">项目明细汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保报销类别</td></tr>
+<tr><td rowspan="3" className="border border-gray-200 px-4 py-2 text-center align-top">费目金额汇总表</td><td className="border border-gray-200 px-4 py-2">费目</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.4 住院费用明细清单
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="45" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="45" className="border border-gray-200 px-4 py-2 text-center align-top">住院费用明细清单</td><td rowspan="26" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据总页数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">当前页码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">人员类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">公民身份证号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院起始日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院结束日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">费用合计金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款单位</td></tr>
+<tr><td rowspan="19" className="border border-gray-200 px-4 py-2 text-center align-top">诊疗清单汇总表</td><td className="border border-gray-200 px-4 py-2">项目编码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单价</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额（明细）</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">自费</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">分类自负</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保费用类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">项目类别（费目）</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">项目编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保报销类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">自付比例</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">乙类分类自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">超限价自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.5 增值税发票
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="18" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="18" className="border border-gray-200 px-4 py-2 text-center align-top">增值税发票</td><td rowspan="11" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">总金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">名称（销售方）</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">其他支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人现金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发票代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">校验码</td></tr>
+<tr><td rowspan="7" className="border border-gray-200 px-4 py-2 text-center align-top">项目明细汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格型号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单价</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">税率</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">税额</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.6 医保结算单
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="55" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="55" className="border border-gray-200 px-4 py-2 text-center align-top">医保结算单</td><td rowspan="43" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据总页数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">当前页码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">结算时间</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">参保地</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就医地</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">业务类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">险种类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">人员类别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">所属单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院起始日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院结束日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">主要诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">次要诊断</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">费用合计金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">起付线金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">已付起付线</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">本年医保统筹基金累计支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹报销比例</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人现金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">其他支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保当年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">乙类先行自付总额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">超限价自付总额</td></tr>
+<tr><td rowspan="10" className="border border-gray-200 px-4 py-2 text-center align-top">费用明细总表</td><td className="border border-gray-200 px-4 py-2">费用名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">自费</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">乙类先行自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">超限价自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">甲类费用金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">乙类费用金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">丙类费用金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">部分项目自付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">政策范围外费用金额</td></tr>
+<tr><td rowspan="2" className="border border-gray-200 px-4 py-2 text-center align-top">基金支付合计汇总表</td><td className="border border-gray-200 px-4 py-2">医保基金类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">基金支付金额</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.7 医疗门诊收费票据（纸质）
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="54" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="54" className="border border-gray-200 px-4 py-2 text-center align-top">医疗门诊收费票据（纸质）</td><td rowspan="44" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">电子票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">电子票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">业务流水号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据校验码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人统一社会信用代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">门诊号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">就诊日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">大写金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发票金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自负金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">分类自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">预缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">退费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">抹零金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">附加基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人现金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">其他支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">复核人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保当年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保历年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计统筹报销金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计起付线金额</td></tr>
+<tr><td rowspan="7" className="border border-gray-200 px-4 py-2 text-center align-top">项目明细汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">规格</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">数量</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保报销类别</td></tr>
+<tr><td rowspan="3" className="border border-gray-200 px-4 py-2 text-center align-top">费目金额汇总表</td><td className="border border-gray-200 px-4 py-2">费目</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+</tbody>
+</table>
+</div>
+
+### 1.4.8 医疗住院收费票据（纸质）
+
+<div className="not-prose">
+<table className="w-full border-collapse border border-gray-200">
+<thead>
+<tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="53" className="border border-gray-200 px-4 py-2 text-center align-top">费用与结算</td><td rowspan="53" className="border border-gray-200 px-4 py-2 text-center align-top">医疗住院收费票据（纸质）</td><td rowspan="49" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">单据标题名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">电子票据代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">电子票据号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">业务流水号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">票据校验码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人统一社会信用代码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">开票日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">年龄</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病历号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">床号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">病区</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保编号</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">社会保障号码</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医疗机构类型</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">科室</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院起始日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院结束日期</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">住院天数</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">大写金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">发票金额合计</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自负金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">分类自付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人自费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">预缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">补缴金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">退费金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">抹零金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保统筹基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">附加基金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人账户支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人现金支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">其他支付</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款单位</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">收款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">复核人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">交款人</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保当年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">医保历年账户余额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计统筹报销金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">累计起付线金额</td></tr>
+<tr><td rowspan="4" className="border border-gray-200 px-4 py-2 text-center align-top">费目金额汇总表</td><td className="border border-gray-200 px-4 py-2">项目名称</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">个人支付金额</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">备注</td></tr>
+</tbody>
+</table>
+</div>

@@ -24,33 +24,33 @@ mint update
 ## 项目结构
 
 - **docs.json** - Mintlify 主配置文件：主题、导航标签页、颜色、Logo、导航栏、页脚等
-- **api-reference/openapi-external.yaml** - OpenAPI 规范文件，定义所有 API 端点、Schema 及请求/响应结构。端点 `.mdx` 文件通过 `openapi` frontmatter 引用此文件
-- **api-reference/endpoint/*.mdx** - 各 API 端点页面，大部分仅包含 frontmatter（引用 OpenAPI YAML）。修改 API 文档内容请编辑 OpenAPI YAML
-- **index.mdx** - 产品简介，包含核心概念（stages、状态枚举、同步/异步模式）
+- **api-reference/openapi-capability.yaml** - OpenAPI 规范文件（CapabilityService），定义所有 API 端点、Schema 及请求/响应结构。端点 `.mdx` 文件通过 `openapi` frontmatter 引用此文件
+- **api-reference/endpoint/*.mdx** - 各 API 端点页面，仅包含 frontmatter（引用 OpenAPI YAML）。修改 API 文档内容请编辑 OpenAPI YAML
+- **index.mdx** - 产品简介，包含核心概念（batch_id、material_id、处理状态、调用流程）
 - **quickstart.mdx** - 快速入门指南，含 curl 示例
-- **authentication.mdx** - API Key 鉴权说明
+- **authentication.mdx** - 双 Header 鉴权说明（x-ti-app-id + x-ti-secret-code）
 
 ### 导航结构（docs.json）
 
 两个标签页，API参考下分两个分组：
 1. **产品导览**：index、quickstart、authentication
 2. **API参考**
-   - **文件处理**：单文件维度的接口（图片质检、PS检测）
-   - **案件处理**：案件维度的接口（创建案件、齐全性、分类、抽取、时间线等）
+   - **文件与材料处理**：文件上传、图像质检、材料分类、材料抽取
+   - **知识库查询**：ICD 疾病编码查询、医疗机构查询、医保目录查询、行政区划查询
 
 ### API 核心概念
 
-- Base URL：`/doc-agent/api/v1`
-- 鉴权：`x-api-key` header
-- 关键实体：`claim_id`（案件 ID）、`material_id`（材料 ID）
-- 处理阶段（stages）：1=分类, 2=抽取, 3=时间线, 4=发票验真, 5=PS检测
-- 仅支持特定的 stages 组合（必须从 1 开始，存在顺序依赖）
+- Base URL：`https://agents.textin.com/doc-agent/api/v1`
+- 鉴权：`x-ti-app-id` + `x-ti-secret-code` 双 Header
+- 关键实体：`batch_id`（批次 ID）、`material_id`（材料 ID）
+- 处理状态（status）：0=待处理, 1=分类中, 2=抽取中, 3=已完成, 4=失败
+- 各能力独立调用，不依赖案件流程，通过 batch_id 和 material_id 串联
 
 ## 内容规范
 
 - 所有面向用户的文档使用简体中文
 - API 端点页面使用 OpenAPI frontmatter（`openapi: 'METHOD /path'`），而非内联内容
-- 新增/修改 API 端点详情，请编辑 `api-reference/openapi-external.yaml`
+- 新增/修改 API 端点详情，请编辑 `api-reference/openapi-capability.yaml`
 - 新增端点页面：在 `api-reference/endpoint/` 下创建 `.mdx` 文件，并在 `docs.json` 导航中注册
 
 ## 部署
