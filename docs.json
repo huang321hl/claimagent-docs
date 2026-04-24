@@ -30,8 +30,7 @@
           {
             "group": "场景化示例",
             "pages": [
-              "insurance-scenario",
-              "custom-config"
+              "insurance-scenario"
             ]
           },
           {
@@ -56,7 +55,7 @@
             ]
           },
           {
-            "group": "医保三目录",
+            "group": "医疗数据库",
             "pages": [
               "api-reference/endpoint/search_icd",
               "api-reference/endpoint/search_medical_institution",

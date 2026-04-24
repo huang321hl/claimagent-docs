@@ -1,5 +1,5 @@
 ---
-title: "保险场景预置配置"
+title: "保险理赔与核保场景"
 description: "针对保险理赔与核保场景的预置分类和抽取字段配置详情"
 ---
 
@@ -7,9 +7,11 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 
 针对保险场景，我们对高频使用的证件和票据类别做了专项的优化，预置的分类和抽取字段配置如下。
 
-## 1.1 身份与授权
+## 01 保险场景预置配置详情
 
-### 1.1.1 港澳台通行证
+### 1.1 身份与授权
+
+#### 1.1.1 港澳台通行证
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -29,7 +31,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.1.2 户口本
+#### 1.1.2 户口本
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -37,12 +39,12 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 <tr><th className="border border-gray-200 px-4 py-2 bg-gray-50">一级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">二级分类</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">字段类型</th><th className="border border-gray-200 px-4 py-2 bg-gray-50">描述</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">户口本</td><td rowspan="5" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">户别</td></tr>
+<tr><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">身份与授权</td><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">户口本</td><td rowspan="27" className="border border-gray-200 px-4 py-2 text-center align-top">常规字段</td><td className="border border-gray-200 px-4 py-2">户别</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">户主姓名</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">户口登记日期</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">户号</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">住址</td></tr>
-<tr><td rowspan="22" className="border border-gray-200 px-4 py-2 text-center align-top">表格字段</td><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
+<tr><td className="border border-gray-200 px-4 py-2">姓名</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">户主或与户主关系</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">曾用名</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">性别</td></tr>
@@ -68,7 +70,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.1.3 银行卡
+#### 1.1.3 银行卡
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -86,7 +88,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.1.4 身份证
+#### 1.1.4 身份证
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -106,7 +108,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.1.5 护照
+#### 1.1.5 护照
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -134,9 +136,9 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-## 1.2 保险与资格
+### 1.2 保险与资格
 
-### 1.2.1 保单
+#### 1.2.1 保单
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -163,7 +165,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.2.2 保险条款
+#### 1.2.2 保险条款
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -177,14 +179,14 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 <tr><td className="border border-gray-200 px-4 py-2">等待期描述</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">免赔及起付线信息</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">各责任限额信息</td></tr>
-<tr><td rowspan="3" className="border border-gray-200 px-4 py-2 text-center align-top">表格字段（责任认定明细表）</td><td className="border border-gray-200 px-4 py-2">保险责任</td></tr>
+<tr><td rowspan="3" className="border border-gray-200 px-4 py-2 text-center align-top">责任认定明细表</td><td className="border border-gray-200 px-4 py-2">保险责任</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">责任内容</td></tr>
 <tr><td className="border border-gray-200 px-4 py-2">保障责任</td></tr>
 </tbody>
 </table>
 </div>
 
-### 1.2.3 保险合同
+#### 1.2.3 保险合同
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -211,9 +213,9 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-## 1.3 医疗文书
+### 1.3 医疗文书
 
-### 1.3.1 门急诊病历
+#### 1.3.1 门急诊病历
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -257,7 +259,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.2 入院记录
+#### 1.3.2 入院记录
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -301,7 +303,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.3 出院小结
+#### 1.3.3 出院小结
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -351,7 +353,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.4 实验室检验报告
+#### 1.3.4 实验室检验报告
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -394,7 +396,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.5 影像学检查报告
+#### 1.3.5 影像学检查报告
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -429,7 +431,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.6 诊断证明书
+#### 1.3.6 诊断证明书
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -462,7 +464,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.7 病案首页
+#### 1.3.7 病案首页
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -515,7 +517,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.8 医疗处方笺
+#### 1.3.8 医疗处方笺
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -552,7 +554,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.9 病理报告
+#### 1.3.9 病理报告
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -592,7 +594,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.10 体检报告
+#### 1.3.10 体检报告
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -626,7 +628,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.3.11 手术记录单
+#### 1.3.11 手术记录单
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -662,9 +664,9 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-## 1.4 费用与结算
+### 1.4 费用与结算
 
-### 1.4.1 门诊费用明细清单
+#### 1.4.1 门诊费用明细清单
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -711,7 +713,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.2 医疗住院收费票据（电子）
+#### 1.4.2 医疗住院收费票据（电子）
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -771,7 +773,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.3 医疗门诊收费票据（电子）
+#### 1.4.3 医疗门诊收费票据（电子）
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -834,7 +836,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.4 住院费用明细清单
+#### 1.4.4 住院费用明细清单
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -891,7 +893,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.5 增值税发票
+#### 1.4.5 增值税发票
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -921,7 +923,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.6 医保结算单
+#### 1.4.6 医保结算单
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -988,7 +990,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.7 医疗门诊收费票据（纸质）
+#### 1.4.7 医疗门诊收费票据（纸质）
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -1054,7 +1056,7 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </table>
 </div>
 
-### 1.4.8 医疗住院收费票据（纸质）
+#### 1.4.8 医疗住院收费票据（纸质）
 
 <div className="not-prose">
 <table className="w-full border-collapse border border-gray-200">
@@ -1118,3 +1120,55 @@ description: "针对保险理赔与核保场景的预置分类和抽取字段配
 </tbody>
 </table>
 </div>
+
+## 02 自定义分类与抽取配置
+
+如果预置类别或抽取字段无法满足实际业务需求，可根据以下配置扩展支持的分类类别与抽取字段。
+
+### 2.1 进入材料分类与抽取的配置页
+
+登录进入 Claim Agent Web 页面的"设置"页，在这您可能看到事先预置好的材料配置。
+
+<Frame caption="在左侧导航栏点击「设置」，进入分类抽取配置页面">
+  <img src="/images/guide/config-entry.png" />
+</Frame>
+
+### 2.2 修改预置的材料配置
+
+若您想修改已预置的材料配置，可手动查找或通过右上角的搜索入口，快速定位到对应要修改的材料配置位置后，按需编辑即可。
+
+<Frame caption="点击「编辑」按钮修改预置的材料配置">
+  <img src="/images/guide/config-edit.png" />
+</Frame>
+
+### 2.3 新增一个分类
+
+我们对材料类别做了二级分类，例如"身份证"，它的一级分类为"身份与授权"，二级分类为"身份证"。您可以在一级分类下点击"新增分类文件"进行类别的扩充，当然也可以通过"自定义目录"，来新增一个新的一级分类，然后在增加新的二级分类的材料类别。
+
+<Frame caption="通过「+ 自定义目录」或「+ 新增分类文件」扩展分类体系">
+  <img src="/images/guide/config-add-category.png" />
+</Frame>
+
+### 2.4 优化分类效果
+
+您可以在分类配置页，添加"分类提示词"，或者上传更多的该类别的"示例样本"，让模型自己学习更多的分类特征，从而进一步提高分类的精度。
+
+<Frame caption="添加分类提示词和示例样本，提升分类精度">
+  <img src="/images/guide/config-optimize-classify.png" />
+</Frame>
+
+### 2.5 配置抽取字段
+
+在配置好分类后，您可以在右侧"新增字段"，或"批量添加"您要抽取的常规字段或表格字段。
+
+<Frame caption="在右侧面板中新增或批量添加抽取字段">
+  <img src="/images/guide/config-add-fields.png" />
+</Frame>
+
+### 2.6 优化抽取字段
+
+已配置好的抽取字段，仍可通过"提示词"进行抽取精度的专项调优。
+
+<Frame caption="为抽取字段添加提示词，进行精度专项调优">
+  <img src="/images/guide/config-optimize-fields.png" />
+</Frame>
