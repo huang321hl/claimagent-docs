@@ -3,22 +3,24 @@ components:
     capability.v1.CapabilityClassifyRequest:
       properties:
         batch_id:
-          description: 批次 ID（处理批次下所有材料）
+          description: 批次 ID(处理批次下所有材料)
           type: string
         file_urls:
-          description: URL 上传（与 material_id/batch_id 互斥）
+          description: URL 上传(与 material_id/batch_id 互斥)
           items:
             type: string
           type: array
         files:
           description: |-
-            文件二进制上传（multipart/form-data，与 material_id/batch_id 互斥）
+            ---- 方式二：直接上传文件 ----
+             文件二进制上传(multipart/form-data，与 material_id/batch_id 互斥)
           items:
             $ref: '#/components/schemas/common.MultipartUpload'
           type: array
         material_id:
           description: |-
-            已上传材料的 ID（处理单个材料）
+            ---- 方式一：指定已上传材料 ----
+             已上传材料的 ID(处理单个材料)
           type: string
       type: object
     capability.v1.CapabilityClassifyResponse:
@@ -32,21 +34,21 @@ components:
     capability.v1.CapabilityExtractRequest:
       properties:
         batch_id:
-          description: 批次ID（material_ids 为空时必传；material_ids 非空时可选，不传则自动从材料关联）
+          description: 批次ID(material_ids 为空时必传；material_ids 非空时可选，不传则自动从材料关联)
           type: string
         callback_url:
           description: |-
-            结果回调 URL（所有材料处理完成后，系统会向该 URL 发送 POST 请求）
+            结果回调 URL(所有材料处理完成后，系统会向该 URL 发送 POST 请求)
              body 为 JSON：{"material_ids": ["id1", "id2"], "status": 3}，status=3 表示已完成
           type: string
         category_hints:
-          description: 手动指定分类（非空时自动跳过分类步骤，每个元素通过 material_id 与 material_ids 中的材料对应）
+          description: 手动指定分类(非空时自动跳过分类步骤，每个元素通过 material_id 与 material_ids 中的材料对应)
           items:
             $ref: '#/components/schemas/capability.v1.MaterialCategoryHint'
           type: array
         material_ids:
           description: |-
-            材料 ID 列表（与 batch_id 二选一）
+            材料 ID 列表(与 batch_id 二选一)
              传 material_ids：处理指定材料，所有材料必须属于同一批次
              不传 material_ids：必须传 batch_id，处理该批次下所有材料
           items:
@@ -54,7 +56,7 @@ components:
           type: array
         with_verification:
           description: |-
-            是否对发票类材料执行验真（支持增值税发票、医疗门诊/住院电子发票）
+            是否对发票类材料执行验真(支持增值税发票、医疗门诊/住院电子发票)
              为 true 时，抽取完成后根据分类结果自动判断是否需要验真
           type: boolean
       type: object
@@ -69,14 +71,14 @@ components:
     capability.v1.CapabilityICDRequest:
       properties:
         disease_str:
-          description: 疾病名称或编码（如 "S52.400" 或 "骨折"）
+          description: 疾病名称或编码(如 "S52.400" 或 "骨折")
           type: string
         page_num:
-          description: 页码（从 1 开始，默认 1）
+          description: 页码(从 1 开始，默认 1)
           format: int32
           type: integer
         page_size:
-          description: 每页数量（默认 10）
+          description: 每页数量(默认 10)
           format: int32
           type: integer
       type: object
@@ -95,58 +97,61 @@ components:
     capability.v1.CapabilityImageQualityRequest:
       properties:
         batch_id:
-          description: 批次 ID（处理批次下所有材料）
+          description: 批次 ID(处理批次下所有材料)
           type: string
         blurry_threshold:
-          description: 模糊判断阈值（0.1~0.9，默认 0.5）
+          description: 模糊判断阈值(0.1~0.9，默认 0.5)
           format: float
           type: number
         detection_scope:
           description: |-
-            检测范围控制：0 整图检测, 1 每个主体单独检测（默认 0）
+            ---- 质检模型参数(query string，可选) ----
+             检测范围控制：0 整图检测, 1 每个主体单独检测(默认 0)
           format: int32
           type: integer
         file_urls:
-          description: URL 上传（与 material_id/batch_id 互斥）
+          description: URL 上传(与 material_id/batch_id 互斥)
           items:
             type: string
           type: array
         files:
           description: |-
-            文件二进制上传（multipart/form-data，与 material_id/batch_id 互斥）
+            ---- 方式二：直接上传文件 ----
+             文件二进制上传(multipart/form-data，与 material_id/batch_id 互斥)
           items:
             $ref: '#/components/schemas/common.MultipartUpload'
           type: array
         light_spot_level:
-          description: 光斑检测严格程度：0 更严格, 1 更宽松（默认 0）
+          description: 光斑检测严格程度：0 更严格, 1 更宽松(默认 0)
           format: int32
           type: integer
         light_spot_threshold:
-          description: 光斑判断阈值（0.1~0.9，默认 0.5）
+          description: 光斑判断阈值(0.1~0.9，默认 0.5)
           format: float
           type: number
         material_id:
           description: |-
-            已上传材料的 ID（处理单个材料）
+            ---- 方式一：指定已上传材料 ----
+             已上传材料的 ID(处理单个材料)
           type: string
         photocopy_threshold:
-          description: 复印件判断阈值（0.1~0.9，默认 0.5）
+          description: 复印件判断阈值(0.1~0.9，默认 0.5)
           format: float
           type: number
         scan_threshold:
-          description: 扫描件判断阈值（0.1~0.9，默认 0.5）
+          description: 扫描件判断阈值(0.1~0.9，默认 0.5)
           format: float
           type: number
         screen_remark_threshold:
-          description: 翻拍判断阈值（0.1~0.9，默认 0.5）
+          description: 翻拍判断阈值(0.1~0.9，默认 0.5)
           format: float
           type: number
         un_integrity_level:
-          description: 完整性检测严格程度：0 更严格, 1 更宽松（默认 0）
+          description: 完整性检测严格程度：0 更严格, 1 更宽松(默认 0)
           format: int32
           type: integer
         un_integrity_threshold:
-          description: 不完整度判断阈值（0.1~0.9，默认 0.5）
+          description: 不完整度判断阈值(0.1~0.9，默认 0.5)
           format: float
           type: number
       type: object
@@ -161,7 +166,7 @@ components:
     capability.v1.CapabilityLookupDivisionRequest:
       properties:
         name:
-          description: 行政区划名称（支持省/市/县模糊匹配，如 "成都"、"北京"、"南山区"）
+          description: 行政区划名称(支持省/市/县模糊匹配，如 "成都"、"北京"、"南山区")
           type: string
       type: object
     capability.v1.CapabilityLookupDivisionResponse:
@@ -186,7 +191,7 @@ components:
           type: string
         material_id:
           description: 材料唯一标识
-          example: '"718fe34e-5d62-4b6a-a8be-18661265f132"'
+          example: '"8ffe03ce-4714-4b50-8daf-afee06002cc3"'
           type: string
       type: object
     capability.v1.CapabilityMaterialResult:
@@ -195,12 +200,12 @@ components:
           description: 分类结果 - 大类
           type: string
         error:
-          description: 错误信息（处理失败时返回）
+          description: 错误信息(处理失败时返回)
           type: string
         extract_result:
           allOf:
           - $ref: '#/components/schemas/common.ExtractResult'
-          description: 抽取结果（处理完成后返回）
+          description: 抽取结果(处理完成后返回)
         material_id:
           description: 材料 ID
           type: string
@@ -208,13 +213,13 @@ components:
           description: 分类结果 - 小类
           type: string
         status:
-          description: '该材料的处理状态（0: 待处理, 1: 分类中, 2: 抽取中, 3: 已完成, 4: 失败）'
+          description: '该材料的处理状态(0: 待处理, 1: 分类中, 2: 抽取中, 3: 已完成, 4: 失败)'
           format: enum
           type: integer
         verify_vat_ret:
           allOf:
           - $ref: '#/components/schemas/common.VerifyVatRet'
-          description: 发票验真结果（with_verification=true 且验真完成后返回）
+          description: 发票验真结果(with_verification=true 且验真完成后返回)
       type: object
     capability.v1.CapabilityMedicalInstitutionRequest:
       properties:
@@ -222,11 +227,11 @@ components:
           description: 医疗机构名称
           type: string
         page_num:
-          description: 页码（从 1 开始，默认 1）
+          description: 页码(从 1 开始，默认 1)
           format: int32
           type: integer
         page_size:
-          description: 每页数量（默认 10）
+          description: 每页数量(默认 10)
           format: int32
           type: integer
       type: object
@@ -245,19 +250,19 @@ components:
     capability.v1.CapabilitySocialInsuranceRequest:
       properties:
         insurance_name:
-          description: 医保目录项名称（药品名/诊疗项目名/服务设施名）
+          description: 医保目录项名称(药品名/诊疗项目名/服务设施名)
           type: string
         page_num:
-          description: 页码（从 1 开始，默认 1）
+          description: 页码(从 1 开始，默认 1)
           format: int32
           type: integer
         page_size:
-          description: 每页数量（默认 10）
+          description: 每页数量(默认 10)
           format: int32
           type: integer
         zone_code:
           description: |-
-            地区编码（6 位行政区划编码，如 "120100" 天津市、"510100" 成都市）
+            地区编码(6 位行政区划编码，如 "120100" 天津市、"510100" 成都市)
              可通过 LookupDivision 接口查询获取，返回结果中的 preferred_code 即为本字段的值
           type: string
       type: object
@@ -276,15 +281,15 @@ components:
     capability.v1.CapabilityUploadRequest:
       properties:
         batch_id:
-          description: 调用方自定义批次ID（UUID格式，不传则系统生成）
+          description: 调用方自定义批次ID(UUID格式，不传则系统生成)
           type: string
         file_urls:
-          description: URL 上传（与 files 可混合使用）
+          description: URL 上传(与 files 可混合使用)
           items:
             type: string
           type: array
         files:
-          description: 文件二进制上传（支持多文件，与 file_urls 可混合使用）
+          description: 文件二进制上传(支持多文件，与 file_urls 可混合使用)
           items:
             $ref: '#/components/schemas/common.MultipartUpload'
           type: array
@@ -293,7 +298,7 @@ components:
       properties:
         batch_id:
           description: 批次ID
-          example: '"550e8400-e29b-41d4-a716-446655440000"'
+          example: '"661be601-65c7-4025-af0f-20d357dfb090"'
           type: string
         materials:
           description: 上传结果列表
@@ -306,34 +311,34 @@ components:
         fiscal:
           allOf:
           - $ref: '#/components/schemas/capability.v1.FiscalBillVerifyParams'
-          description: 财政电子票据验真参数（type="fiscal" 时必填）
+          description: 财政电子票据验真参数(type="fiscal" 时必填)
         type:
-          description: '验真类型: "fiscal"（财政电子票据）或 "vat"（增值税发票）'
+          description: '验真类型: "fiscal"(财政电子票据)或 "vat"(增值税发票)'
           type: string
         vat:
           allOf:
           - $ref: '#/components/schemas/capability.v1.VatInvoiceVerifyParams'
-          description: 增值税发票验真参数（type="vat" 时必填）
+          description: 增值税发票验真参数(type="vat" 时必填)
       type: object
     capability.v1.CapabilityVerifyInvoiceResponse:
       properties:
         fiscal_result:
           allOf:
           - $ref: '#/components/schemas/common.FiscalBillVerifyResult'
-          description: 财政票据验真结果（type="fiscal" 时返回）
+          description: 财政票据验真结果(type="fiscal" 时返回)
         vat_result:
           allOf:
           - $ref: '#/components/schemas/common.VatInvoiceVerifyResult'
-          description: 增值税发票验真结果（type="vat" 时返回）
+          description: 增值税发票验真结果(type="vat" 时返回)
       type: object
     capability.v1.DivisionItem:
       description: 行政区划信息
       properties:
         city_code:
-          description: 所属地级市编码（省级条目为空）
+          description: 所属地级市编码(省级条目为空)
           type: string
         city_name:
-          description: 所属地级市名称（省级条目为空）
+          description: 所属地级市名称(省级条目为空)
           type: string
         code:
           description: 该条目自身的 6 位行政区划编码
@@ -343,7 +348,7 @@ components:
           type: string
         preferred_code:
           description: |-
-            推荐使用的地区编码（有地级市返回地级市代码，否则返回省级代码）
+            推荐使用的地区编码(有地级市返回地级市代码，否则返回省级代码)
              此值可直接作为 SearchSocialInsurance 的 zone_code 参数
           type: string
         province_code:
@@ -354,7 +359,7 @@ components:
           type: string
       type: object
     capability.v1.FiscalBillVerifyParams:
-      description: 财政电子票据验真参数（医疗门诊/住院收费票据等）
+      description: 财政电子票据验真参数(医疗门诊/住院收费票据等)
       properties:
         bill_amount:
           description: 票据金额
@@ -363,7 +368,7 @@ components:
           description: 票据代码
           type: string
         bill_date:
-          description: '开票日期（格式: yyyyMMdd，如 "20240226"）'
+          description: '开票日期(格式: yyyyMMdd，如 "20240226")'
           type: string
         bill_no:
           description: 票据号码
@@ -379,7 +384,7 @@ components:
           description: 附加编码
           type: string
         category_name:
-          description: 分类名称（如 "ICD-10疾病编码"）
+          description: 分类名称(如 "ICD-10疾病编码")
           type: string
         category_uuid:
           description: 分类唯一标识
@@ -518,7 +523,7 @@ components:
     capability.v1.PageQualityResult:
       properties:
         page:
-          description: 页码（从 1 开始）
+          description: 页码(从 1 开始)
           format: int32
           type: integer
         risk_details:
@@ -548,7 +553,7 @@ components:
           description: 剂型
           type: string
         fee_level:
-          description: '费用等级（1: 甲类, 2: 乙类）'
+          description: '费用等级(1: 甲类, 2: 乙类)'
           type: string
         fee_level_name:
           description: 费用等级名称
@@ -575,7 +580,7 @@ components:
           description: 发票项类型编码
           type: string
         medical_invoice_items_type_name:
-          description: 发票项类型名称（如 西药费、中成药费）
+          description: 发票项类型名称(如 西药费、中成药费)
           type: string
         memo:
           description: 备注
@@ -584,7 +589,7 @@ components:
           description: 价格
           type: string
         restricted:
-          description: '是否限制用药（0: 否, 1: 是）'
+          description: '是否限制用药(0: 否, 1: 是)'
           format: int32
           type: integer
         self_ratio:
@@ -610,7 +615,7 @@ components:
           description: 医保目录名称拼音缩写
           type: string
         social_insurance_catalog_type:
-          description: '目录类型（1: 药品目录, 2: 诊疗项目, 3: 服务设施）'
+          description: '目录类型(1: 药品目录, 2: 诊疗项目, 3: 服务设施)'
           type: string
         social_insurance_catalog_type_name:
           description: 目录类型名称
@@ -639,16 +644,16 @@ components:
           description: 发票代码
           type: string
         invoice_date:
-          description: '开票日期（格式: yyyyMMdd，如 "20230915"）'
+          description: '开票日期(格式: yyyyMMdd，如 "20230915")'
           type: string
         invoice_no:
           description: 发票号码
           type: string
         invoice_sum:
-          description: 不含税金额（或价税合计）
+          description: 不含税金额(或价税合计)
           type: string
         verify_code:
-          description: 校验码（后 6 位）
+          description: 校验码(后 6 位)
           type: string
       type: object
     common.Document:
@@ -740,14 +745,84 @@ components:
           - $ref: '#/components/schemas/common.ScoreDetail'
           description: 唯一性/歧义性评分
       type: object
-    common.FiscalBillVerifyResult:
-      description: 财政电子票据验真结果
+    common.FiscalBillExtraInfo:
+      description: 财政票据其它信息条目
       properties:
+        en_value:
+          description: 英文值
+          type: string
+        key:
+          description: 字段英文名(如 "ywlsh"、"mzh"、"jzrq")
+          type: string
+        label:
+          description: 字段中文名(如 "业务流水号"、"门诊号"、"就诊日期")
+          type: string
+        value:
+          description: 值
+          type: string
+      type: object
+    common.FiscalBillItem:
+      description: 财政票据项目明细/清单条目(xmmx 和 xmqd 结构相同)
+      properties:
+        amount:
+          description: 金额
+          type: string
+        code:
+          description: 项目编号
+          type: string
+        index:
+          description: 项目序号
+          format: int32
+          type: integer
+        name:
+          description: 项目名称
+          type: string
+        paid_amount:
+          description: 支付金额
+          type: string
+        paid_amount_rate:
+          description: 支付金额税率
+          type: string
+        quantity:
+          description: 数量
+          type: string
+        remark:
+          description: 备注
+          type: string
+        standard:
+          description: 规格标准
+          type: string
+        type:
+          description: 类型(如"甲")
+          type: string
+        unit:
+          description: 单位
+          type: string
+      type: object
+    common.FiscalBillVerifyResult:
+      description: |-
+        财政电子票据验真结果
+
+         错误码说明：
+         1000  成功
+         999   其它错误
+         1001  网站访问异常
+         1002  超出该张票据最大查验次数
+         1003  验证码错误
+         1006  未查询到当前发票数据
+         1007  当前地区维护中，请稍后
+         1008  开票日期超出范围，仅可查验最近一年内开具的电子票据
+         1009  局端请求异常
+         1010  税局服务异常，建议 15-20 分钟后重试
+      properties:
+        accounting_status:
+          description: 入账状态("01"=未入账，"02"=已入账)
+          type: string
         bill_code:
           description: 票据代码
           type: string
         bill_date:
-          description: 开票日期
+          description: 开票日期(格式 YYYYMMDD)
           type: string
         bill_name:
           description: 票据名称
@@ -755,42 +830,90 @@ components:
         bill_no:
           description: 票据号码
           type: string
+        bill_status:
+          description: 票据状态("01"=正常，"02"=冲红)
+          type: string
         check_code:
           description: 校验码
           type: string
         code:
-          description: 验真返回码（1=成功）
+          description: 验真返回码(1000=成功，详见错误码说明)
           format: int32
           type: integer
+        collector:
+          description: 收款人(与收款单位不同，指具体经办人)
+          type: string
         file_type:
-          description: 文件类型
+          description: 文件类型(如 "pdf")
           type: string
         file_url:
-          description: 文件 URL
+          description: 文件 URL(票据 PDF 下载链接)
+          type: string
+        fiscal_seal:
+          description: 财政编码印章
+          type: string
+        fiscal_seal_no:
+          description: 财政编码印章编号
           type: string
         item_details:
-          description: 项目明细（原始 JSON）
-          type: string
+          description: 项目明细
+          items:
+            $ref: '#/components/schemas/common.FiscalBillItem'
+          type: array
         item_list:
-          description: 项目清单（原始 JSON）
-          type: string
+          description: 项目清单
+          items:
+            $ref: '#/components/schemas/common.FiscalBillItem'
+          type: array
         message:
           description: 返回信息
           type: string
+        other_info:
+          description: 其它信息(业务流水号、门诊号、就诊日期、医疗机构类型、医保类型等)
+          items:
+            $ref: '#/components/schemas/common.FiscalBillExtraInfo'
+          type: array
         payee:
           description: 收款单位
           type: string
         payer:
           description: 缴款人
           type: string
+        payer_tax_id:
+          description: 缴款人纳税人识别号
+          type: string
+        print_status:
+          description: 打印状态("01"=未打印，"02"=已打印)
+          type: string
         query_count:
           description: 查验次数
           type: string
+        remark:
+          description: 备注
+          type: string
+        reviewer:
+          description: 复核人
+          type: string
+        supplementary_info:
+          description: 票据左上角补充信息(如"门特慢")
+          type: string
         time:
-          description: 时间
+          description: 查验时间
           type: string
         total_amount:
           description: 金额合计
+          type: string
+        total_amount_cn:
+          description: 金额合计大写
+          type: string
+        void_date:
+          description: 冲红日期
+          type: string
+        void_reason:
+          description: 冲红原因
+          type: string
+        void_time:
+          description: 冲红时间
           type: string
       type: object
     common.IntArray:
@@ -979,7 +1102,7 @@ components:
           description: 验真返回码
           type: string
         data:
-          description: 详细数据（原始 JSON）
+          description: 详细数据(原始 JSON)
           type: string
         invalid_mark:
           description: 作废标志
@@ -1010,7 +1133,7 @@ components:
             发票验真返回码说明
 
              001    成功，验证为真
-             002    此发票今日查询次数已达上限（5次），请次日查询
+             002    此发票今日查询次数已达上限(5次)，请次日查询
              005    请求不合法，请核对验真参数
              006    发票信息不一致，请核对发票信息
              009    查无此票，请核对发票信息
@@ -1026,9 +1149,9 @@ components:
              113    参数 invoice_no 的格式或取值范围错误
              114    校验码不正确，应为后六位
              115    超过服务有效期限限制
-             116    此发票今日查询次数已达上限（5次），请次日查询
+             116    此发票今日查询次数已达上限(5次)，请次日查询
              1005   请核对验真参数是否符合发票规范
-             1010   日期格式不正确（YYYYMMDD）
+             1010   日期格式不正确(YYYYMMDD)
              1011   请求参数不完整
              1021   查验异常，国税局/发票查验地区升级维护，请稍后重试
              10014  日期当天不能查验
@@ -1041,7 +1164,7 @@ components:
         fiscal_result:
           allOf:
           - $ref: '#/components/schemas/common.FiscalBillVerifyResult'
-          description: 财政票据验真详情（医疗门诊/住院电子票据）
+          description: 财政票据验真详情(医疗门诊/住院电子票据)
         message:
           description: 发票验真返回码说明
           type: string
@@ -1058,30 +1181,29 @@ info:
 
      ## 典型调用流程
      1. 上传文件 → UploadFiles，获得 batch_id 和 material_id 列表
-     2. （可选）图像质检 → CheckImageQuality，可独立调用，也可用上传返回的 material_id
-     3. （可选）材料分类 → ClassifyMaterial，可独立调用，也可用上传返回的 material_id
+     2. (可选)图像质检 → CheckImageQuality，可独立调用，也可用上传返回的 material_id
+     3. (可选)材料分类 → ClassifyMaterial，可独立调用，也可用上传返回的 material_id
      4. 材料抽取 → ExtractMaterial，传入 material_id 列表，返回每个材料的状态和结果
      5. 轮询 → 重复调用 ExtractMaterial 直到所有材料完成，或等待 callback_url 回调
      注: 质检和分类可独立调用，不依赖抽取流程；抽取接口的 material_ids 必须来自上传接口。
      注: ExtractMaterial 幂等，已完成的材料不会重新抽取，失败的材料会自动重试。
 
      ## 错误响应
-     所有接口错误均返回 HTTP 非 200 状态码，body 格式: {"code": 400, "reason": "ERROR_CODE", "message": "错误描述"}
+     所有接口错误均返回 HTTP 非 200 状态码，body 格式: {"code": 400, "msg": "错误描述"}
      常见错误码:
-       400 INVALID_ARGUMENT — 参数校验失败（缺少必填字段、文件数超限等）
-       401 Unauthorized — 认证失败（x-ti-app-id 或 x-ti-secret-code 缺失/无效）
-       404 MATERIAL_NOT_FOUND — material_id 不存在
-       404 BATCH_NOT_FOUND — batch_id 对应的批次不存在
-       500 WORKFLOW_START_FAILED — 内部处理异常
+       400 — 参数校验失败(缺少必填字段、文件数超限等)
+       403 — 认证失败(x-ti-app-id 或 x-ti-secret-code 缺失/无效)
+       404 — 资源不存在(material_id / batch_id 无效)
+       500 — 内部处理异常
 
      错误响应示例:
        {"code": 404, "msg": "material not found"}
        {"code": 404, "msg": "batch not found"}
-       {"code": 400, "msg": "material_id or batch_id is required"}
+       {"code": 400, "msg": "material_ids or batch_id is required"}
        {"code": 400, "msg": "material does not belong to the specified batch"}
        {"code": 400, "msg": "files or file_urls is required"}
        {"code": 400, "msg": "所有材料必须属于同一批次"}
-       {"code": 400, "msg": "invalid CapabilityExtractRequest.MaterialIds: value must contain at least 1 item(s)"}
+       {"code": 403, "msg": "x-api-key 或 x-ti-app-id/x-ti-secret-code 不能为空"}
   title: CapabilityService API
   version: 0.0.1
 openapi: 3.0.3
@@ -1168,10 +1290,10 @@ paths:
             schema:
               properties:
                 batch_id:
-                  description: 调用方自定义批次ID（UUID格式，不传则系统生成）
+                  description: 调用方自定义批次ID(UUID格式，不传则系统生成)
                   type: string
                 file_urls:
-                  description: URL 上传（与 files 可混合使用）
+                  description: URL 上传(与 files 可混合使用)
                   items:
                     type: string
                   type: array
@@ -1189,12 +1311,16 @@ paths:
               example:
                 code: 200
                 data:
-                  batch_id: 5fa9877c-fda0-49db-9894-5ffbcd0e93d2
+                  batch_id: 661be601-65c7-4025-af0f-20d357dfb090
                   materials:
-                  - file_name: case1.jpg
-                    file_size: "590067"
+                  - file_name: 门诊收费票据01.png
+                    file_size: "520464"
+                    file_type: image/png
+                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                  - file_name: 住院费用明细.jpg
+                    file_size: "1814199"
                     file_type: image/jpeg
-                    material_id: 7e9596a5-b521-4a93-adf4-05e8309ecad3
+                    material_id: 27734e23-3482-42a3-98d7-1bdb369118bc
                 message: OK
               schema:
                 properties:
@@ -1248,8 +1374,13 @@ paths:
                 data:
                   list:
                   - category_name: ICD-10疾病编码
+                    category_uuid: be966ca476acbba3623214e560cd2e6b
+                    detail_uuid: 926d1709cb6f0d4a32a7b96526f6d136
                     disease_code: S52.400
                     disease_name: 尺骨和桡骨骨干均骨折
+                    id: 40749
+                    is_show: true
+                    parent_uuid: a6f60a6458e81f5f8da6ca1507bbccd5
                   pagination:
                     page: 1
                     page_size: 10
@@ -1277,9 +1408,9 @@ paths:
         图像质量检测
          检测项: 模糊(blurry)、不完整(un_integrity)、复印件(photocopy)、翻拍(screen_remark)、光斑(light_spot)、扫描件(scan)
 
-         支持两种输入方式（互斥）：
+         支持两种输入方式(互斥)：
            方式一：传 material_id 或 batch_id 指定已上传的材料
-           方式二：直接上传文件（multipart/form-data 或 file_urls）
+           方式二：直接上传文件(multipart/form-data 或 file_urls)
            同时传文件和 material_id/batch_id 会返回 400 错误
 
          质检模型参数通过 query string 传递，如 ?blurry_threshold=0.3&un_integrity_threshold=0.7
@@ -1302,19 +1433,20 @@ paths:
             schema:
               properties:
                 batch_id:
-                  description: 批次 ID（处理批次下所有材料）
+                  description: 批次 ID(处理批次下所有材料)
                   type: string
                 blurry_threshold:
-                  description: 模糊判断阈值（0.1~0.9，默认 0.5）
+                  description: 模糊判断阈值(0.1~0.9，默认 0.5)
                   format: float
                   type: number
                 detection_scope:
                   description: |-
-                    检测范围控制：0 整图检测, 1 每个主体单独检测（默认 0）
+                    ---- 质检模型参数(query string，可选) ----
+                     检测范围控制：0 整图检测, 1 每个主体单独检测(默认 0)
                   format: int32
                   type: integer
                 file_urls:
-                  description: URL 上传（与 material_id/batch_id 互斥）
+                  description: URL 上传(与 material_id/batch_id 互斥)
                   items:
                     type: string
                   type: array
@@ -1324,35 +1456,36 @@ paths:
                     type: string
                   type: array
                 light_spot_level:
-                  description: 光斑检测严格程度：0 更严格, 1 更宽松（默认 0）
+                  description: 光斑检测严格程度：0 更严格, 1 更宽松(默认 0)
                   format: int32
                   type: integer
                 light_spot_threshold:
-                  description: 光斑判断阈值（0.1~0.9，默认 0.5）
+                  description: 光斑判断阈值(0.1~0.9，默认 0.5)
                   format: float
                   type: number
                 material_id:
                   description: |-
-                    已上传材料的 ID（处理单个材料）
+                    ---- 方式一：指定已上传材料 ----
+                     已上传材料的 ID(处理单个材料)
                   type: string
                 photocopy_threshold:
-                  description: 复印件判断阈值（0.1~0.9，默认 0.5）
+                  description: 复印件判断阈值(0.1~0.9，默认 0.5)
                   format: float
                   type: number
                 scan_threshold:
-                  description: 扫描件判断阈值（0.1~0.9，默认 0.5）
+                  description: 扫描件判断阈值(0.1~0.9，默认 0.5)
                   format: float
                   type: number
                 screen_remark_threshold:
-                  description: 翻拍判断阈值（0.1~0.9，默认 0.5）
+                  description: 翻拍判断阈值(0.1~0.9，默认 0.5)
                   format: float
                   type: number
                 un_integrity_level:
-                  description: 完整性检测严格程度：0 更严格, 1 更宽松（默认 0）
+                  description: 完整性检测严格程度：0 更严格, 1 更宽松(默认 0)
                   format: int32
                   type: integer
                 un_integrity_threshold:
-                  description: 不完整度判断阈值（0.1~0.9，默认 0.5）
+                  description: 不完整度判断阈值(0.1~0.9，默认 0.5)
                   format: float
                   type: number
               type: object
@@ -1361,118 +1494,73 @@ paths:
         "200":
           content:
             application/json:
-              examples:
-                batch_id 批量, 2个材料:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - material_id: 8088ecab-5d7f-4903-9c0c-483b583fc054
-                        pages:
-                        - page: 1
-                          risk_details:
-                            blurry:
-                              reason: []
-                              score: 0.6
-                              valid: true
-                            light_spot:
-                              reason: []
-                              score: 0
-                              valid: false
-                            photocopy:
-                              reason: []
-                              score: 0
-                              valid: false
-                            scan:
-                              reason: []
-                              score: 0
-                              valid: false
-                            screen_remark:
-                              reason: []
-                              score: 0
-                              valid: false
-                            un_integrity:
-                              reason:
-                              - 拍摄
-                              - 数字遮挡
-                              score: 1
-                              valid: true
-                          risk_type:
-                          - blurry
-                          - un_integrity
-                      - material_id: fcdf499c-1a20-4da2-9e4a-9227b9fc4ed7
-                        pages:
-                        - page: 1
-                          risk_details:
-                            blurry:
-                              reason: []
-                              score: 0.6
-                              valid: true
-                            light_spot:
-                              reason: []
-                              score: 0
-                              valid: false
-                            photocopy:
-                              reason: []
-                              score: 0
-                              valid: false
-                            scan:
-                              reason: []
-                              score: 0
-                              valid: false
-                            screen_remark:
-                              reason: []
-                              score: 0
-                              valid: false
-                            un_integrity:
-                              reason:
-                              - 拍摄
-                              - 数字遮挡
-                              score: 1
-                              valid: true
-                          risk_type:
-                          - blurry
-                          - un_integrity
-                    message: OK
-                单材料:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - material_id: 7e9596a5-b521-4a93-adf4-05e8309ecad3
-                        pages:
-                        - page: 1
-                          risk_details:
-                            blurry:
-                              reason: []
-                              score: 0.6
-                              valid: true
-                            light_spot:
-                              reason: []
-                              score: 0
-                              valid: false
-                            photocopy:
-                              reason: []
-                              score: 0
-                              valid: false
-                            scan:
-                              reason: []
-                              score: 0
-                              valid: false
-                            screen_remark:
-                              reason: []
-                              score: 0
-                              valid: false
-                            un_integrity:
-                              reason:
-                              - 拍摄
-                              - 数字遮挡
-                              score: 1
-                              valid: true
-                          risk_type:
-                          - blurry
-                          - un_integrity
-                    message: OK
+              example:
+                code: 200
+                data:
+                  materials:
+                  - material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                    pages:
+                    - page: 1
+                      risk_details:
+                        blurry:
+                          reason: []
+                          score: 0.4
+                          valid: false
+                        light_spot:
+                          reason: []
+                          score: 0
+                          valid: false
+                        photocopy:
+                          reason: []
+                          score: 0
+                          valid: false
+                        scan:
+                          reason: []
+                          score: 0
+                          valid: false
+                        screen_remark:
+                          reason: []
+                          score: 0
+                          valid: false
+                        un_integrity:
+                          reason:
+                          - 数字遮挡
+                          score: 1
+                          valid: true
+                      risk_type:
+                      - un_integrity
+                  - material_id: 27734e23-3482-42a3-98d7-1bdb369118bc
+                    pages:
+                    - page: 1
+                      risk_details:
+                        blurry:
+                          reason: []
+                          score: 0.4
+                          valid: false
+                        light_spot:
+                          reason: []
+                          score: 0
+                          valid: false
+                        photocopy:
+                          reason: []
+                          score: 0
+                          valid: false
+                        scan:
+                          reason: []
+                          score: 0
+                          valid: false
+                        screen_remark:
+                          reason: []
+                          score: 0
+                          valid: false
+                        un_integrity:
+                          reason:
+                          - 拍摄
+                          score: 1
+                          valid: true
+                      risk_type:
+                      - un_integrity
+                message: OK
               schema:
                 properties:
                   code:
@@ -1494,7 +1582,7 @@ paths:
       description: |-
         发票验真
          直接调用底层验真 API，同步返回结果。支持两种发票类型：
-           - fiscal: 财政电子票据（医疗门诊/住院收费票据等）
+           - fiscal: 财政电子票据(医疗门诊/住院收费票据等)
            - vat: 增值税发票
       operationId: CapabilityService_VerifyInvoice
       parameters:
@@ -1517,18 +1605,18 @@ paths:
                   type: vat
                   vat:
                     invoice_code: "033002100311"
-                    invoice_date: "20230915"
-                    invoice_no: "48401855"
-                    invoice_sum: "1000.00"
-                    verify_code: "12345678901234567890"
+                    invoice_date: "20230901"
+                    invoice_no: "48400000"
+                    invoice_sum: "800.00"
+                    verify_code: d3e4f5
               财政票据:
                 value:
                   fiscal:
-                    bill_amount: "154.84"
-                    bill_code: "31060124"
-                    bill_date: "20240226"
-                    bill_no: "0179299491"
-                    check_code: 166f45
+                    bill_amount: "500.00"
+                    bill_code: "31060125"
+                    bill_date: "20250801"
+                    bill_no: "0290484000"
+                    check_code: a0b1c2
                   type: fiscal
             schema:
               $ref: '#/components/schemas/capability.v1.CapabilityVerifyInvoiceRequest'
@@ -1537,22 +1625,37 @@ paths:
         "200":
           content:
             application/json:
-              example:
-                code: 200
-                data:
-                  fiscal_result:
-                    bill_code: "31060124"
-                    bill_date: "20240226"
-                    bill_name: 医疗门诊收费票据
-                    bill_no: "0179299491"
-                    check_code: 166f45
-                    code: 1
-                    message: 查验成功
-                    payee: 某某医院
-                    payer: 张三
-                    query_count: "3"
-                    total_amount: "154.84"
-                message: OK
+              examples:
+                财政票据 — 查验失败:
+                  value:
+                    code: 200
+                    data:
+                      fiscal_result:
+                        code: 1009
+                        message: 局端异常,请稍后重试
+                    message: OK
+                财政票据 — 查验成功:
+                  value:
+                    code: 200
+                    data:
+                      fiscal_result:
+                        bill_code: "31060125"
+                        bill_date: "20250801"
+                        bill_name: 上海市医疗门诊收费票据(电子)
+                        bill_no: "0290484000"
+                        check_code: a0b1c2
+                        code: 1000
+                        file_type: ""
+                        file_url: ""
+                        item_details: '[{"je":"138.00","sl":"4.00","xmmc":"[乙10%]绞股蓝总甙片",...}]'
+                        item_list: '[{"je":"37.00","xmbh":"PA0199","xmmc":"其他门急诊费",...}]'
+                        message: 处理成功
+                        payee: 上海市某医院
+                        payer: 李某某
+                        query_count: "2"
+                        time: "2026-04-29 10:13:50"
+                        total_amount: "500.00"
+                    message: OK
               schema:
                 properties:
                   code:
@@ -1575,9 +1678,9 @@ paths:
         材料分类
          默认分类以医疗票据和保险常用文件为主
 
-         支持两种输入方式（互斥）：
+         支持两种输入方式(互斥)：
            方式一：传 material_id 或 batch_id 指定已上传的材料
-           方式二：直接上传文件（multipart/form-data 或 file_urls）
+           方式二：直接上传文件(multipart/form-data 或 file_urls)
            同时传文件和 material_id/batch_id 会返回 400 错误
       operationId: CapabilityService_ClassifyMaterial
       parameters:
@@ -1597,10 +1700,10 @@ paths:
             schema:
               properties:
                 batch_id:
-                  description: 批次 ID（处理批次下所有材料）
+                  description: 批次 ID(处理批次下所有材料)
                   type: string
                 file_urls:
-                  description: URL 上传（与 material_id/batch_id 互斥）
+                  description: URL 上传(与 material_id/batch_id 互斥)
                   items:
                     type: string
                   type: array
@@ -1611,7 +1714,8 @@ paths:
                   type: array
                 material_id:
                   description: |-
-                    已上传材料的 ID（处理单个材料）
+                    ---- 方式一：指定已上传材料 ----
+                     已上传材料的 ID(处理单个材料)
                   type: string
               type: object
         required: true
@@ -1619,28 +1723,17 @@ paths:
         "200":
           content:
             application/json:
-              examples:
-                batch_id 批量:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - category: 费用与结算
-                        material_id: 8088ecab-5d7f-4903-9c0c-483b583fc054
-                        material_type: 住院费用明细清单
-                      - category: 费用与结算
-                        material_id: fcdf499c-1a20-4da2-9e4a-9227b9fc4ed7
-                        material_type: 住院费用明细清单
-                    message: OK
-                单材料:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - category: 费用与结算
-                        material_id: 7e9596a5-b521-4a93-adf4-05e8309ecad3
-                        material_type: 住院费用明细清单
-                    message: OK
+              example:
+                code: 200
+                data:
+                  materials:
+                  - category: 费用与结算
+                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                    material_type: 医疗门诊收费票据(电子)
+                  - category: 费用与结算
+                    material_id: 27734e23-3482-42a3-98d7-1bdb369118bc
+                    material_type: 住院费用明细清单
+                message: OK
               schema:
                 properties:
                   code:
@@ -1660,10 +1753,10 @@ paths:
   /doc-agent/api/v1/capability/material/extract:
     post:
       description: |-
-        材料抽取（幂等）
+        材料抽取(幂等)
          传入 material_id 列表，按需创建抽取任务：
            - 未处理的材料：创建抽取任务，返回 PENDING 状态
-           - 处理中的材料：返回当前状态（CLASSIFYING/EXTRACTING）
+           - 处理中的材料：返回当前状态(CLASSIFYING/EXTRACTING)
            - 已完成的材料：直接返回结果，不重新抽取
            - 失败的材料：重新创建抽取任务
          支持重复调用直到所有材料 status=COMPLETED，或等待 callback_url 回调
@@ -1687,18 +1780,18 @@ paths:
                 value:
                   category_hints:
                   - category: 费用与结算
-                    material_id: 8088ecab-5d7f-4903-9c0c-483b583fc054
-                    material_type: 住院费用明细清单
+                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                    material_type: 医疗门诊收费票据(电子)
                   material_ids:
-                  - 8088ecab-5d7f-4903-9c0c-483b583fc054
+                  - 8ffe03ce-4714-4b50-8daf-afee06002cc3
               指定材料:
                 value:
                   material_ids:
-                  - 8088ecab-5d7f-4903-9c0c-483b583fc054
-                  - fcdf499c-1a20-4da2-9e4a-9227b9fc4ed7
+                  - 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                  - 27734e23-3482-42a3-98d7-1bdb369118bc
               按批次:
                 value:
-                  batch_id: 5fa9877c-fda0-49db-9894-5ffbcd0e93d2
+                  batch_id: 661be601-65c7-4025-af0f-20d357dfb090
             schema:
               $ref: '#/components/schemas/capability.v1.CapabilityExtractRequest'
         required: true
@@ -1706,160 +1799,19 @@ paths:
         "200":
           content:
             application/json:
-              examples:
-                已完成, 含抽取结果:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - category: 费用与结算
-                        extract_result:
-                          extract_fields:
-                          - confidence: 1
-                            dimensions:
-                              contextual_consistency:
-                                explanation: ""
-                                score: 1
-                              cross_field_consistency:
-                                explanation: ""
-                                score: 1
-                              field_cue_proximity:
-                                explanation: ""
-                                score: 1
-                              numerical_plausibility:
-                                explanation: ""
-                                score: 1
-                              traceability:
-                                explanation: ""
-                                score: 1
-                              uniqueness_ambiguity:
-                                explanation: ""
-                                score: 1
-                            key: 发票金额合计
-                            not_consistence_reason: []
-                            position:
-                            - page: 0
-                              vertices:
-                              - 1535
-                              - 1086
-                              - 1787
-                              - 1086
-                              - 1787
-                              - 1134
-                              - 1535
-                              - 1134
-                            value: "200.00"
-                          - confidence: 0.09
-                            dimensions:
-                              contextual_consistency:
-                                explanation: ""
-                                score: 1
-                              cross_field_consistency:
-                                explanation: 账户余额与个人账户支付等字段无法核对
-                                score: 0.5
-                              field_cue_proximity:
-                                explanation: 字段名与原文字段并不完全一致，存在定义差异
-                                score: 0.6
-                              numerical_plausibility:
-                                explanation: 原文存在具体余额数值而抽取为空
-                                score: 0
-                              traceability:
-                                explanation: 原文有相关余额数值，但抽取为空
-                                score: 0
-                              uniqueness_ambiguity:
-                                explanation: 原文有两个余额字段，且字段名与目标字段不完全同名
-                                score: 0.5
-                            key: 个人账户余额
-                            not_consistence_reason: []
-                            position: []
-                            value: ""
-                          tables:
-                          - items:
-                            - values:
-                              - confidence: 0.83
-                                dimensions:
-                                  contextual_consistency:
-                                    explanation: ""
-                                    score: 1
-                                  cross_field_consistency:
-                                    explanation: 该行金额200与第二行金额200合计与票据金额对不上
-                                    score: 0.5
-                                  field_cue_proximity:
-                                    explanation: ""
-                                    score: 1
-                                  numerical_plausibility:
-                                    explanation: ""
-                                    score: 1
-                                  traceability:
-                                    explanation: ""
-                                    score: 1
-                                  uniqueness_ambiguity:
-                                    explanation: ""
-                                    score: 1
-                                key: 项目名称
-                                not_consistence_reason: []
-                                position:
-                                - page: 0
-                                  vertices:
-                                  - 137
-                                  - 526
-                                  - 264
-                                  - 526
-                                  - 264
-                                  - 574
-                                  - 137
-                                  - 574
-                                value: 检查费
-                              - confidence: 0.2
-                                dimensions:
-                                  contextual_consistency:
-                                    explanation: ""
-                                    score: 1
-                                  cross_field_consistency:
-                                    explanation: 与金额合计字段逻辑不符
-                                    score: 0.2
-                                  field_cue_proximity:
-                                    explanation: ""
-                                    score: 1
-                                  numerical_plausibility:
-                                    explanation: 两行各200总和为400，与票据金额合计200不符
-                                    score: 0.2
-                                  traceability:
-                                    explanation: ""
-                                    score: 1
-                                  uniqueness_ambiguity:
-                                    explanation: ""
-                                    score: 1
-                                key: 金额
-                                not_consistence_reason: []
-                                position:
-                                - page: 0
-                                  vertices:
-                                  - 1535
-                                  - 1086
-                                  - 1787
-                                  - 1086
-                                  - 1787
-                                  - 1134
-                                  - 1535
-                                  - 1134
-                                value: "200.00"
-                            table_name: Table1
-                            table_type: ""
-                        material_id: e84c7b7f-2e47-4cc9-b101-bf6e5845f505
-                        material_type: 医疗门诊收费票据（电子）
-                        status: 3
-                    message: OK
-                首次提交, 状态为 PENDING:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - material_id: 8088ecab-5d7f-4903-9c0c-483b583fc054
-                        status: 0
-                      - material_id: fcdf499c-1a20-4da2-9e4a-9227b9fc4ed7
-                        status: 0
-                    message: OK
+              example:
+                code: 200
+                data:
+                  materials:
+                  - category: 费用与结算
+                    extract_result:
+                      document: null
+                      extract_fields: []
+                      tables: []
+                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                    material_type: 医疗门诊收费票据(电子)
+                    status: 1
+                message: OK
               schema:
                 properties:
                   code:
@@ -1911,15 +1863,43 @@ paths:
                 code: 200
                 data:
                   list:
-                  - address: 北京市东城区帅府园1号
+                  - address: 西城区大木仓胡同41号
+                    hospital_grade: "1"
                     hospital_level: "3"
-                    institution_code: YLJG112497
-                    institution_name: 北京协和医院
+                    id: "238614"
+                    institution_code: YLJG138204
+                    institution_name: 北京协和医院(西单院区)
+                    institution_name_alias: 北京邮电总医院北京协和医院西院、中国医学科学院北京协和医院西院
+                    institution_nature: "1"
+                    institution_type: "1"
+                    institution_uuid: 80ee544cb80b11e9b11b88e9fe8153df
+                    medical_nature: "1"
+                    zone_city: 北京市
+                    zone_city_code: "110100"
+                    zone_county: 西城区
+                    zone_county_code: "110102"
                     zone_province: 北京
+                    zone_province_code: "110000"
+                  - address: 东城区帅府园一号
+                    hospital_grade: "1"
+                    hospital_level: "3"
+                    id: "332500"
+                    institution_code: YLJG213038
+                    institution_name: 北京协和医院(东单院区)
+                    institution_nature: "1"
+                    institution_type: "1"
+                    institution_uuid: 4274236c65e741fca681a317b6e6b551
+                    medical_nature: "1"
+                    zone_city: 北京市
+                    zone_city_code: "110100"
+                    zone_county: 东城区
+                    zone_county_code: "110101"
+                    zone_province: 北京市
+                    zone_province_code: "110000"
                   pagination:
                     page: 1
                     page_size: 10
-                    sum: 5
+                    sum: 7
                 message: OK
               schema:
                 properties:
@@ -1940,8 +1920,8 @@ paths:
   /doc-agent/api/v1/capability/social-insurance/search:
     post:
       description: |-
-        医保三目录查询（补全）
-         按名称模糊搜索医保目录项（药品目录、诊疗项目目录、医疗服务设施目录）
+        医保三目录查询(补全)
+         按名称模糊搜索医保目录项(药品目录、诊疗项目目录、医疗服务设施目录)
          支持指定地区编码筛选
       operationId: CapabilityService_SearchSocialInsurance
       parameters:
@@ -1959,10 +1939,10 @@ paths:
         content:
           application/json:
             example:
-              insurance_name: 复方
+              insurance_name: 阿莫西林
               page_num: 1
               page_size: 10
-              zone_code: "120100"
+              zone_code: "310100"
             schema:
               $ref: '#/components/schemas/capability.v1.CapabilitySocialInsuranceRequest'
         required: true
@@ -1974,17 +1954,30 @@ paths:
                 code: 200
                 data:
                   list:
-                  - dose_form: 散剂
+                  - detail_uuid: 7803cae83918460da4b66d034d411e37
+                    dose_form: 口服常释剂型
+                    fee_level: "1"
                     fee_level_name: 甲类
+                    id: "1821499"
+                    medical_invoice_items_type: "1"
+                    medical_invoice_items_type_name: 西药费
                     self_ratio: 0
-                    social_insurance_catalog_code: "65"
-                    social_insurance_catalog_name: 复方胰酶散
+                    self_ratio_type: "1"
+                    self_ratio_type_name: 通用-在职职工
+                    social_insurance_catalog_code: "632"
+                    social_insurance_catalog_name: 阿莫西林
+                    social_insurance_catalog_name_pinyin: AMXL
+                    social_insurance_catalog_type: "1"
                     social_insurance_catalog_type_name: 药品目录
-                    zone_name: 天津市
+                    version_code: SIV001738
+                    version_level: 1
+                    version_name: 上海市药品目录_260424
+                    zone_code: "310100"
+                    zone_name: 上海市
                   pagination:
                     page: 1
                     page_size: 10
-                    sum: 50
+                    sum: 7
                 message: OK
               schema:
                 properties:
