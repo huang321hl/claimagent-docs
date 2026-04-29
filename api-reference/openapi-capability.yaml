@@ -1626,14 +1626,6 @@ paths:
           content:
             application/json:
               examples:
-                财政票据 — 查验失败:
-                  value:
-                    code: 200
-                    data:
-                      fiscal_result:
-                        code: 1009
-                        message: 局端异常,请稍后重试
-                    message: OK
                 财政票据 — 查验成功:
                   value:
                     code: 200
@@ -1647,14 +1639,42 @@ paths:
                         code: 1000
                         file_type: ""
                         file_url: ""
-                        item_details: '[{"je":"138.00","sl":"4.00","xmmc":"[乙10%]绞股蓝总甙片",...}]'
-                        item_list: '[{"je":"37.00","xmbh":"PA0199","xmmc":"其他门急诊费",...}]'
+                        item_details:
+                        - amount: "138.00"
+                          code: ""
+                          name: '[乙10%]绞股蓝总甙片'
+                          paid_amount: "124.20"
+                          paid_amount_rate: 90%
+                          quantity: "4.00"
+                          remark: ""
+                          standard: ""
+                          type: 乙
+                          unit: ""
+                        item_list:
+                        - amount: "37.00"
+                          code: PA0199
+                          name: 其他门急诊费
+                          paid_amount: ""
+                          paid_amount_rate: ""
+                          quantity: ""
+                          remark: ""
+                          standard: ""
+                          type: ""
+                          unit: ""
                         message: 处理成功
                         payee: 上海市某医院
                         payer: 李某某
                         query_count: "2"
                         time: "2026-04-29 10:13:50"
                         total_amount: "500.00"
+                    message: OK
+                财政票据 — 查验失败:
+                  value:
+                    code: 200
+                    data:
+                      fiscal_result:
+                        code: 1009
+                        message: 局端异常,请稍后重试
                     message: OK
               schema:
                 properties:
@@ -1799,19 +1819,184 @@ paths:
         "200":
           content:
             application/json:
-              example:
-                code: 200
-                data:
-                  materials:
-                  - category: 费用与结算
-                    extract_result:
-                      document: null
-                      extract_fields: []
-                      tables: []
-                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-                    material_type: 医疗门诊收费票据(电子)
-                    status: 1
-                message: OK
+              examples:
+                已完成, 含抽取结果 — 仅展示部分字段:
+                  value:
+                    code: 200
+                    data:
+                      materials:
+                      - category: 费用与结算
+                        extract_result:
+                          extract_fields:
+                          - confidence: 1
+                            dimensions:
+                              contextual_consistency:
+                                explanation: ""
+                                score: 1
+                              cross_field_consistency:
+                                explanation: ""
+                                score: 1
+                              field_cue_proximity:
+                                explanation: ""
+                                score: 1
+                              numerical_plausibility:
+                                explanation: ""
+                                score: 1
+                              traceability:
+                                explanation: ""
+                                score: 1
+                              uniqueness_ambiguity:
+                                explanation: ""
+                                score: 1
+                            key: 单据标题名称
+                            not_consistence_reason: []
+                            position:
+                            - page: 0
+                              vertices:
+                              - 671
+                              - 68
+                              - 1523
+                              - 68
+                              - 1523
+                              - 146
+                              - 671
+                              - 146
+                            value: 上海市医疗门诊收费票据(电子)
+                          - confidence: 0.6333333333333333
+                            dimensions:
+                              contextual_consistency:
+                                explanation: 应为统一社会信用代码，抽取为"30"明显不完整
+                                score: 0.8
+                              cross_field_consistency:
+                                explanation: ""
+                                score: 1
+                              field_cue_proximity:
+                                explanation: 原文仅在"交款人统一社会信用代码：3 0"处，结构模糊
+                                score: 0.6
+                              numerical_plausibility:
+                                explanation: ""
+                                score: 1
+                              traceability:
+                                explanation: 原文为"3 0"，中间有空格且疑似更长被截断
+                                score: 0.5
+                              uniqueness_ambiguity:
+                                explanation: ""
+                                score: 1
+                            key: 交款人统一社会信用代码
+                            not_consistence_reason: []
+                            position:
+                            - page: 0
+                              vertices:
+                              - 131
+                              - 275
+                              - 594
+                              - 275
+                              - 594
+                              - 319
+                              - 131
+                              - 319
+                            - page: 0
+                              vertices:
+                              - 837
+                              - 280
+                              - 863
+                              - 280
+                              - 863
+                              - 313
+                              - 837
+                              - 313
+                            value: "30"
+                          tables:
+                          - items:
+                            - values:
+                              - confidence: 1
+                                dimensions:
+                                  contextual_consistency:
+                                    explanation: ""
+                                    score: 1
+                                  cross_field_consistency:
+                                    explanation: ""
+                                    score: 1
+                                  field_cue_proximity:
+                                    explanation: ""
+                                    score: 1
+                                  numerical_plausibility:
+                                    explanation: ""
+                                    score: 1
+                                  traceability:
+                                    explanation: ""
+                                    score: 1
+                                  uniqueness_ambiguity:
+                                    explanation: ""
+                                    score: 1
+                                key: 费目
+                                not_consistence_reason: []
+                                position:
+                                - page: 0
+                                  vertices:
+                                  - 126
+                                  - 455
+                                  - 332
+                                  - 455
+                                  - 332
+                                  - 496
+                                  - 126
+                                  - 496
+                                value: 其他门急诊费
+                              - confidence: 1
+                                dimensions:
+                                  contextual_consistency:
+                                    explanation: ""
+                                    score: 1
+                                  cross_field_consistency:
+                                    explanation: ""
+                                    score: 1
+                                  field_cue_proximity:
+                                    explanation: ""
+                                    score: 1
+                                  numerical_plausibility:
+                                    explanation: ""
+                                    score: 1
+                                  traceability:
+                                    explanation: ""
+                                    score: 1
+                                  uniqueness_ambiguity:
+                                    explanation: ""
+                                    score: 1
+                                key: 金额
+                                not_consistence_reason: []
+                                position:
+                                - page: 0
+                                  vertices:
+                                  - 848
+                                  - 458
+                                  - 942
+                                  - 458
+                                  - 942
+                                  - 494
+                                  - 848
+                                  - 494
+                                value: "37.00"
+                            table_name: 费目金额汇总表
+                            table_type: ""
+                        material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                        material_type: 医疗门诊收费票据(电子)
+                        status: 3
+                    message: OK
+                首次提交, 状态为 CLASSIFYING:
+                  value:
+                    code: 200
+                    data:
+                      materials:
+                      - category: 费用与结算
+                        extract_result:
+                          document: null
+                          extract_fields: []
+                          tables: []
+                        material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                        material_type: 医疗门诊收费票据(电子)
+                        status: 1
+                    message: OK
               schema:
                 properties:
                   code:

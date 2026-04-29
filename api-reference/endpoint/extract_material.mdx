@@ -2,3 +2,29 @@
 title: '材料抽取'
 openapi: 'POST /doc-agent/api/v1/capability/material/extract'
 ---
+
+## 响应示例：首次提交(分类中)
+
+首次调用时材料尚未处理完成，`status=1` 表示分类中，`extract_result` 为空：
+
+```json
+{
+  "code": 200,
+  "data": {
+    "materials": [
+      {
+        "category": "费用与结算",
+        "extract_result": {
+          "document": null,
+          "extract_fields": [],
+          "tables": []
+        },
+        "material_id": "8ffe03ce-4714-4b50-8daf-afee06002cc3",
+        "material_type": "医疗门诊收费票据(电子)",
+        "status": 1
+      }
+    ]
+  },
+  "message": "OK"
+}
+```
