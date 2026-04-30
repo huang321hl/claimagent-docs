@@ -376,6 +376,20 @@ components:
         check_code:
           description: 校验码
           type: string
+        id_card_last6:
+          description: 身份证后六位（明细版和地方版中，山西、湖北、海南、陕西、新疆、内蒙古、四川地区的票据需要传）
+          type: string
+        mode:
+          description: |-
+            查验模式:
+             - "national": 全国版，走财政部全国网站查验，速度快，部分票据可能无明细，仅支持开票时间在一年内的电子票据
+             - "national_local": 明细版，先走全国版再走地方版，确保返回明细信息，耗时较长
+             - "local": 地方版，只走各地区网站，无时效和次数限制，支持非税收入缴款书查验
+             默认 "national"
+          type: string
+        payer_name:
+          description: 交款人（地方版中部分票据需要传）
+          type: string
       type: object
     capability.v1.ICDItem:
       description: ICD 疾病编码信息
@@ -887,7 +901,8 @@ components:
           type: string
         query_count:
           description: 查验次数
-          type: string
+          format: int32
+          type: integer
         remark:
           description: 备注
           type: string
@@ -1612,11 +1627,11 @@ paths:
               财政票据:
                 value:
                   fiscal:
-                    bill_amount: "500.00"
-                    bill_code: "31060125"
-                    bill_date: "20250801"
-                    bill_no: "0290484000"
-                    check_code: a0b1c2
+                    bill_code: "50060100"
+                    bill_date: "20210830"
+                    bill_no: "0100000001"
+                    check_code: a1b2c3
+                    mode: local
                   type: fiscal
             schema:
               $ref: '#/components/schemas/capability.v1.CapabilityVerifyInvoiceRequest'
@@ -1626,55 +1641,143 @@ paths:
           content:
             application/json:
               examples:
-                财政票据 — 查验成功:
-                  value:
-                    code: 200
-                    data:
-                      fiscal_result:
-                        bill_code: "31060125"
-                        bill_date: "20250801"
-                        bill_name: 上海市医疗门诊收费票据(电子)
-                        bill_no: "0290484000"
-                        check_code: a0b1c2
-                        code: 1000
-                        file_type: ""
-                        file_url: ""
-                        item_details:
-                        - amount: "138.00"
-                          code: ""
-                          name: '[乙10%]绞股蓝总甙片'
-                          paid_amount: "124.20"
-                          paid_amount_rate: 90%
-                          quantity: "4.00"
-                          remark: ""
-                          standard: ""
-                          type: 乙
-                          unit: ""
-                        item_list:
-                        - amount: "37.00"
-                          code: PA0199
-                          name: 其他门急诊费
-                          paid_amount: ""
-                          paid_amount_rate: ""
-                          quantity: ""
-                          remark: ""
-                          standard: ""
-                          type: ""
-                          unit: ""
-                        message: 处理成功
-                        payee: 上海市某医院
-                        payer: 李某某
-                        query_count: "2"
-                        time: "2026-04-29 10:13:50"
-                        total_amount: "500.00"
-                    message: OK
                 财政票据 — 查验失败:
                   value:
                     code: 200
                     data:
                       fiscal_result:
-                        code: 1009
+                        accounting_status: ""
+                        bill_code: ""
+                        bill_date: ""
+                        bill_name: ""
+                        bill_no: ""
+                        bill_status: ""
+                        check_code: ""
+                        code: 999
+                        collector: ""
+                        file_type: ""
+                        file_url: ""
+                        fiscal_seal: ""
+                        fiscal_seal_no: ""
+                        item_details: []
+                        item_list: []
                         message: 局端异常,请稍后重试
+                        other_info: []
+                        payee: ""
+                        payer: ""
+                        payer_tax_id: ""
+                        print_status: ""
+                        query_count: 0
+                        remark: ""
+                        reviewer: ""
+                        supplementary_info: ""
+                        time: ""
+                        total_amount: ""
+                        total_amount_cn: ""
+                        void_date: ""
+                        void_reason: ""
+                        void_time: ""
+                    message: OK
+                财政票据 — 查验成功:
+                  value:
+                    code: 200
+                    data:
+                      fiscal_result:
+                        accounting_status: ""
+                        bill_code: "50060121"
+                        bill_date: "2021-08-30"
+                        bill_name: 重庆市医疗门诊收费票据(电子)
+                        bill_no: "0128467378"
+                        bill_status: "01"
+                        check_code: e69aa5
+                        code: 1000
+                        collector: 某某
+                        file_type: pdf
+                        file_url: http://example.com/archive/xxxxx.pdf
+                        fiscal_seal: ""
+                        fiscal_seal_no: ""
+                        item_details:
+                        - amount: "66.0000"
+                          code: ""
+                          index: 1
+                          name: 牙体缺损粘接修复术
+                          paid_amount: ""
+                          paid_amount_rate: ""
+                          quantity: "1.0"
+                          remark: ""
+                          standard: ""
+                          type: ""
+                          unit: 每牙
+                        - amount: "22.0000"
+                          code: ""
+                          index: 2
+                          name: 根管充填术
+                          paid_amount: ""
+                          paid_amount_rate: ""
+                          quantity: "1.0"
+                          remark: ""
+                          standard: ""
+                          type: ""
+                          unit: 每根管
+                        item_list:
+                        - amount: "442.00"
+                          code: ""
+                          index: 1
+                          name: 治疗费
+                          paid_amount: ""
+                          paid_amount_rate: ""
+                          quantity: "1.0"
+                          remark: ""
+                          standard: ""
+                          type: ""
+                          unit: ""
+                        - amount: "1.76"
+                          code: ""
+                          index: 2
+                          name: 卫生材料费
+                          paid_amount: ""
+                          paid_amount_rate: ""
+                          quantity: "1.0"
+                          remark: ""
+                          standard: ""
+                          type: ""
+                          unit: ""
+                        message: 处理成功
+                        other_info:
+                        - en_value: ""
+                          key: ywlsh
+                          label: 业务流水号
+                          value: xxx19986935
+                        - en_value: ""
+                          key: mzh
+                          label: 门诊号
+                          value: "3347453003"
+                        - en_value: ""
+                          key: jzrq
+                          label: 就诊日期
+                          value: "20210830"
+                        - en_value: ""
+                          key: yljglx
+                          label: 医疗机构类型
+                          value: 三级甲等专科医院
+                        - en_value: ""
+                          key: yblx
+                          label: 医保类型
+                          value: 自费
+                        payee: 某某医院
+                        payer: 张某某
+                        payer_tax_id: 330721XXXX0824****
+                        print_status: ""
+                        query_count: 1
+                        remark: ""
+                        reviewer: 某某
+                        supplementary_info: ""
+                        time: "2026-04-30 15:23:23"
+                        total_amount: "443.76"
+                        total_amount_cn: 肆佰肆拾叁元柒角陆分
+                        void_date: ""
+                        void_reason: ""
+                        void_time: ""
                     message: OK
               schema:
                 properties:
@@ -1819,184 +1922,19 @@ paths:
         "200":
           content:
             application/json:
-              examples:
-                已完成, 含抽取结果 — 仅展示部分字段:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - category: 费用与结算
-                        extract_result:
-                          extract_fields:
-                          - confidence: 1
-                            dimensions:
-                              contextual_consistency:
-                                explanation: ""
-                                score: 1
-                              cross_field_consistency:
-                                explanation: ""
-                                score: 1
-                              field_cue_proximity:
-                                explanation: ""
-                                score: 1
-                              numerical_plausibility:
-                                explanation: ""
-                                score: 1
-                              traceability:
-                                explanation: ""
-                                score: 1
-                              uniqueness_ambiguity:
-                                explanation: ""
-                                score: 1
-                            key: 单据标题名称
-                            not_consistence_reason: []
-                            position:
-                            - page: 0
-                              vertices:
-                              - 671
-                              - 68
-                              - 1523
-                              - 68
-                              - 1523
-                              - 146
-                              - 671
-                              - 146
-                            value: 上海市医疗门诊收费票据(电子)
-                          - confidence: 0.6333333333333333
-                            dimensions:
-                              contextual_consistency:
-                                explanation: 应为统一社会信用代码，抽取为"30"明显不完整
-                                score: 0.8
-                              cross_field_consistency:
-                                explanation: ""
-                                score: 1
-                              field_cue_proximity:
-                                explanation: 原文仅在"交款人统一社会信用代码：3 0"处，结构模糊
-                                score: 0.6
-                              numerical_plausibility:
-                                explanation: ""
-                                score: 1
-                              traceability:
-                                explanation: 原文为"3 0"，中间有空格且疑似更长被截断
-                                score: 0.5
-                              uniqueness_ambiguity:
-                                explanation: ""
-                                score: 1
-                            key: 交款人统一社会信用代码
-                            not_consistence_reason: []
-                            position:
-                            - page: 0
-                              vertices:
-                              - 131
-                              - 275
-                              - 594
-                              - 275
-                              - 594
-                              - 319
-                              - 131
-                              - 319
-                            - page: 0
-                              vertices:
-                              - 837
-                              - 280
-                              - 863
-                              - 280
-                              - 863
-                              - 313
-                              - 837
-                              - 313
-                            value: "30"
-                          tables:
-                          - items:
-                            - values:
-                              - confidence: 1
-                                dimensions:
-                                  contextual_consistency:
-                                    explanation: ""
-                                    score: 1
-                                  cross_field_consistency:
-                                    explanation: ""
-                                    score: 1
-                                  field_cue_proximity:
-                                    explanation: ""
-                                    score: 1
-                                  numerical_plausibility:
-                                    explanation: ""
-                                    score: 1
-                                  traceability:
-                                    explanation: ""
-                                    score: 1
-                                  uniqueness_ambiguity:
-                                    explanation: ""
-                                    score: 1
-                                key: 费目
-                                not_consistence_reason: []
-                                position:
-                                - page: 0
-                                  vertices:
-                                  - 126
-                                  - 455
-                                  - 332
-                                  - 455
-                                  - 332
-                                  - 496
-                                  - 126
-                                  - 496
-                                value: 其他门急诊费
-                              - confidence: 1
-                                dimensions:
-                                  contextual_consistency:
-                                    explanation: ""
-                                    score: 1
-                                  cross_field_consistency:
-                                    explanation: ""
-                                    score: 1
-                                  field_cue_proximity:
-                                    explanation: ""
-                                    score: 1
-                                  numerical_plausibility:
-                                    explanation: ""
-                                    score: 1
-                                  traceability:
-                                    explanation: ""
-                                    score: 1
-                                  uniqueness_ambiguity:
-                                    explanation: ""
-                                    score: 1
-                                key: 金额
-                                not_consistence_reason: []
-                                position:
-                                - page: 0
-                                  vertices:
-                                  - 848
-                                  - 458
-                                  - 942
-                                  - 458
-                                  - 942
-                                  - 494
-                                  - 848
-                                  - 494
-                                value: "37.00"
-                            table_name: 费目金额汇总表
-                            table_type: ""
-                        material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-                        material_type: 医疗门诊收费票据(电子)
-                        status: 3
-                    message: OK
-                首次提交, 状态为 CLASSIFYING:
-                  value:
-                    code: 200
-                    data:
-                      materials:
-                      - category: 费用与结算
-                        extract_result:
-                          document: null
-                          extract_fields: []
-                          tables: []
-                        material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-                        material_type: 医疗门诊收费票据(电子)
-                        status: 1
-                    message: OK
+              example:
+                code: 200
+                data:
+                  materials:
+                  - category: 费用与结算
+                    extract_result:
+                      document: null
+                      extract_fields: []
+                      tables: []
+                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                    material_type: 医疗门诊收费票据(电子)
+                    status: 1
+                message: OK
               schema:
                 properties:
                   code:
