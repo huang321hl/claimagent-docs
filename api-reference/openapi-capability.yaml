@@ -306,31 +306,6 @@ components:
             $ref: '#/components/schemas/capability.v1.CapabilityMaterialInfo'
           type: array
       type: object
-    capability.v1.CapabilityVerifyInvoiceRequest:
-      properties:
-        fiscal:
-          allOf:
-          - $ref: '#/components/schemas/capability.v1.FiscalBillVerifyParams'
-          description: 财政电子票据验真参数(type="fiscal" 时必填)
-        type:
-          description: '验真类型: "fiscal"(财政电子票据)或 "vat"(增值税发票)'
-          type: string
-        vat:
-          allOf:
-          - $ref: '#/components/schemas/capability.v1.VatInvoiceVerifyParams'
-          description: 增值税发票验真参数(type="vat" 时必填)
-      type: object
-    capability.v1.CapabilityVerifyInvoiceResponse:
-      properties:
-        fiscal_result:
-          allOf:
-          - $ref: '#/components/schemas/common.FiscalBillVerifyResult'
-          description: 财政票据验真结果(type="fiscal" 时返回)
-        vat_result:
-          allOf:
-          - $ref: '#/components/schemas/common.VatInvoiceVerifyResult'
-          description: 增值税发票验真结果(type="vat" 时返回)
-      type: object
     capability.v1.DivisionItem:
       description: 行政区划信息
       properties:
@@ -356,39 +331,6 @@ components:
           type: string
         province_name:
           description: 所属省级名称
-          type: string
-      type: object
-    capability.v1.FiscalBillVerifyParams:
-      description: 财政电子票据验真参数(医疗门诊/住院收费票据等)
-      properties:
-        bill_amount:
-          description: 票据金额
-          type: string
-        bill_code:
-          description: 票据代码
-          type: string
-        bill_date:
-          description: '开票日期(格式: yyyyMMdd，如 "20240226")'
-          type: string
-        bill_no:
-          description: 票据号码
-          type: string
-        check_code:
-          description: 校验码
-          type: string
-        id_card_last6:
-          description: 身份证后六位（明细版和地方版中，山西、湖北、海南、陕西、新疆、内蒙古、四川地区的票据需要传）
-          type: string
-        mode:
-          description: |-
-            查验模式:
-             - "national": 全国版，走财政部全国网站查验，速度快，部分票据可能无明细，仅支持开票时间在一年内的电子票据
-             - "national_local": 明细版，先走全国版再走地方版，确保返回明细信息，耗时较长
-             - "local": 地方版，只走各地区网站，无时效和次数限制，支持非税收入缴款书查验
-             默认 "national"
-          type: string
-        payer_name:
-          description: 交款人（地方版中部分票据需要传）
           type: string
       type: object
     capability.v1.ICDItem:
@@ -651,24 +593,75 @@ components:
           description: 地区名称
           type: string
       type: object
-    capability.v1.VatInvoiceVerifyParams:
-      description: 增值税发票验真参数
+    capability.v1.VerifyFiscalBillRequest:
+      properties:
+        bill_amount:
+          description: 票据金额
+          type: string
+        bill_code:
+          description: 票据代码
+          type: string
+        bill_date:
+          description: '开票日期(格式: yyyyMMdd，如 "20240226")'
+          type: string
+        bill_no:
+          description: 票据号码
+          type: string
+        check_code:
+          description: 校验码
+          type: string
+        id_card_last6:
+          description: 身份证后六位（明细版中用于路由判断：传了则走地方版，部分地区票据必填）
+          type: string
+        mode:
+          description: |-
+            查验模式:
+             - "national": 全国版，走财政部全国网站查验，速度快，部分票据可能无明细，仅支持开票时间在一年内的电子票据
+             - "detail": 明细版，根据是否传入 id_card_last6 + payer_name 自动判断走地方版或全国明细版
+             默认 "national"
+          type: string
+        payer_name:
+          description: 交款人（明细版中用于路由判断：传了则走地方版，部分票据必填）
+          type: string
+      type: object
+    capability.v1.VerifyFiscalBillResponse:
+      properties:
+        result:
+          allOf:
+          - $ref: '#/components/schemas/common.FiscalBillVerifyResult'
+          description: 财政票据验真结果
+      type: object
+    capability.v1.VerifyVatInvoiceRequest:
       properties:
         invoice_code:
-          description: 发票代码
+          description: 发票代码，全电发票（发票类型代码为 31, 32, 51, 61, 83, 84, 87）时非必填，其他发票类型必填
           type: string
         invoice_date:
-          description: '开票日期(格式: yyyyMMdd，如 "20230915")'
+          description: '开票日期（必填，格式: yyyyMMdd，如 "20190203"）'
           type: string
         invoice_no:
-          description: 发票号码
+          description: 发票号码（必填）
           type: string
         invoice_sum:
-          description: 不含税金额(或价税合计)
+          description: |-
+            金额，非必填。发票类型代码为 01, 03, 15, 20, 31, 32, 51, 61, 85, 83, 84, 87 时必填:
+               - 为 01, 03, 20, 85 时填写发票不含税金额
+               - 为 15, 84 时填写发票车价合计
+               - 为 31, 32, 51, 61, 83, 87 时填写含税金额
+               - 其它可为空
           type: string
         verify_code:
-          description: 校验码(后 6 位)
+          description: |-
+            机器验证码，非必填，取后六位。发票类型代码为 04, 10, 11, 14, 86 时必填（填写密码区数电票号码后六位），
+             发票类型代码为 86 时填写密码区数电票号码后六位，其他发票种类可为空
           type: string
+      type: object
+    capability.v1.VerifyVatInvoiceResponse:
+      properties:
+        result:
+          allOf:
+          - $ref: '#/components/schemas/common.VatInvoiceVerifyResult'
+          description: 增值税发票验真结果
       type: object
     common.Document:
       properties:
@@ -1110,17 +1103,410 @@ components:
           description: 表类型（字符串，和原 JSON 的 "type" 对应）
           type: string
       type: object
+    common.VatInvoiceData:
+      description: 增值税发票详细数据
+      properties:
+        after_tax_code:
+          description: 完税凭证号码
+          type: string
+        all_tax:
+          description: 税额
+          type: string
+        all_valorem_tax:
+          description: 价税合计
+          type: string
+        blue_invoice_code:
+          description: 蓝字发票代码(红冲时)
+          type: string
+        blue_invoice_no:
+          description: 蓝字发票号码(红冲时)
+          type: string
+        brand_version:
+          description: 厂牌型号
+          type: string
+        business_unit:
+          description: 经营/拍卖单位
+          type: string
+        business_unit_tax_no:
+          description: 经营/拍卖单位纳税人识别号
+          type: string
+        busmess_unit_address:
+          description: 经营/拍卖单位地址
+          type: string
+        busmess_unit_bank_and_account:
+          description: 经营/拍卖单位开户行及账号
+          type: string
+        busmess_unit_phone:
+          description: 经营/拍卖单位电话
+          type: string
+        car_price:
+          description: 车价合计
+          type: string
+        car_type:
+          description: 车辆类型
+          type: string
+        car_type_and_number:
+          description: 车种车号
+          type: string
+        carframe_code:
+          description: 车辆识别代号/车架号
+          type: string
+        carrier_name:
+          description: |-
+            ===== 货物运输发票专用 =====
+             承运人名称
+          type: string
+        carrier_tax_no:
+          description: 承运人识别号
+          type: string
+        check_code:
+          description: 校验码
+          type: string
+        consignor_name:
+          description: 发货人名称
+          type: string
+        consignor_tax_no:
+          description: 发货人识别号
+          type: string
+        cyjgxx:
+          description: 查验结果描述
+          type: string
+        detail_list:
+          description: ===== 明细列表 =====
+          items:
+            $ref: '#/components/schemas/common.VatInvoiceDetailItem'
+          type: array
+        drawee_name:
+          description: 受票方名称
+          type: string
+        drawee_tax_no:
+          description: 受票方识别号
+          type: string
+        elec_ticket_num:
+          description: 电子客票号码
+          type: string
+        engine_code:
+          description: 发动机号
+          type: string
+        id_card:
+          description: |-
+            ===== 机动车销售发票专用 =====
+             身份证号/组织机构代码
+          type: string
+        import_license:
+          description: 进口证明书号
+          type: string
+        inspection_amount:
+          description: 查验次数
+          type: string
+        inspection_number:
+          description: 商检单号
+          type: string
+        invalid_mark:
+          description: 作废标志
+          type: string
+        invoice_code:
+          description: 发票代码
+          type: string
+        invoice_date:
+          description: 开票日期(YYYYMMDD)
+          type: string
+        invoice_money:
+          description: 不含税金额
+          type: string
+        invoice_number:
+          description: 发票号码
+          type: string
+        invoice_type:
+          description: |-
+            ===== 基本信息 =====
+             发票类型代码
+          type: string
+        lemon_market:
+          description: 二手车市场
+          type: string
+        lemon_market_address:
+          description: 二手车市场地址
+          type: string
+        lemon_market_bank_and_account:
+          description: 二手车市场开户行及账号
+          type: string
+        lemon_market_phone:
+          description: 二手车市场电话
+          type: string
+        lemon_market_tax_no:
+          description: 二手车市场纳税人识别号
+          type: string
+        license_code:
+          description: 合格证号
+          type: string
+        license_plate:
+          description: |-
+            ===== 二手车发票专用 =====
+             车牌照号
+          type: string
+        limit_amount:
+          description: 限乘人数
+          type: string
+        machine_code:
+          description: 机器编号
+          type: string
+        note:
+          description: |-
+            ===== 其他基本字段 =====
+             备注
+          type: string
+        producing_area:
+          description: 产地
+          type: string
+        purchaser_address_or_phone:
+          description: 购方地址电话
+          type: string
+        purchaser_bank_and_number:
+          description: 购方开户行及账号
+          type: string
+        purchaser_name:
+          description: |-
+            ===== 购方信息 =====
+             购方名称
+          type: string
+        purchaser_phone:
+          description: 买方电话
+          type: string
+        purchaser_taxpayer_number:
+          description: 购方纳税人识别号
+          type: string
+        purchaser_unit_or_individual:
+          description: 买方单位/个人
+          type: string
+        purchaser_unit_or_individual_address:
+          description: 买方单位/个人住址
+          type: string
+        purchaser_unitcode_or_id_no:
+          description: 买方单位代码/身份证号
+          type: string
+        receive_name:
+          description: 收货人名称
+          type: string
+        receive_tax_no:
+          description: 收货人识别号
+          type: string
+        registration_no:
+          description: 登记证号
+          type: string
+        saler_address:
+          description: 销方地址
+          type: string
+        saler_address_or_phone:
+          description: 销方地址电话
+          type: string
+        saler_bank_account:
+          description: 销方银行账号
+          type: string
+        saler_bank_and_number:
+          description: 销方开户行及账号
+          type: string
+        saler_bank_name:
+          description: 销方银行名称
+          type: string
+        saler_name:
+          description: |-
+            ===== 销方信息 =====
+             销方名称
+          type: string
+        saler_phone:
+          description: 销方电话
+          type: string
+        saler_taxpayer_number:
+          description: 销方纳税人识别号
+          type: string
+        seller_phone:
+          description: 卖方电话
+          type: string
+        seller_unit_code_or_idno:
+          description: 卖方单位代码/身份证号
+          type: string
+        seller_unit_or_individual:
+          description: 卖方单位/个人
+          type: string
+        seller_unit_or_individual_address:
+          description: 卖方单位/个人住址
+          type: string
+        tax_disk_number:
+          description: 税控盘号
+          type: string
+        tax_rate:
+          description: 税率
+          type: string
+        tax_unit_code:
+          description: 主管税务机关代码
+          type: string
+        tax_unit_name:
+          description: 主管税务机关名称
+          type: string
+        through_address:
+          description: 起运地、经由、到达地
+          type: string
+        traffic_fee_flag:
+          description: |-
+            ===== 通行费专用 =====
+             通行费标志(Y/N)
+          type: string
+        transferred_vehicle_office:
+          description: 转入地车辆管理所名称
+          type: string
+        transport_goods_info:
+          description: 运输货物信息
+          type: string
+        unit:
+          description: 吨位
+          type: string
+        vehicle_tonnage:
+          description: 车辆吨位
+          type: string
+        zero_tax_rate_flag:
+          description: 零税率标识
+          type: string
+      type: object
+    common.VatInvoiceDetailItem:
+      description: 增值税发票明细行
+      properties:
+        all_tax:
+          description: 税额
+          type: string
+        board_date:
+          description: 乘车日期
+          type: string
+        business_type:
+          description: |-
+            ===== 其他 =====
+             业务类型(0=销售, 1=退货)
+          type: string
+        carriage:
+          description: 车厢
+          type: string
+        carrier:
+          description: 承运人
+          type: string
+        carrier_date:
+          description: |-
+            ===== 航空电子客票专用 =====
+             承运日期
+          type: string
+        detail_amount:
+          description: 金额
+          type: string
+        detail_no:
+          description: 明细序号
+          type: string
+        document_num:
+          description: |-
+            ===== 铁路电子客票专用 =====
+             单据号
+          type: string
+        end_station:
+          description: 到达站
+          type: string
+        expense_item:
+          description: |-
+            ===== 货物运输专用 =====
+             费用项目
+          type: string
+        flight_number:
+          description: 航班号
+          type: string
+        flight_time:
+          description: 起飞时间
+          type: string
+        goods_name:
+          description: 货物或应税劳务名称
+          type: string
+        kttz:
+          description: 空调特征
+          type: string
+        leg:
+          description: 航段
+          type: string
+        name:
+          description: 乘车人姓名
+          type: string
+        net_value:
+          description: 不含税单价
+          type: string
+        num:
+          description: 数量
+          type: string
+        plate_no:
+          description: 车牌号
+          type: string
+        row_no:
+          description: |-
+            ===== 通用字段 =====
+             行号
+          type: string
+        seat_level:
+          description: 座位等级
+          type: string
+        standard:
+          description: 规格型号
+          type: string
+        start_station:
+          description: 出发站
+          type: string
+        start_time:
+          description: 开车时间
+          type: string
+        tax_classify_code:
+          description: 税收分类编码
+          type: string
+        tax_detail_amount:
+          description: 含税金额
+          type: string
+        tax_rate:
+          description: 税率
+          type: string
+        tax_unit_price:
+          description: 含税单价
+          type: string
+        ticked_level:
+          description: 客票级别
+          type: string
+        traffic_date_end:
+          description: 通行日期止
+          type: string
+        traffic_date_start:
+          description: 通行日期起
+          type: string
+        train_num:
+          description: 车次
+          type: string
+        type:
+          description: |-
+            ===== 通行费专用 =====
+             类型
+          type: string
+        unit:
+          description: 单位
+          type: string
+        xb:
+          description: 席别
+          type: string
+        xw:
+          description: 席位
+          type: string
+      type: object
     common.VatInvoiceVerifyResult:
       description: 增值税发票验真结果
       properties:
         code:
-          description: 验真返回码
+          description: 验真返回码(001=成功)
           type: string
         data:
-          description: 详细数据(原始 JSON)
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/common.VatInvoiceData'
+          description: 发票详细信息
         invalid_mark:
-          description: 作废标志
+          description: 作废标志(N=正常, Y=作废, H=红冲, 7=部分红冲, 8=全额红冲)
           type: string
         invoice_code:
           description: 发票代码
@@ -1132,7 +1518,7 @@ components:
           description: 发票号码
           type: string
         invoice_type:
-          description: 发票类型
+          description: 发票类型代码
           type: string
         message:
           description: 返回信息
@@ -1284,9 +1670,7 @@ paths:
   /doc-agent/api/v1/capability/file/upload:
     post:
       description: |-
-        文件上传
-         支持类型: jpg, jpeg, png, bmp, tiff, pdf
-         单文件上限: 50MB，单次上传上限: 20 个文件
+        文件上传。支持类型: jpg, jpeg, png, bmp, tiff, pdf。单文件上限: 50MB，单次上传上限: 20 个文件。
       operationId: CapabilityService_UploadFiles
       parameters:
       - in: header
@@ -1302,21 +1686,23 @@ paths:
       requestBody:
         content:
           multipart/form-data:
+            example:
+              batch_id: 661be601-65c7-4025-af0f-20d357dfb090
+              files: "@门诊收费票据01.png"
             schema:
               properties:
                 batch_id:
                   description: 调用方自定义批次ID(UUID格式，不传则系统生成)
                   type: string
+                  example: 661be601-65c7-4025-af0f-20d357dfb090
                 file_urls:
-                  description: URL 上传(与 files 可混合使用)
-                  items:
-                    type: string
-                  type: array
+                  description: URL 上传(与 files 可混合使用)，JSON 数组格式
+                  type: string
+                  example: '["https://example.com/file1.pdf","https://example.com/file2.jpg"]'
                 files:
-                  items:
-                    format: binary
-                    type: string
-                  type: array
+                  description: 文件二进制上传(支持多文件)
+                  type: string
+                  format: binary
               type: object
         required: true
       responses:
@@ -1345,6 +1731,171 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/capability.v1.CapabilityUploadResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
+          description: OK
+      tags:
+      - CapabilityService
+  /doc-agent/api/v1/capability/fiscal-bill/verify:
+    post:
+      description: |-
+        财政票据验真。直接调用底层验真 API，同步返回结果。支持医疗门诊/住院收费电子票据等财政票据。
+
+
+        mode 查验模式说明：
+
+        - **national**：全国版，走财政部全国网站查验，速度快，部分票据可能无明细，仅支持开票时间在一年内的电子票据
+
+        - **detail**：明细版，根据是否传入 id_card_last6 + payer_name 自动判断：两者都传则走地方版(各地区网站)；未传齐则走全国明细版(先全国再地方，确保返回明细)
+
+
+        默认 "national"
+      operationId: CapabilityService_VerifyFiscalBill
+      parameters:
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              bill_amount: "20.00"
+              bill_code: "51060123"
+              bill_date: "20230411"
+              bill_no: "0272000001"
+              check_code: 7ffdbe
+              id_card_last6: "083411"
+              mode: detail
+              payer_name: 张某某
+            schema:
+              $ref: '#/components/schemas/capability.v1.VerifyFiscalBillRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                code: 200
+                data:
+                  result:
+                    accounting_status: ""
+                    bill_code: "51060123"
+                    bill_date: "2023-04-11"
+                    bill_name: 四川省医疗门诊收费票据(电子)
+                    bill_no: "0272000001"
+                    bill_status: "01"
+                    check_code: 7ffdbe
+                    code: 1000
+                    collector: 工行自助机
+                    file_type: pdf
+                    file_url: http://example.com/archive/xxxxx.pdf
+                    fiscal_seal: ""
+                    fiscal_seal_no: ""
+                    item_details:
+                    - amount: "1.0000"
+                      code: ""
+                      index: 1
+                      name: ●挂号费
+                      paid_amount: ""
+                      paid_amount_rate: ""
+                      quantity: "1.0"
+                      remark: ""
+                      standard: ""
+                      type: ""
+                      unit: 次
+                    - amount: "19.0000"
+                      code: ""
+                      index: 2
+                      name: 材料费
+                      paid_amount: ""
+                      paid_amount_rate: ""
+                      quantity: "1.0"
+                      remark: ""
+                      standard: ""
+                      type: ""
+                      unit: 次
+                    item_list:
+                    - amount: "1.00"
+                      code: ""
+                      index: 1
+                      name: 挂号费
+                      paid_amount: ""
+                      paid_amount_rate: ""
+                      quantity: ""
+                      remark: ""
+                      standard: ""
+                      type: ""
+                      unit: ""
+                    - amount: "19.00"
+                      code: ""
+                      index: 2
+                      name: 其他门急诊收费项目
+                      paid_amount: ""
+                      paid_amount_rate: ""
+                      quantity: ""
+                      remark: ""
+                      standard: ""
+                      type: ""
+                      unit: ""
+                    message: 处理成功
+                    other_info:
+                    - en_value: ""
+                      key: ywlsh
+                      label: 业务流水号
+                      value: MZ20230411XXXXXXXX
+                    - en_value: ""
+                      key: mzh
+                      label: 门诊号
+                      value: "23031500000"
+                    - en_value: ""
+                      key: jzrq
+                      label: 就诊日期
+                      value: "20230411"
+                    - en_value: ""
+                      key: yljglx
+                      label: 医疗机构类型
+                      value: 中医医院
+                    - en_value: ""
+                      key: yblx
+                      label: 医保类型
+                      value: ""
+                    - en_value: ""
+                      key: grxjzf
+                      label: 个人现金支付
+                      value: "20.00"
+                    payee: 某某骨科医院
+                    payer: 张某某
+                    payer_tax_id: 513124********3411
+                    print_status: ""
+                    query_count: 1
+                    remark: ""
+                    reviewer: 工行自助机
+                    supplementary_info: ""
+                    time: "2026-05-06 11:47:17"
+                    total_amount: "20.00"
+                    total_amount_cn: 贰拾元整
+                    void_date: ""
+                    void_reason: ""
+                    void_time: ""
+                message: OK
+              schema:
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/capability.v1.VerifyFiscalBillResponse'
                   message:
                     description: 状态说明
                     example: OK
@@ -1420,16 +1971,20 @@ paths:
   /doc-agent/api/v1/capability/image-quality:
     post:
       description: |-
-        图像质量检测
-         检测项: 模糊(blurry)、不完整(un_integrity)、复印件(photocopy)、翻拍(screen_remark)、光斑(light_spot)、扫描件(scan)
+        图像质量检测。检测项: 模糊(blurry)、不完整(un_integrity)、复印件(photocopy)、翻拍(screen_remark)、光斑(light_spot)、扫描件(scan)。
 
-         支持两种输入方式(互斥)：
-           方式一：传 material_id 或 batch_id 指定已上传的材料
-           方式二：直接上传文件(multipart/form-data 或 file_urls)
-           同时传文件和 material_id/batch_id 会返回 400 错误
 
-         质检模型参数通过 query string 传递，如 ?blurry_threshold=0.3&un_integrity_threshold=0.7
-         参数与上次质检不一致时会重新调用质检模型。
+        支持两种输入方式(互斥)：
+
+        - **方式一**：传 material_id 或 batch_id 指定已上传的材料
+
+        - **方式二**：直接上传文件(multipart/form-data 或 file_urls)
+
+
+        同时传文件和 material_id/batch_id 会返回 400 错误。
+
+
+        质检模型参数通过 query string 传递，如 `?blurry_threshold=0.3&un_integrity_threshold=0.7`，参数与上次质检不一致时会重新调用质检模型。
       operationId: CapabilityService_CheckImageQuality
       parameters:
       - in: header
@@ -1445,64 +2000,72 @@ paths:
       requestBody:
         content:
           multipart/form-data:
+            example:
+              material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+              files: "@门诊收费票据01.png"
             schema:
               properties:
                 batch_id:
                   description: 批次 ID(处理批次下所有材料)
                   type: string
+                  example: 661be601-65c7-4025-af0f-20d357dfb090
                 blurry_threshold:
-                  description: 模糊判断阈值(0.1~0.9，默认 0.5)
+                  description: 模糊风险判定阈值。开启模糊检测后，若模型输出的模糊风险分数大于该阈值，则判定图像存在模糊风险(0~1，保留2位小数，默认 0.5)
                   format: float
                   type: number
+                  example: 0.5
                 detection_scope:
-                  description: |-
-                    ---- 质检模型参数(query string，可选) ----
-                     检测范围控制：0 整图检测, 1 每个主体单独检测(默认 0)
+                  description: 检测范围控制参数。0 表示检测图片中的所有主体，只要任一主体存在质量风险，则整体判定为存在风险；1 表示仅检测第一个主体的质量风险情况。建议采用 0(默认 0)
                   format: int32
                   type: integer
+                  example: 0
                 file_urls:
-                  description: URL 上传(与 material_id/batch_id 互斥)
-                  items:
-                    type: string
-                  type: array
-                files:
-                  items:
-                    format: binary
-                    type: string
-                  type: array
-                light_spot_level:
-                  description: 光斑检测严格程度：0 更严格, 1 更宽松(默认 0)
-                  format: int32
-                  type: integer
-                light_spot_threshold:
-                  description: 光斑判断阈值(0.1~0.9，默认 0.5)
-                  format: float
-                  type: number
-                material_id:
-                  description: |-
-                    ---- 方式一：指定已上传材料 ----
-                     已上传材料的 ID(处理单个材料)
+                  description: URL 上传(与 material_id/batch_id 互斥)，JSON 数组格式
                   type: string
-                photocopy_threshold:
-                  description: 复印件判断阈值(0.1~0.9，默认 0.5)
-                  format: float
-                  type: number
-                scan_threshold:
-                  description: 扫描件判断阈值(0.1~0.9，默认 0.5)
-                  format: float
-                  type: number
-                screen_remark_threshold:
-                  description: 翻拍判断阈值(0.1~0.9，默认 0.5)
-                  format: float
-                  type: number
-                un_integrity_level:
-                  description: 完整性检测严格程度：0 更严格, 1 更宽松(默认 0)
+                  example: '["https://example.com/file1.pdf"]'
+                files:
+                  description: 文件二进制上传(支持多文件)
+                  type: string
+                  format: binary
+                light_spot_level:
+                  description: 光斑检测的检测级别控制参数。0 表示优先检测主体边缘与背景区域是否存在光斑；1 表示优先检测主体内容区域是否存在光斑，例如文字、印章、人像等区域是否受光斑影响(默认 0)
                   format: int32
                   type: integer
-                un_integrity_threshold:
-                  description: 不完整度判断阈值(0.1~0.9，默认 0.5)
+                  example: 0
+                light_spot_threshold:
+                  description: 光斑风险判定阈值。开启光斑检测后，若模型输出的光斑风险分数大于该阈值，则判定图像存在光斑风险(0~1，保留2位小数，默认 0.5)
                   format: float
                   type: number
+                  example: 0.5
+                material_id:
+                  description: 已上传材料的 ID(处理单个材料，与 files/file_urls 互斥)
+                  type: string
+                  example: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                photocopy_threshold:
+                  description: 复印件风险判定阈值。开启复印件检测后，若模型输出的复印件风险分数大于该阈值，则判定图像为复印件风险(0~1，保留2位小数，默认 0.5)
+                  format: float
+                  type: number
+                  example: 0.5
+                scan_threshold:
+                  description: 扫描件风险判定阈值。开启扫描件检测后，若模型输出的扫描件风险分数大于该阈值，则判定图像存在扫描件风险(0~1，保留2位小数，默认 0.5)
+                  format: float
+                  type: number
+                  example: 0.5
+                screen_remark_threshold:
+                  description: 翻拍风险判定阈值。开启翻拍检测后，若模型输出的翻拍风险分数大于该阈值，则判定图像存在翻拍风险(0~1，保留2位小数，默认 0.5)
+                  format: float
+                  type: number
+                  example: 0.5
+                un_integrity_level:
+                  description: 完整性检测的检测级别控制参数。0 表示优先检测主体边缘与背景是否完整；1 表示优先检测主体内容是否完整，例如文字、印章、人像等区域是否缺失(默认 0)
+                  format: int32
+                  type: integer
+                  example: 0
+                un_integrity_threshold:
+                  description: 完整性风险判定阈值。开启完整性检测后，若模型输出的完整性风险分数大于该阈值，则判定图像存在不完整风险。完整性风险检测包括：1.拍摄(因未拍全导致的完整性风险) 2.物理遮挡 3.数字遮挡(如马赛克) 4.物理水印(含水印文件的打印件) 5.数字水印(常规水印，如水印相机) 6.弯折 7.破损(0~1，保留2位小数，默认 0.5)
+                  format: float
+                  type: number
+                  example: 0.5
               type: object
         required: true
       responses:
@@ -1592,219 +2155,20 @@ paths:
           description: OK
       tags:
       - CapabilityService
-  /doc-agent/api/v1/capability/invoice/verify:
-    post:
-      description: |-
-        发票验真
-         直接调用底层验真 API，同步返回结果。支持两种发票类型：
-           - fiscal: 财政电子票据(医疗门诊/住院收费票据等)
-           - vat: 增值税发票
-      operationId: CapabilityService_VerifyInvoice
-      parameters:
-      - in: header
-        name: x-ti-app-id
-        required: true
-        schema:
-          type: string
-      - in: header
-        name: x-ti-secret-code
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            examples:
-              增值税发票:
-                value:
-                  type: vat
-                  vat:
-                    invoice_code: "033002100311"
-                    invoice_date: "20230901"
-                    invoice_no: "48400000"
-                    invoice_sum: "800.00"
-                    verify_code: d3e4f5
-              财政票据:
-                value:
-                  fiscal:
-                    bill_code: "50060100"
-                    bill_date: "20210830"
-                    bill_no: "0100000001"
-                    check_code: a1b2c3
-                    mode: local
-                  type: fiscal
-            schema:
-              $ref: '#/components/schemas/capability.v1.CapabilityVerifyInvoiceRequest'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                财政票据 — 查验失败:
-                  value:
-                    code: 200
-                    data:
-                      fiscal_result:
-                        accounting_status: ""
-                        bill_code: ""
-                        bill_date: ""
-                        bill_name: ""
-                        bill_no: ""
-                        bill_status: ""
-                        check_code: ""
-                        code: 999
-                        collector: ""
-                        file_type: ""
-                        file_url: ""
-                        fiscal_seal: ""
-                        fiscal_seal_no: ""
-                        item_details: []
-                        item_list: []
-                        message: 局端异常,请稍后重试
-                        other_info: []
-                        payee: ""
-                        payer: ""
-                        payer_tax_id: ""
-                        print_status: ""
-                        query_count: 0
-                        remark: ""
-                        reviewer: ""
-                        supplementary_info: ""
-                        time: ""
-                        total_amount: ""
-                        total_amount_cn: ""
-                        void_date: ""
-                        void_reason: ""
-                        void_time: ""
-                    message: OK
-                财政票据 — 查验成功:
-                  value:
-                    code: 200
-                    data:
-                      fiscal_result:
-                        accounting_status: ""
-                        bill_code: "50060121"
-                        bill_date: "2021-08-30"
-                        bill_name: 重庆市医疗门诊收费票据(电子)
-                        bill_no: "0128467378"
-                        bill_status: "01"
-                        check_code: e69aa5
-                        code: 1000
-                        collector: 某某
-                        file_type: pdf
-                        file_url: http://example.com/archive/xxxxx.pdf
-                        fiscal_seal: ""
-                        fiscal_seal_no: ""
-                        item_details:
-                        - amount: "66.0000"
-                          code: ""
-                          index: 1
-                          name: 牙体缺损粘接修复术
-                          paid_amount: ""
-                          paid_amount_rate: ""
-                          quantity: "1.0"
-                          remark: ""
-                          standard: ""
-                          type: ""
-                          unit: 每牙
-                        - amount: "22.0000"
-                          code: ""
-                          index: 2
-                          name: 根管充填术
-                          paid_amount: ""
-                          paid_amount_rate: ""
-                          quantity: "1.0"
-                          remark: ""
-                          standard: ""
-                          type: ""
-                          unit: 每根管
-                        item_list:
-                        - amount: "442.00"
-                          code: ""
-                          index: 1
-                          name: 治疗费
-                          paid_amount: ""
-                          paid_amount_rate: ""
-                          quantity: "1.0"
-                          remark: ""
-                          standard: ""
-                          type: ""
-                          unit: ""
-                        - amount: "1.76"
-                          code: ""
-                          index: 2
-                          name: 卫生材料费
-                          paid_amount: ""
-                          paid_amount_rate: ""
-                          quantity: "1.0"
-                          remark: ""
-                          standard: ""
-                          type: ""
-                          unit: ""
-                        message: 处理成功
-                        other_info:
-                        - en_value: ""
-                          key: ywlsh
-                          label: 业务流水号
-                          value: xxx19986935
-                        - en_value: ""
-                          key: mzh
-                          label: 门诊号
-                          value: "3347453003"
-                        - en_value: ""
-                          key: jzrq
-                          label: 就诊日期
-                          value: "20210830"
-                        - en_value: ""
-                          key: yljglx
-                          label: 医疗机构类型
-                          value: 三级甲等专科医院
-                        - en_value: ""
-                          key: yblx
-                          label: 医保类型
-                          value: 自费
-                        payee: 某某医院
-                        payer: 张某某
-                        payer_tax_id: 330721XXXX0824****
-                        print_status: ""
-                        query_count: 1
-                        remark: ""
-                        reviewer: 某某
-                        supplementary_info: ""
-                        time: "2026-04-30 15:23:23"
-                        total_amount: "443.76"
-                        total_amount_cn: 肆佰肆拾叁元柒角陆分
-                        void_date: ""
-                        void_reason: ""
-                        void_time: ""
-                    message: OK
-              schema:
-                properties:
-                  code:
-                    description: 业务状态码
-                    example: 200
-                    type: integer
-                  data:
-                    $ref: '#/components/schemas/capability.v1.CapabilityVerifyInvoiceResponse'
-                  message:
-                    description: 状态说明
-                    example: OK
-                    type: string
-                type: object
-          description: OK
-      tags:
-      - CapabilityService
   /doc-agent/api/v1/capability/material/classify:
     post:
       description: |-
-        材料分类
-         默认分类以医疗票据和保险常用文件为主
+        材料分类。默认分类以医疗票据和保险常用文件为主。
 
-         支持两种输入方式(互斥)：
-           方式一：传 material_id 或 batch_id 指定已上传的材料
-           方式二：直接上传文件(multipart/form-data 或 file_urls)
-           同时传文件和 material_id/batch_id 会返回 400 错误
+
+        支持两种输入方式(互斥)：
+
+        - **方式一**：传 material_id 或 batch_id 指定已上传的材料
+
+        - **方式二**：直接上传文件(multipart/form-data 或 file_urls)
+
+
+        同时传文件和 material_id/batch_id 会返回 400 错误
       operationId: CapabilityService_ClassifyMaterial
       parameters:
       - in: header
@@ -1820,26 +2184,27 @@ paths:
       requestBody:
         content:
           multipart/form-data:
+            example:
+              material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+              files: "@门诊收费票据01.png"
             schema:
               properties:
                 batch_id:
                   description: 批次 ID(处理批次下所有材料)
                   type: string
+                  example: 661be601-65c7-4025-af0f-20d357dfb090
                 file_urls:
-                  description: URL 上传(与 material_id/batch_id 互斥)
-                  items:
-                    type: string
-                  type: array
-                files:
-                  items:
-                    format: binary
-                    type: string
-                  type: array
-                material_id:
-                  description: |-
-                    ---- 方式一：指定已上传材料 ----
-                     已上传材料的 ID(处理单个材料)
+                  description: URL 上传(与 material_id/batch_id 互斥)，JSON 数组格式
                   type: string
+                  example: '["https://example.com/file1.pdf"]'
+                files:
+                  description: 文件二进制上传(支持多文件)
+                  type: string
+                  format: binary
+                material_id:
+                  description: 已上传材料的 ID(处理单个材料，与 files/file_urls 互斥)
+                  type: string
+                  example: 8ffe03ce-4714-4b50-8daf-afee06002cc3
               type: object
         required: true
       responses:
@@ -1876,13 +2241,18 @@ paths:
   /doc-agent/api/v1/capability/material/extract:
     post:
       description: |-
-        材料抽取(幂等)
-         传入 material_id 列表，按需创建抽取任务：
-           - 未处理的材料：创建抽取任务，返回 PENDING 状态
-           - 处理中的材料：返回当前状态(CLASSIFYING/EXTRACTING)
-           - 已完成的材料：直接返回结果，不重新抽取
-           - 失败的材料：重新创建抽取任务
-         支持重复调用直到所有材料 status=COMPLETED，或等待 callback_url 回调
+        材料抽取(幂等)。传入 material_id 列表，按需创建抽取任务：
+
+        - 未处理的材料：创建抽取任务，返回 PENDING 状态
+
+        - 处理中的材料：返回当前状态(CLASSIFYING/EXTRACTING)
+
+        - 已完成的材料：直接返回结果，不重新抽取
+
+        - 失败的材料：重新创建抽取任务
+
+
+        支持重复调用直到所有材料 status=COMPLETED，或等待 callback_url 回调。
       operationId: CapabilityService_ExtractMaterial
       parameters:
       - in: header
@@ -2110,6 +2480,96 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/capability.v1.CapabilitySocialInsuranceResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
+          description: OK
+      tags:
+      - CapabilityService
+  /doc-agent/api/v1/capability/vat-invoice/verify:
+    post:
+      description: 增值税发票验真。直接调用底层验真 API，同步返回结果。
+      operationId: CapabilityService_VerifyVatInvoice
+      parameters:
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              invoice_code: ""
+              invoice_date: "20260202"
+              invoice_no: "26330000009400012345"
+              invoice_sum: "7282.03"
+              verify_code: ""
+            schema:
+              $ref: '#/components/schemas/capability.v1.VerifyVatInvoiceRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                code: 200
+                data:
+                  result:
+                    code: "001"
+                    data:
+                      all_tax: "436.92"
+                      all_valorem_tax: "7718.95"
+                      check_code: "26330000009400012345"
+                      cyjgxx: 查验成功发票一致
+                      detail_list:
+                      - all_tax: "436.92"
+                        detail_amount: "7282.03"
+                        detail_no: "1"
+                        goods_name: '*企业管理服务*市场管理'
+                        row_no: "1"
+                        tax_classify_code: "3040801990000000000"
+                        tax_rate: "6"
+                      inspection_amount: "5"
+                      invalid_mark: "N"
+                      invoice_code: ""
+                      invoice_date: "20260202"
+                      invoice_money: "7282.03"
+                      invoice_number: "26330000009400012345"
+                      invoice_type: "31"
+                      machine_code: ""
+                      note: 购方开户银行：招商银行股份有限公司某某支行 银行账号：120919530XXXXXX
+                      purchaser_bank_and_number: 购方开户银行：招商银行股份有限公司某某支行 银行账号：120919530XXXXXX
+                      purchaser_name: 某某互联网科技有限公司
+                      purchaser_taxpayer_number: 91440101MAXXXXXXX3
+                      saler_address_or_phone: 浙江省杭州市滨江区某某路1750号某某中心2005室 138****8845
+                      saler_bank_and_number: 销方开户银行：杭州银行股份有限公司滨江支行 银行账号：330104106000XXXXXXX
+                      saler_name: 某某贸易有限公司
+                      saler_taxpayer_number: 91330108MAXXXXXXX7
+                      seller_unit_or_individual: 某某贸易有限公司
+                    invalid_mark: "N"
+                    invoice_code: ""
+                    invoice_date: "20260202"
+                    invoice_number: "26330000009400012345"
+                    invoice_type: "31"
+                    message: 成功
+                    purchaser_taxpayer_number: 91440101MAXXXXXXX3
+                message: OK
+              schema:
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/capability.v1.VerifyVatInvoiceResponse'
                   message:
                     description: 状态说明
                     example: OK

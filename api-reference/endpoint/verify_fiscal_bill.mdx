@@ -1,11 +1,11 @@
 ---
-title: '发票验真'
-openapi: 'POST /doc-agent/api/v1/capability/invoice/verify'
+title: '财政票据验真'
+openapi: 'POST /doc-agent/api/v1/capability/fiscal-bill/verify'
 ---
 
 ## 财政电子票据验真错误码
 
-当 `type="fiscal"` 时，响应中 `data.fiscal_result.code` 的含义如下：
+响应中 `data.result.code` 的含义如下：
 
 | 错误码 | 说明 |
 | --- | --- |

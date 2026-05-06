@@ -51,8 +51,14 @@
               "api-reference/endpoint/upload_files",
               "api-reference/endpoint/check_image_quality",
               "api-reference/endpoint/classify_material",
-              "api-reference/endpoint/extract_material",
-              "api-reference/endpoint/verify_invoice"
+              "api-reference/endpoint/extract_material"
+            ]
+          },
+          {
+            "group": "发票验真",
+            "pages": [
+              "api-reference/endpoint/verify_fiscal_bill",
+              "api-reference/endpoint/verify_vat_invoice"
             ]
           },
           {
