@@ -4,23 +4,23 @@ components:
       properties:
         batch_id:
           description: 批次 ID(处理批次下所有材料)
+          example: 661be601-65c7-4025-af0f-20d357dfb090
           type: string
         file_urls:
           description: URL 上传(与 material_id/batch_id 互斥)
+          example:
+          - https://example.com/file1.pdf
           items:
             type: string
           type: array
         files:
-          description: |-
-            ---- 方式二：直接上传文件 ----
-             文件二进制上传(multipart/form-data，与 material_id/batch_id 互斥)
+          description: 文件二进制上传(支持多文件)
           items:
             $ref: '#/components/schemas/common.MultipartUpload'
           type: array
         material_id:
-          description: |-
-            ---- 方式一：指定已上传材料 ----
-             已上传材料的 ID(处理单个材料)
+          description: 已上传材料的 ID(处理单个材料，与 files/file_urls 互斥)
+          example: 8ffe03ce-4714-4b50-8daf-afee06002cc3
           type: string
       type: object
     capability.v1.CapabilityClassifyResponse:
@@ -98,60 +98,67 @@ components:
       properties:
         batch_id:
           description: 批次 ID(处理批次下所有材料)
+          example: 661be601-65c7-4025-af0f-20d357dfb090
           type: string
         blurry_threshold:
-          description: 模糊判断阈值(0.1~0.9，默认 0.5)
+          description: 模糊风险判定阈值。开启模糊检测后，若模型输出的模糊风险分数大于该阈值，则判定图像存在模糊风险(0~1，保留2位小数，默认 0.5)
+          example: 0.5
           format: float
           type: number
         detection_scope:
-          description: |-
-            ---- 质检模型参数(query string，可选) ----
-             检测范围控制：0 整图检测, 1 每个主体单独检测(默认 0)
+          description: 检测范围控制参数。0 表示检测图片中的所有主体，只要任一主体存在质量风险，则整体判定为存在风险；1 表示仅检测第一个主体的质量风险情况。建议采用 0(默认 0)
+          example: 0
           format: int32
           type: integer
         file_urls:
           description: URL 上传(与 material_id/batch_id 互斥)
+          example:
+          - https://example.com/file1.pdf
           items:
             type: string
           type: array
         files:
-          description: |-
-            ---- 方式二：直接上传文件 ----
-             文件二进制上传(multipart/form-data，与 material_id/batch_id 互斥)
+          description: 文件二进制上传(支持多文件)
           items:
             $ref: '#/components/schemas/common.MultipartUpload'
           type: array
         light_spot_level:
-          description: 光斑检测严格程度：0 更严格, 1 更宽松(默认 0)
+          description: 光斑检测的检测级别控制参数。0 表示优先检测主体边缘与背景区域是否存在光斑；1 表示优先检测主体内容区域是否存在光斑，例如文字、印章、人像等区域是否受光斑影响(默认 0)
+          example: 0
           format: int32
           type: integer
         light_spot_threshold:
-          description: 光斑判断阈值(0.1~0.9，默认 0.5)
+          description: 光斑风险判定阈值。开启光斑检测后，若模型输出的光斑风险分数大于该阈值，则判定图像存在光斑风险(0~1，保留2位小数，默认 0.5)
+          example: 0.5
           format: float
           type: number
         material_id:
-          description: |-
-            ---- 方式一：指定已上传材料 ----
-             已上传材料的 ID(处理单个材料)
+          description: 已上传材料的 ID(处理单个材料，与 files/file_urls 互斥)
+          example: 8ffe03ce-4714-4b50-8daf-afee06002cc3
           type: string
         photocopy_threshold:
-          description: 复印件判断阈值(0.1~0.9，默认 0.5)
+          description: 复印件风险判定阈值。开启复印件检测后，若模型输出的复印件风险分数大于该阈值，则判定图像为复印件风险(0~1，保留2位小数，默认 0.5)
+          example: 0.5
           format: float
           type: number
         scan_threshold:
-          description: 扫描件判断阈值(0.1~0.9，默认 0.5)
+          description: 扫描件风险判定阈值。开启扫描件检测后，若模型输出的扫描件风险分数大于该阈值，则判定图像存在扫描件风险(0~1，保留2位小数，默认 0.5)
+          example: 0.5
           format: float
           type: number
         screen_remark_threshold:
-          description: 翻拍判断阈值(0.1~0.9，默认 0.5)
+          description: 翻拍风险判定阈值。开启翻拍检测后，若模型输出的翻拍风险分数大于该阈值，则判定图像存在翻拍风险(0~1，保留2位小数，默认 0.5)
+          example: 0.5
           format: float
           type: number
         un_integrity_level:
-          description: 完整性检测严格程度：0 更严格, 1 更宽松(默认 0)
+          description: 完整性检测的检测级别控制参数。0 表示优先检测主体边缘与背景是否完整；1 表示优先检测主体内容是否完整，例如文字、印章、人像等区域是否缺失(默认 0)
+          example: 0
           format: int32
           type: integer
         un_integrity_threshold:
-          description: 不完整度判断阈值(0.1~0.9，默认 0.5)
+          description: 完整性风险判定阈值。开启完整性检测后，若模型输出的完整性风险分数大于该阈值，则判定图像存在不完整风险。完整性风险检测包括：1.拍摄(因未拍全导致的完整性风险) 2.物理遮挡 3.数字遮挡(如马赛克) 4.物理水印(含水印文件的打印件) 5.数字水印(常规水印，如水印相机) 6.弯折 7.破损(0~1，保留2位小数，默认 0.5)
+          example: 0.5
           format: float
           type: number
       type: object
@@ -206,6 +213,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/common.ExtractResult'
           description: 抽取结果(处理完成后返回)
+        fiscal_verify_result:
+          allOf:
+          - $ref: '#/components/schemas/common.FiscalBillVerifyResult'
+          description: 财政票据验真结果(with_verification=true 且验真完成后返回，医疗门诊/住院电子票据)
         material_id:
           description: 材料 ID
           type: string
@@ -216,10 +227,10 @@ components:
           description: '该材料的处理状态(0: 待处理, 1: 分类中, 2: 抽取中, 3: 已完成, 4: 失败)'
           format: enum
           type: integer
-        verify_vat_ret:
+        vat_verify_result:
           allOf:
-          - $ref: '#/components/schemas/common.VerifyVatRet'
-          description: 发票验真结果(with_verification=true 且验真完成后返回)
+          - $ref: '#/components/schemas/common.VatInvoiceVerifyResult'
+          description: 增值税发票验真结果(with_verification=true 且验真完成后返回)
       type: object
     capability.v1.CapabilityMedicalInstitutionRequest:
       properties:
@@ -282,14 +293,18 @@ components:
       properties:
         batch_id:
           description: 调用方自定义批次ID(UUID格式，不传则系统生成)
+          example: 661be601-65c7-4025-af0f-20d357dfb090
           type: string
         file_urls:
           description: URL 上传(与 files 可混合使用)
+          example:
+          - https://example.com/file1.pdf
+          - https://example.com/file2.jpg
           items:
             type: string
           type: array
         files:
-          description: 文件二进制上传(支持多文件，与 file_urls 可混合使用)
+          description: 文件二进制上传(支持多文件)
           items:
             $ref: '#/components/schemas/common.MultipartUpload'
           type: array
@@ -610,15 +625,15 @@ components:
         check_code:
           description: 校验码
           type: string
-        id_card_last6:
-          description: 身份证后六位（明细版中用于路由判断：传了则走地方版，部分地区票据必填）
-          type: string
         mode:
           description: |-
             查验模式:
              - "national": 全国版，走财政部全国网站查验，速度快，部分票据可能无明细，仅支持开票时间在一年内的电子票据
              - "detail": 明细版，根据是否传入 id_card_last6 + payer_name 自动判断走地方版或全国明细版
              默认 "national"
+          type: string
+        id_card_last6:
+          description: 身份证后六位（明细版中用于路由判断：传了则走地方版，部分地区票据必填）
           type: string
         payer_name:
           description: 交款人（明细版中用于路由判断：传了则走地方版，部分票据必填）
@@ -1527,53 +1542,6 @@ components:
           description: 购方税号
           type: string
       type: object
-    common.VerifyVatRet:
-      properties:
-        code:
-          description: |-
-            发票验真返回码说明
-
-             001    成功，验证为真
-             002    此发票今日查询次数已达上限(5次)，请次日查询
-             005    请求不合法，请核对验真参数
-             006    发票信息不一致，请核对发票信息
-             009    查无此票，请核对发票信息
-             104    已超过最大查验量
-             105    查询发票不规范，请核对发票信息
-             106    查验异常，国税局/发票查验地区升级维护，请稍后重试
-             107    鉴权失败
-             108    参数不为空
-             109    参数长度不正确
-             110    参数 invoice_code 的格式或取值范围错误
-             111    参数 invoice_sum 的格式或取值范围错误
-             112    参数 verify_code 的格式或取值范围错误
-             113    参数 invoice_no 的格式或取值范围错误
-             114    校验码不正确，应为后六位
-             115    超过服务有效期限限制
-             116    此发票今日查询次数已达上限(5次)，请次日查询
-             1005   请核对验真参数是否符合发票规范
-             1010   日期格式不正确(YYYYMMDD)
-             1011   请求参数不完整
-             1021   查验异常，国税局/发票查验地区升级维护，请稍后重试
-             10014  日期当天不能查验
-             10015  开票金额：不合法的格式
-             10016  检验码：不能为空
-             10017  超过五年的不能查验
-             10018  检验码：不合法的长度
-             10020  没有查验权限
-          type: string
-        fiscal_result:
-          allOf:
-          - $ref: '#/components/schemas/common.FiscalBillVerifyResult'
-          description: 财政票据验真详情(医疗门诊/住院电子票据)
-        message:
-          description: 发票验真返回码说明
-          type: string
-        vat_result:
-          allOf:
-          - $ref: '#/components/schemas/common.VatInvoiceVerifyResult'
-          description: 增值税发票验真详情
-      type: object
 info:
   description: |-
     CapabilityService 独立子能力服务
@@ -1613,8 +1581,8 @@ paths:
     post:
       description: |-
         行政区划查询
-         根据名称模糊匹配省/市/县三级行政区划，返回的 preferred_code 可作为
-         SearchSocialInsurance 接口的 zone_code 参数使用。
+        根据名称模糊匹配省/市/县三级行政区划，返回的 preferred_code 可作为
+        SearchSocialInsurance 接口的 zone_code 参数使用。
       operationId: CapabilityService_LookupDivision
       parameters:
       - in: header
@@ -1669,8 +1637,7 @@ paths:
       - CapabilityService
   /doc-agent/api/v1/capability/file/upload:
     post:
-      description: |-
-        文件上传。支持类型: jpg, jpeg, png, bmp, tiff, pdf。单文件上限: 50MB，单次上传上限: 20 个文件。
+      description: '文件上传。支持类型: jpg, jpeg, png, bmp, tiff, pdf。单文件上限: 50MB，单次上传上限: 20 个文件。'
       operationId: CapabilityService_UploadFiles
       parameters:
       - in: header
@@ -1688,21 +1655,21 @@ paths:
           multipart/form-data:
             example:
               batch_id: 661be601-65c7-4025-af0f-20d357dfb090
-              files: "@门诊收费票据01.png"
+              files: '@门诊收费票据01.png'
             schema:
               properties:
                 batch_id:
                   description: 调用方自定义批次ID(UUID格式，不传则系统生成)
-                  type: string
                   example: 661be601-65c7-4025-af0f-20d357dfb090
+                  type: string
                 file_urls:
                   description: URL 上传(与 files 可混合使用)，JSON 数组格式
-                  type: string
                   example: '["https://example.com/file1.pdf","https://example.com/file2.jpg"]'
+                  type: string
                 files:
                   description: 文件二进制上传(支持多文件)
-                  type: string
                   format: binary
+                  type: string
               type: object
         required: true
       responses:
@@ -1908,7 +1875,7 @@ paths:
     post:
       description: |-
         ICD 疾病编码查询
-         按疾病名称或编码搜索 ICD-10 疾病分类信息
+        按疾病名称或编码搜索 ICD-10 疾病分类信息
       operationId: CapabilityService_SearchICD
       parameters:
       - in: header
@@ -2001,71 +1968,71 @@ paths:
         content:
           multipart/form-data:
             example:
+              files: '@门诊收费票据01.png'
               material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-              files: "@门诊收费票据01.png"
             schema:
               properties:
                 batch_id:
                   description: 批次 ID(处理批次下所有材料)
-                  type: string
                   example: 661be601-65c7-4025-af0f-20d357dfb090
+                  type: string
                 blurry_threshold:
                   description: 模糊风险判定阈值。开启模糊检测后，若模型输出的模糊风险分数大于该阈值，则判定图像存在模糊风险(0~1，保留2位小数，默认 0.5)
+                  example: 0.5
                   format: float
                   type: number
-                  example: 0.5
                 detection_scope:
                   description: 检测范围控制参数。0 表示检测图片中的所有主体，只要任一主体存在质量风险，则整体判定为存在风险；1 表示仅检测第一个主体的质量风险情况。建议采用 0(默认 0)
+                  example: 0
                   format: int32
                   type: integer
-                  example: 0
                 file_urls:
                   description: URL 上传(与 material_id/batch_id 互斥)，JSON 数组格式
-                  type: string
                   example: '["https://example.com/file1.pdf"]'
+                  type: string
                 files:
                   description: 文件二进制上传(支持多文件)
-                  type: string
                   format: binary
+                  type: string
                 light_spot_level:
                   description: 光斑检测的检测级别控制参数。0 表示优先检测主体边缘与背景区域是否存在光斑；1 表示优先检测主体内容区域是否存在光斑，例如文字、印章、人像等区域是否受光斑影响(默认 0)
+                  example: 0
                   format: int32
                   type: integer
-                  example: 0
                 light_spot_threshold:
                   description: 光斑风险判定阈值。开启光斑检测后，若模型输出的光斑风险分数大于该阈值，则判定图像存在光斑风险(0~1，保留2位小数，默认 0.5)
+                  example: 0.5
                   format: float
                   type: number
-                  example: 0.5
                 material_id:
                   description: 已上传材料的 ID(处理单个材料，与 files/file_urls 互斥)
-                  type: string
                   example: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                  type: string
                 photocopy_threshold:
                   description: 复印件风险判定阈值。开启复印件检测后，若模型输出的复印件风险分数大于该阈值，则判定图像为复印件风险(0~1，保留2位小数，默认 0.5)
+                  example: 0.5
                   format: float
                   type: number
-                  example: 0.5
                 scan_threshold:
                   description: 扫描件风险判定阈值。开启扫描件检测后，若模型输出的扫描件风险分数大于该阈值，则判定图像存在扫描件风险(0~1，保留2位小数，默认 0.5)
+                  example: 0.5
                   format: float
                   type: number
-                  example: 0.5
                 screen_remark_threshold:
                   description: 翻拍风险判定阈值。开启翻拍检测后，若模型输出的翻拍风险分数大于该阈值，则判定图像存在翻拍风险(0~1，保留2位小数，默认 0.5)
+                  example: 0.5
                   format: float
                   type: number
-                  example: 0.5
                 un_integrity_level:
                   description: 完整性检测的检测级别控制参数。0 表示优先检测主体边缘与背景是否完整；1 表示优先检测主体内容是否完整，例如文字、印章、人像等区域是否缺失(默认 0)
+                  example: 0
                   format: int32
                   type: integer
-                  example: 0
                 un_integrity_threshold:
                   description: 完整性风险判定阈值。开启完整性检测后，若模型输出的完整性风险分数大于该阈值，则判定图像存在不完整风险。完整性风险检测包括：1.拍摄(因未拍全导致的完整性风险) 2.物理遮挡 3.数字遮挡(如马赛克) 4.物理水印(含水印文件的打印件) 5.数字水印(常规水印，如水印相机) 6.弯折 7.破损(0~1，保留2位小数，默认 0.5)
+                  example: 0.5
                   format: float
                   type: number
-                  example: 0.5
               type: object
         required: true
       responses:
@@ -2185,26 +2152,26 @@ paths:
         content:
           multipart/form-data:
             example:
+              files: '@门诊收费票据01.png'
               material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-              files: "@门诊收费票据01.png"
             schema:
               properties:
                 batch_id:
                   description: 批次 ID(处理批次下所有材料)
-                  type: string
                   example: 661be601-65c7-4025-af0f-20d357dfb090
+                  type: string
                 file_urls:
                   description: URL 上传(与 material_id/batch_id 互斥)，JSON 数组格式
-                  type: string
                   example: '["https://example.com/file1.pdf"]'
+                  type: string
                 files:
                   description: 文件二进制上传(支持多文件)
-                  type: string
                   format: binary
+                  type: string
                 material_id:
                   description: 已上传材料的 ID(处理单个材料，与 files/file_urls 互斥)
-                  type: string
                   example: 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                  type: string
               type: object
         required: true
       responses:
@@ -2241,18 +2208,12 @@ paths:
   /doc-agent/api/v1/capability/material/extract:
     post:
       description: |-
-        材料抽取(幂等)。传入 material_id 列表，按需创建抽取任务：
-
-        - 未处理的材料：创建抽取任务，返回 PENDING 状态
-
-        - 处理中的材料：返回当前状态(CLASSIFYING/EXTRACTING)
-
-        - 已完成的材料：直接返回结果，不重新抽取
-
-        - 失败的材料：重新创建抽取任务
-
-
-        支持重复调用直到所有材料 status=COMPLETED，或等待 callback_url 回调。
+        材料抽取(幂等)
+        传入 material_id 列表，按需创建抽取任务：
+           - 未处理的材料：创建抽取任务，返回 PENDING 状态
+           - 处理中/失败的材料：直接返回当前状态，不重复处理
+           - 已完成的材料：直接返回抽取结果
+        支持重复调用直到所有材料终态(COMPLETED/FAILED)，或等待 callback_url 回调
       operationId: CapabilityService_ExtractMaterial
       parameters:
       - in: header
@@ -2269,19 +2230,23 @@ paths:
         content:
           application/json:
             examples:
+              含验真:
+                value:
+                  material_ids:
+                  - c0b6cdaa-ab06-4d67-bef2-3ea14de665be
+                  with_verification: true
               指定分类:
                 value:
                   category_hints:
                   - category: 费用与结算
-                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-                    material_type: 医疗门诊收费票据(电子)
+                    material_id: c0b6cdaa-ab06-4d67-bef2-3ea14de665be
+                    material_type: 医疗门诊收费票据（电子）
                   material_ids:
-                  - 8ffe03ce-4714-4b50-8daf-afee06002cc3
+                  - c0b6cdaa-ab06-4d67-bef2-3ea14de665be
               指定材料:
                 value:
                   material_ids:
-                  - 8ffe03ce-4714-4b50-8daf-afee06002cc3
-                  - 27734e23-3482-42a3-98d7-1bdb369118bc
+                  - c0b6cdaa-ab06-4d67-bef2-3ea14de665be
               按批次:
                 value:
                   batch_id: 661be601-65c7-4025-af0f-20d357dfb090
@@ -2292,19 +2257,146 @@ paths:
         "200":
           content:
             application/json:
-              example:
-                code: 200
-                data:
-                  materials:
-                  - category: 费用与结算
-                    extract_result:
-                      document: null
-                      extract_fields: []
-                      tables: []
-                    material_id: 8ffe03ce-4714-4b50-8daf-afee06002cc3
-                    material_type: 医疗门诊收费票据(电子)
-                    status: 1
-                message: OK
+              examples:
+                已完成, 含抽取结果和验真 — 仅展示部分字段:
+                  value:
+                    code: 200
+                    data:
+                      materials:
+                      - category: 费用与结算
+                        extract_result:
+                          extract_fields:
+                          - key: 单据标题名称
+                            position:
+                            - page: 0
+                              vertices:
+                              - 702
+                              - 73
+                              - 1597
+                              - 73
+                              - 1597
+                              - 156
+                              - 702
+                              - 156
+                            value: 上海市医疗门诊收费票据（电子）
+                          - key: 票据代码
+                            position:
+                            - page: 0
+                              vertices:
+                              - 305
+                              - 241
+                              - 457
+                              - 241
+                              - 457
+                              - 280
+                              - 305
+                              - 280
+                            value: "31060125"
+                          - key: 票据号码
+                            position:
+                            - page: 0
+                              vertices:
+                              - 1632
+                              - 239
+                              - 1818
+                              - 239
+                              - 1818
+                              - 278
+                              - 1632
+                              - 278
+                            value: "0290479045"
+                          - key: 开票日期
+                            position:
+                            - page: 0
+                              vertices:
+                              - 1629
+                              - 349
+                              - 1818
+                              - 349
+                              - 1818
+                              - 388
+                              - 1629
+                              - 388
+                            value: "2025-08-04"
+                          - key: 发票金额合计
+                            position:
+                            - page: 0
+                              vertices:
+                              - 1402
+                              - 987
+                              - 1629
+                              - 987
+                              - 1629
+                              - 1033
+                              - 1402
+                              - 1033
+                            value: "250.00"
+                          - key: 收款单位
+                            position:
+                            - page: 0
+                              vertices:
+                              - 126
+                              - 1450
+                              - 1042
+                              - 1450
+                              - 1042
+                              - 1510
+                              - 126
+                              - 1510
+                            value: XX中医药大学附属XX医院
+                          - key: 交款人
+                            position:
+                            - page: 0
+                              vertices:
+                              - 135
+                              - 344
+                              - 305
+                              - 344
+                              - 305
+                              - 388
+                              - 135
+                              - 388
+                            value: 张*
+                          tables:
+                          - items:
+                            - values:
+                              - key: 项目名称
+                                value: 诊察费
+                              - key: 金额
+                                value: "250.00"
+                              - key: 数量
+                                value: "1.00"
+                            table_name: Table1
+                            table_type: ""
+                        fiscal_verify_result:
+                          bill_code: "31060125"
+                          bill_date: "20250804"
+                          bill_name: 上海市医疗门诊收费票据（电子）
+                          bill_no: "0290479045"
+                          check_code: 519d23
+                          code: 1000
+                          message: 处理成功
+                          payee: XX中医药大学附属XX医院
+                          payer: 张*
+                          query_count: 1
+                          time: "2026-05-07 10:03:40"
+                          total_amount: "250.00"
+                        material_id: c0b6cdaa-ab06-4d67-bef2-3ea14de665be
+                        material_type: 医疗门诊收费票据（电子）
+                        status: 3
+                    message: OK
+                首次提交, 状态为 CLASSIFYING:
+                  value:
+                    code: 200
+                    data:
+                      materials:
+                      - category: ""
+                        extract_result:
+                          extract_fields: []
+                          tables: []
+                        material_id: c0b6cdaa-ab06-4d67-bef2-3ea14de665be
+                        status: 1
+                    message: OK
               schema:
                 properties:
                   code:
@@ -2325,7 +2417,7 @@ paths:
     post:
       description: |-
         医疗机构查询
-         按名称模糊搜索医疗机构信息，包含医院等级、地址、联系方式等
+        按名称模糊搜索医疗机构信息，包含医院等级、地址、联系方式等
       operationId: CapabilityService_SearchMedicalInstitution
       parameters:
       - in: header
@@ -2414,8 +2506,8 @@ paths:
     post:
       description: |-
         医保三目录查询(补全)
-         按名称模糊搜索医保目录项(药品目录、诊疗项目目录、医疗服务设施目录)
-         支持指定地区编码筛选
+        按名称模糊搜索医保目录项(药品目录、诊疗项目目录、医疗服务设施目录)
+        支持指定地区编码筛选
       operationId: CapabilityService_SearchSocialInsurance
       parameters:
       - in: header
