@@ -227,6 +227,10 @@ components:
           description: '该材料的处理状态(0: 待处理, 1: 分类中, 2: 抽取中, 3: 已完成, 4: 失败)'
           format: enum
           type: integer
+        timing:
+          allOf:
+          - $ref: '#/components/schemas/capability.v1.MaterialTiming'
+          description: 各阶段处理耗时(毫秒，处理完成后返回)
         vat_verify_result:
           allOf:
           - $ref: '#/components/schemas/common.VatInvoiceVerifyResult'
@@ -321,6 +325,24 @@ components:
             $ref: '#/components/schemas/capability.v1.CapabilityMaterialInfo'
           type: array
       type: object
+    capability.v1.ClassificationFieldConfig:
+      description: 单个分类的字段配置
+      properties:
+        classification_name:
+          description: 分类名称（小类名称，如"医疗门诊收费票据（电子）"）
+          example: '"医疗门诊收费票据（电子）"'
+          type: string
+        fields:
+          description: 该分类下的独立字段启用/禁用配置
+          items:
+            $ref: '#/components/schemas/capability.v1.FieldEnabledConfig'
+          type: array
+        tables:
+          description: 该分类下的表格配置（每个表格含自身开关及其列字段开关）
+          items:
+            $ref: '#/components/schemas/capability.v1.TableFieldConfig'
+          type: array
+      type: object
     capability.v1.DivisionItem:
       description: 行政区划信息
       properties:
@@ -346,6 +368,18 @@ components:
           type: string
         province_name:
           description: 所属省级名称
+          type: string
+      type: object
+    capability.v1.FieldEnabledConfig:
+      description: 单个字段的启用/禁用配置
+      properties:
+        enabled:
+          description: 是否启用
+          example: true
+          type: boolean
+        field_name:
+          description: 字段名称
+          example: '"票据代码"'
           type: string
       type: object
     capability.v1.ICDItem:
@@ -417,6 +451,19 @@ components:
           items:
             $ref: '#/components/schemas/capability.v1.PageQualityResult'
           type: array
+      type: object
+    capability.v1.MaterialTiming:
+      description: 材料各阶段处理耗时(毫秒)
+      properties:
+        classify_ms:
+          description: 材料分类耗时(毫秒)
+          type: string
+        extract_ms:
+          description: 信息抽取耗时(毫秒)
+          type: string
+        parse_ms:
+          description: 文件解析耗时(毫秒)
+          type: string
       type: object
     capability.v1.MedicalInstitutionItem:
       description: 医疗机构信息
@@ -514,6 +561,48 @@ components:
             type: string
           type: array
       type: object
+    capability.v1.QueryFieldConfigRequest:
+      properties:
+        classification_names:
+          description: 要查询的分类名称列表，为空时返回所有分类的字段配置
+          example:
+          - 医疗门诊收费票据（电子）
+          - 住院费用明细清单
+          items:
+            type: string
+          type: array
+      type: object
+    capability.v1.QueryFieldConfigResponse:
+      properties:
+        classifications:
+          description: 各分类的字段配置
+          items:
+            $ref: '#/components/schemas/capability.v1.ClassificationFieldConfig'
+          type: array
+      type: object
+    capability.v1.SetFieldConfigRequest:
+      properties:
+        classifications:
+          description: |-
+            分类字段配置列表（支持同时设置多个分类）
+             fields 控制独立字段，tables 控制表格及其列字段
+          example:
+          - classification_name: 医疗门诊收费票据（电子）
+            fields:
+            - enabled: false
+              field_name: 票据代码
+            tables:
+            - enabled: true
+              fields:
+              - enabled: false
+                field_name: 项目名称
+              table_name: 费用明细
+          items:
+            $ref: '#/components/schemas/capability.v1.ClassificationFieldConfig'
+          type: array
+      type: object
+    capability.v1.SetFieldConfigResponse:
+      type: object
     capability.v1.SocialInsuranceItem:
       description: 医保目录项
       properties:
@@ -608,6 +697,22 @@ components:
           description: 地区名称
           type: string
       type: object
+    capability.v1.TableFieldConfig:
+      description: 单个表格的配置（含表格整体开关及其列字段）
+      properties:
+        enabled:
+          description: 表格整体启用/禁用
+          type: boolean
+        fields:
+          description: 表格内列字段的启用/禁用配置
+          items:
+            $ref: '#/components/schemas/capability.v1.FieldEnabledConfig'
+          type: array
+        table_name:
+          description: 表格名称
+          example: '"费用明细"'
+          type: string
+      type: object
     capability.v1.VerifyFiscalBillRequest:
       properties:
         bill_amount:
@@ -625,15 +730,15 @@ components:
         check_code:
           description: 校验码
           type: string
+        id_card_last6:
+          description: 身份证后六位（明细版中用于路由判断：传了则走地方版，部分地区票据必填）
+          type: string
         mode:
           description: |-
             查验模式:
              - "national": 全国版，走财政部全国网站查验，速度快，部分票据可能无明细，仅支持开票时间在一年内的电子票据
              - "detail": 明细版，根据是否传入 id_card_last6 + payer_name 自动判断走地方版或全国明细版
              默认 "national"
-          type: string
-        id_card_last6:
-          description: 身份证后六位（明细版中用于路由判断：传了则走地方版，部分地区票据必填）
           type: string
         payer_name:
           description: 交款人（明细版中用于路由判断：传了则走地方版，部分票据必填）
@@ -1627,6 +1732,159 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/capability.v1.CapabilityLookupDivisionResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
+          description: OK
+      tags:
+      - CapabilityService
+  /doc-agent/api/v1/capability/field-config/query:
+    post:
+      description: |-
+        查询字段配置。返回所有分类及其所有字段的最终启用状态（系统默认 + 调用方覆盖合并）。
+
+        - classification_names 非空时：仅返回指定分类的字段配置
+        - classification_names 为空时：返回所有分类及其所有字段的配置
+
+        每个分类会列出其全部字段（包括普通字段和表格列字段），enabled 为合并后的最终状态。
+      operationId: CapabilityService_QueryFieldConfig
+      parameters:
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            examples:
+              查询所有分类:
+                value: {}
+              查询指定分类:
+                value:
+                  classification_names:
+                  - 医疗门诊收费票据（电子）
+            schema:
+              $ref: '#/components/schemas/capability.v1.QueryFieldConfigRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                code: 200
+                data:
+                  classifications:
+                  - classification_name: 医疗门诊收费票据（电子）
+                    fields:
+                    - enabled: true
+                      field_name: 单据标题名称
+                    - enabled: true
+                      field_name: 票据代码
+                    - enabled: true
+                      field_name: 票据号码
+                    - enabled: false
+                      field_name: 开票日期
+                    - enabled: true
+                      field_name: 发票金额合计
+                    - enabled: true
+                      field_name: 收款单位
+                    - enabled: true
+                      field_name: 交款人
+                  - classification_name: 住院费用明细清单
+                    fields:
+                    - enabled: true
+                      field_name: 姓名
+                    - enabled: true
+                      field_name: 住院号
+                    - enabled: false
+                      field_name: 住院天数
+                    - enabled: true
+                      field_name: 项目名称
+                    - enabled: true
+                      field_name: 金额
+                message: OK
+              schema:
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/capability.v1.QueryFieldConfigResponse'
+                  message:
+                    description: 状态说明
+                    example: OK
+                    type: string
+                type: object
+          description: OK
+      tags:
+      - CapabilityService
+  /doc-agent/api/v1/capability/field-config/set:
+    post:
+      description: |-
+        设置字段配置。批量设置一个或多个分类下抽取字段的启用/禁用状态。
+        配置按调用方维度持久化存储，后续该调用方的抽取请求自动遵循。
+
+        行为说明：
+        - 只设置明确传入的字段，未提及的字段保持现有配置不变
+        - 不存在的分类名或字段名静默忽略（不报错）
+        - 幂等：重复调用相同请求结果一致
+      operationId: CapabilityService_SetFieldConfig
+      parameters:
+      - in: header
+        name: x-ti-app-id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: x-ti-secret-code
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              classifications:
+              - classification_name: 医疗门诊收费票据（电子）
+                fields:
+                - enabled: true
+                  field_name: 票据代码
+                - enabled: false
+                  field_name: 开票日期
+              - classification_name: 住院费用明细清单
+                fields:
+                - enabled: true
+                  field_name: 姓名
+                - enabled: false
+                  field_name: 住院天数
+            schema:
+              $ref: '#/components/schemas/capability.v1.SetFieldConfigRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                code: 200
+                data: {}
+                message: OK
+              schema:
+                properties:
+                  code:
+                    description: 业务状态码
+                    example: 200
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/capability.v1.SetFieldConfigResponse'
                   message:
                     description: 状态说明
                     example: OK

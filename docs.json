@@ -55,6 +55,13 @@
             ]
           },
           {
+            "group": "字段配置",
+            "pages": [
+              "api-reference/endpoint/query_field_config",
+              "api-reference/endpoint/set_field_config"
+            ]
+          },
+          {
             "group": "发票验真",
             "pages": [
               "api-reference/endpoint/verify_fiscal_bill",
